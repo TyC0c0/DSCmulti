@@ -72,7 +72,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <icon value="DALL_E_2024-12-10_13.05.09_-_A_modern_login_icon_for_a_web_application__featuring_a_sleek_and_professional_design._The_icon_includes_a_silhouette_of_a_person_and_a_key_symbol__arr-removebg-preview.png"/>
+              <icon value="LoginImage.png"/>
               <text value=""/>
             </properties>
           </component>
