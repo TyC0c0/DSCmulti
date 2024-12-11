@@ -2,24 +2,25 @@ package org.example.multiDSC.model;
 
 import java.util.ArrayList;
 /*
-class to get all the text and add it to the login
+Class to set all the text to the view
 @autor Alvaro Garcia Lopez
 @version 1.0
-*/
-public class VistaFormModel {
+ */
+public class VistaFormModel_es {
     private ArrayList<String> loginText = new ArrayList<String>();
-    public void VistaForm(){
+
+    public void VistaFormModel_es() {
         addStringToArray();
     }
 
     private void addStringToArray() {
         loginText.add("Login");//0
-        loginText.add("Welcome to the");//1
-        loginText.add("Username");//2
-        loginText.add("Password");//3
-        loginText.add("Ok");//4
-        loginText.add("Cancel");//5
-        loginText.add("Login form");//6
+        loginText.add("Bienvenido al");//1
+        loginText.add("Nombre Usuario");//2
+        loginText.add("Contraseña");//3
+        loginText.add("Vale");//4
+        loginText.add("Cancelar");//5
+        loginText.add("Formulario Login");//6
     }
 
     public ArrayList<String> getLoginText() {

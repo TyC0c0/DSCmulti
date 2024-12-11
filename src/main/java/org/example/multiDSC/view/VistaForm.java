@@ -1,6 +1,6 @@
 package org.example.multiDSC.view;
 
-import org.example.multiDSC.model.VistaFormModel;
+import org.example.multiDSC.model.VistaFormModel_en;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -34,7 +34,7 @@ public class VistaForm extends JDialog {
     public VistaForm() {
         JFrame frame = new JFrame();
         // Instanciar el modelo para obtener textos
-        VistaFormModel vistaFormModel = new VistaFormModel();
+        VistaFormModel_en vistaFormModelEn = new VistaFormModel_en();
         setTitle("Login");
         setContentPane(loginPanel);
         //setMinimumSize(new Dimension(450, 500));
@@ -46,15 +46,15 @@ public class VistaForm extends JDialog {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 
-        vistaFormModel.VistaForm(); // Inicializa el array con los textos
+        vistaFormModelEn.VistaForm(); // Inicializa el array con los textos
 
         // Asignar los textos desde el modelo a los componentes
-        lblWelcome.setText(vistaFormModel.getLoginText().get(1)); // "Welcome to the"
-        lblWelcome2.setText(vistaFormModel.getLoginText().get(6));
-        lblUsername.setText(vistaFormModel.getLoginText().get(2)); // "Username"
-        lblPassword.setText(vistaFormModel.getLoginText().get(3)); // "Password"
-        btnOk.setText(vistaFormModel.getLoginText().get(4)); // "Ok"
-        btnCancel.setText(vistaFormModel.getLoginText().get(5)); // "Cancel"
+        lblWelcome.setText(vistaFormModelEn.getLoginText().get(1)); // "Welcome to the"
+        lblWelcome2.setText(vistaFormModelEn.getLoginText().get(6));
+        lblUsername.setText(vistaFormModelEn.getLoginText().get(2)); // "Username"
+        lblPassword.setText(vistaFormModelEn.getLoginText().get(3)); // "Password"
+        btnOk.setText(vistaFormModelEn.getLoginText().get(4)); // "Ok"
+        btnCancel.setText(vistaFormModelEn.getLoginText().get(5)); // "Cancel"
 
         // Listener ok button
         btnOk.addActionListener(new ActionListener() {
