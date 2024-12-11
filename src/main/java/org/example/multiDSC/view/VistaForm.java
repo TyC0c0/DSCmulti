@@ -8,6 +8,16 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
+/*
+
+    VistaForm - This class is the backend from the Windows VistaForm.form
+    who is the window of the login form.
+
+    @author Ramón Reina González
+    @version 1.2
+
+*/
+
 public class VistaForm extends JDialog {
     private JTextField tfNickname;
     private JPasswordField pfPassword;
