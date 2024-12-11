@@ -22,24 +22,24 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="23445" class="javax.swing.JLabel">
+          <component id="23445" class="javax.swing.JLabel" binding="lblWelcome">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <font name="Sylfaen" size="18" style="0"/>
               <foreground color="-1"/>
-              <text value="Welcome to the"/>
+              <text value=" "/>
             </properties>
           </component>
-          <component id="f19fa" class="javax.swing.JLabel">
+          <component id="f19fa" class="javax.swing.JLabel" binding="lblWelcome2">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <font name="Sylfaen" size="18" style="0"/>
               <foreground color="-1"/>
-              <text value="Login Form"/>
+              <text value=""/>
             </properties>
           </component>
           <vspacer id="1be1c">
@@ -76,14 +76,14 @@
               <text value=""/>
             </properties>
           </component>
-          <component id="88ad7" class="javax.swing.JLabel">
+          <component id="88ad7" class="javax.swing.JLabel" binding="lblUsername">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <font name="Sylfaen" size="18" style="1"/>
               <foreground color="-16777216"/>
-              <text value="Username"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="6642d" class="javax.swing.JTextField" binding="tfNickname">
@@ -97,7 +97,7 @@
               <font name="Sylfaen" size="16" style="0"/>
             </properties>
           </component>
-          <component id="d615d" class="javax.swing.JLabel">
+          <component id="d615d" class="javax.swing.JLabel" binding="lblPassword">
             <constraints>
               <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -105,7 +105,7 @@
               <background color="-1"/>
               <font name="Sylfaen" size="18" style="1"/>
               <foreground color="-16777216"/>
-              <text value="Password"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="578e8" class="javax.swing.JPasswordField" binding="pfPassword">
@@ -128,7 +128,7 @@
               <background color="-14869220"/>
               <font name="Sylfaen" size="18" style="1"/>
               <foreground color="-1"/>
-              <text value="OK"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="33475" class="javax.swing.JButton" binding="btnCancel">
