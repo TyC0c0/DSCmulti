@@ -1,5 +1,7 @@
 package org.example.multiDSC.view;
 
+import org.example.multiDSC.model.VistaFormModel;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +9,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+/*
+Class edited for get all the text from the model class
+@autor Alvaro Garcia Lopez
+@version 1.1
+*/
 
 public class VistaForm extends JDialog {
     private JTextField tfNickname;
@@ -14,19 +21,33 @@ public class VistaForm extends JDialog {
     private JButton btnOk;
     private JButton btnCancel;
     private JPanel loginPanel;
+    private JLabel lblUsername;
+    private JLabel lblPassword;
+    private JLabel lblWelcome;
+    private JLabel lblWelcome2;
 
     public VistaForm(JFrame frame) {
         super(frame);
-        setTitle("Login");
+        // Instanciar el modelo para obtener textos
+        VistaFormModel vistaFormModel = new VistaFormModel();
+        setTitle("Login");//Login
         setContentPane(loginPanel);
-        //setMinimumSize(new Dimension(450, 500));
-        //setMaximumSize(new Dimension(450, 500));
         setSize(700, 500);
         setResizable(false);
         setModal(true);
         setLocationRelativeTo(frame);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setVisible(true);
+
+
+        vistaFormModel.VistaForm(); // Inicializa el array con los textos
+
+        // Asignar los textos desde el modelo a los componentes
+        lblWelcome.setText(vistaFormModel.getLoginText().get(1)); // "Welcome to the"
+        lblWelcome2.setText(vistaFormModel.getLoginText().get(6));
+        lblUsername.setText(vistaFormModel.getLoginText().get(2)); // "Username"
+        lblPassword.setText(vistaFormModel.getLoginText().get(3)); // "Password"
+        btnOk.setText(vistaFormModel.getLoginText().get(4)); // "Ok"
+        btnCancel.setText(vistaFormModel.getLoginText().get(5)); // "Cancel"
 
         // Listener ok button
         btnOk.addActionListener(new ActionListener() {
@@ -34,6 +55,8 @@ public class VistaForm extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 String email = tfNickname.getText();
                 String password = String.valueOf(pfPassword.getPassword());
+                System.out.println("Username: " + email);
+                System.out.println("Password: " + password);
             }
         });
 
@@ -57,7 +80,6 @@ public class VistaForm extends JDialog {
         User user = null;
 
         // DB connection
-
         final String db_url = "jdbc:mysql://localhost";
         final String username = "root";
         final String password = "";
