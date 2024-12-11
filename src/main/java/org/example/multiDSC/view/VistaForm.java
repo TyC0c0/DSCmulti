@@ -25,8 +25,8 @@ public class VistaForm extends JDialog {
     private JButton btnCancel;
     private JPanel loginPanel;
 
-    public VistaForm(JFrame frame) {
-        super(frame);
+    public VistaForm() {
+        JFrame frame = new JFrame();
         setTitle("Login");
         setContentPane(loginPanel);
         //setMinimumSize(new Dimension(450, 500));
@@ -87,7 +87,7 @@ public class VistaForm extends JDialog {
     }
 
     public static void main(String[] args) {
-        VistaForm vista = new VistaForm(null);
+        VistaForm vista = new VistaForm();
 //        User user = vista.authentificateUser();
 //
 //        if (user != null) {
