@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.multiDSC.model.mainContModel;
+import org.example.multiDSC.controller.mainController;
 
 /**
  * Main - Main class that calls the Controller of the app.
@@ -12,7 +12,7 @@ import org.example.multiDSC.model.mainContModel;
 public class Main {
     public static void main(String[] args) {
 
-        mainContModel controller= new mainContModel();
+        mainController controller= new mainController();
 
     }
 }
