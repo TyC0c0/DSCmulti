@@ -17,6 +17,7 @@ public class MailView {
     private JLabel jlabel6;
     private JButton refreshButton;
     private JButton backButton;
+    private JList list1;
 
     public MailView() {
         JFrame frame = new JFrame();
