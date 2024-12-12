@@ -69,6 +69,7 @@ public class SendMailView {
         sendButton = new JButton(sendMailViewModelEn.getTexts().get(3));
         addFileButton = new JButton(sendMailViewModelEn.getTexts().get(4));
         cancelButton = new JButton(sendMailViewModelEn.getTexts().get(5));
+
         sendButton.setBackground(Color.BLACK);
         sendButton.setForeground(Color.WHITE);
         addFileButton.setBackground(Color.BLACK);
