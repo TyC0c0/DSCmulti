@@ -2,11 +2,11 @@ package org.example.multiDSC.controller;
 
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.controller.databaseConection.conexionThread;
-import org.example.multiDSC.view.VistaForm;
+import org.example.multiDSC.view.LoginView;
 
 public class mainController {
 
-    private VistaForm login;
+    private LoginView login;
     ConectionBD conexion;
 
 
@@ -15,7 +15,7 @@ public class mainController {
     }
 
     public void init(){
-        login= new VistaForm();
+        login= new LoginView();
         hiloConexion();
     }
 

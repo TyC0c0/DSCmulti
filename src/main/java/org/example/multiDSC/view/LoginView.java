@@ -20,7 +20,7 @@ import java.sql.Statement;
 
 */
 
-public class VistaForm extends JDialog {
+public class LoginView extends JDialog {
     private JTextField tfNickname;
     private JPasswordField pfPassword;
     private JButton btnOk;
@@ -31,7 +31,7 @@ public class VistaForm extends JDialog {
     private JLabel lblWelcome;
     private JLabel lblWelcome2;
 
-    public VistaForm() {
+    public LoginView() {
         JFrame frame = new JFrame();
         // Instanciar el modelo para obtener textos
         VistaFormModel_en vistaFormModelEn = new VistaFormModel_en();
@@ -107,7 +107,7 @@ public class VistaForm extends JDialog {
     }
 
     public static void main(String[] args) {
-        VistaForm vista = new VistaForm();
+        LoginView vista = new LoginView();
 //        User user = vista.authentificateUser();
 //
 //        if (user != null) {

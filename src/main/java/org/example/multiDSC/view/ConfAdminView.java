@@ -1,8 +1,4 @@
-/**
- * The ConfAdminView class is a graphical user interface  for user configuration.
- * It provides input fields for user details and action buttons.
- */
-package org.example.multiDSC.controller.Configs;
+package org.example.multiDSC.view;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,6 +38,7 @@ public class ConfAdminView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
+        setVisible(true);
 
         // Inicializar los ArrayLists
         nombres = new ArrayList<>();
@@ -76,7 +73,8 @@ public class ConfAdminView extends JFrame {
         // Crear algunos campos de ejemplo dinámicos usando bucles
         for (int i = 0; i < 50; i++) {
             JPanel rowPanel = new JPanel(new GridLayout(1, 4, 10, 10));
-            rowPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0)); // Espaciado vertical entre filas
+            // Espaciado vertical entre filas
+            rowPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
             JTextField[] textFields = new JTextField[4];
             for (int j = 0; j < textFields.length; j++) {
@@ -118,11 +116,4 @@ public class ConfAdminView extends JFrame {
         add(mainPanel);
     }
 
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            ConfAdminView frame = new ConfAdminView();
-            frame.setVisible(true);
-        });
-    }
 }

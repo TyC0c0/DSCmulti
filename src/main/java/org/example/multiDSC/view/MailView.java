@@ -1,4 +1,4 @@
-package org.example.multiDSC.controller.smptGmail;
+package org.example.multiDSC.view;
 
 import org.example.multiDSC.model.MainViewModel;
 
