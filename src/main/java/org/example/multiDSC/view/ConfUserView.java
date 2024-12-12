@@ -87,6 +87,7 @@ public class ConfUserView extends JFrame {
                     textField.setBackground(Color.WHITE);
                 }
                 crearBotonesModificacion();
+                buttons.get(1).setEnabled(false);
             }
         });
 
@@ -116,7 +117,7 @@ public class ConfUserView extends JFrame {
         // Panel para los botones "Aplicar" y "Cancelar"
         botonesPanel = new JPanel();
         botonesPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); // Centrar los botones
-        botonesPanel.setBackground(Color.LIGHT_GRAY);
+        botonesPanel.setBackground(Color.darkGray);
         botonesPanel.setVisible(false); // Ocultarlo inicialmente
 
         // Agregar paneles al marco principal
