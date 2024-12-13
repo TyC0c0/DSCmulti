@@ -4,6 +4,8 @@
  */
 package org.example.multiDSC.view;
 
+import org.example.multiDSC.model.ConfUserModel_en;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,44 +13,47 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class ConfUserView extends JFrame {
+    private ConfUserModel_en confUserModelEn;
     private ArrayList<JButton> buttons;
     private ArrayList<JLabel> labels;
     private ArrayList<JTextField> textFields;
-    private ArrayList<JButton> botonesModificacion;
+    private ArrayList<JButton> modificationButtons;
     private JPanel rightPanel;
-    private JPanel botonesPanel;
+    private JPanel buttonsPanel;
 
     /**
      * Constructs the ConfUserView and initializes the GUI components and layout.
      * The interface includes buttons for modifying user details and applying or canceling changes.
+     *
      * @author Ivan Guerrero Romero
-     * @version 1.0*/
+     * @version 1.0
+     */
 
 
     public ConfUserView() {
-        // Inicializar listas
+        // Initializing lists
         buttons = new ArrayList<>();
         labels = new ArrayList<>();
         textFields = new ArrayList<>();
-        botonesModificacion = new ArrayList<>();
+        modificationButtons = new ArrayList<>();
 
-        // Configurar el marco principal
-        setTitle("Diseño de Interfaz");
+        // Configure the main panel
+        setTitle(confUserModelEn.getConfUserText_en().get(0));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400); // Tamaño fijo para todas las pantallas
+        setSize(600, 400); // Fixed size for all the views
         setLayout(new BorderLayout());
 
-        // Establecer márgenes y colores generales
+        // Establish margins and general colours
         getContentPane().setBackground(Color.LIGHT_GRAY);
 
-        // Panel izquierdo
+        // Left panel
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         leftPanel.setBackground(Color.DARK_GRAY);
         leftPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Márgenes
 
-        // Crear botones dinámicamente
-        String[] buttonNames = {"Eliminar", "Modificar"};
+        // Create buttons dynamically
+        String[] buttonNames = {confUserModelEn.getConfUserText_en().get(1), confUserModelEn.getConfUserText_en().get(2)};
         for (String name : buttonNames) {
             JButton button = new JButton(name);
             button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -58,11 +63,11 @@ public class ConfUserView extends JFrame {
             button.setFont(new Font("Arial", Font.BOLD, 12));
             buttons.add(button);
             leftPanel.add(button);
-            leftPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Espaciador
+            leftPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Space
         }
 
-        // Crear botón "Salir" separado
-        JButton exitButton = new JButton("Salir");
+        // Create separated the button "exit"
+        JButton exitButton = new JButton(confUserModelEn.getConfUserText_en().get(3));
         exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         exitButton.setBackground(Color.WHITE);
         exitButton.setForeground(Color.BLACK);
@@ -71,39 +76,39 @@ public class ConfUserView extends JFrame {
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0); // Cerrar la aplicación
+                System.exit(0); // Close the app
             }
         });
-        leftPanel.add(Box.createVerticalGlue()); // Separador flexible
+        leftPanel.add(Box.createVerticalGlue()); // Flexible separator
         leftPanel.add(exitButton);
-        leftPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Espaciador inferior
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Lower space
 
-        // Agregar acción al botón "Modificar"
+        // Add action to the button "Modify"
         buttons.get(1).addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 for (JTextField textField : textFields) {
-                    textField.setEnabled(true); // Activar los campos de texto
+                    textField.setEnabled(true); // Activate the text fields
                     textField.setBackground(Color.WHITE);
                 }
-                crearBotonesModificacion();
+                createModificationButtons();
                 buttons.get(1).setEnabled(false);
             }
         });
 
-        // Panel derecho
+        // Right panel
         rightPanel = new JPanel();
-        rightPanel.setLayout(new GridLayout(7, 2, 5, 5)); // 7 filas, 2 columnas
-        rightPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Márgenes
+        rightPanel.setLayout(new GridLayout(7, 2, 5, 5)); // 7 rows, 2 columns
+        rightPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Margins
         rightPanel.setBackground(Color.LIGHT_GRAY);
 
-        // Crear etiquetas y campos de texto dinámicamente
+        // Create labels and text fields dynamically
         String[] labelsArray = {"Nickname", "Nombre", "Apellido", "Correo", "Contraseña", "DNI", "DescrpRol"};
         for (String labelName : labelsArray) {
             JLabel fieldLabel = new JLabel(labelName);
             fieldLabel.setFont(new Font("Arial", Font.PLAIN, 12));
             JTextField textField = new JTextField();
-            textField.setEnabled(false); // Desactivados inicialmente
+            textField.setEnabled(false); // Deactivate in the beginning
             textField.setBackground(Color.GRAY);
             textField.setForeground(Color.BLACK);
 
@@ -114,69 +119,69 @@ public class ConfUserView extends JFrame {
             rightPanel.add(textField);
         }
 
-        // Panel para los botones "Aplicar" y "Cancelar"
-        botonesPanel = new JPanel();
-        botonesPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); // Centrar los botones
-        botonesPanel.setBackground(Color.darkGray);
-        botonesPanel.setVisible(false); // Ocultarlo inicialmente
+        // Panel for the buttons "Apply" and "Cancel"
+        buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); // Center the buttons
+        buttonsPanel.setBackground(Color.darkGray);
+        buttonsPanel.setVisible(false); // Hide in the beginning
 
-        // Agregar paneles al marco principal
+        // Add panels to the main panel
         add(leftPanel, BorderLayout.WEST);
         add(rightPanel, BorderLayout.CENTER);
-        add(botonesPanel, BorderLayout.SOUTH);
+        add(buttonsPanel, BorderLayout.SOUTH);
     }
 
     /**
-     * Creates the "Aplicar" and "Cancelar" buttons dynamically and configures their actions.
-     * "Cancelar" clears the text fields, disables them, and hides the modification buttons.
+     * Creates the "Apply" and "Cancel" buttons dynamically and configures their actions.
+     * "Cancel" clears the text fields, disables them, and hides the modification buttons.
      */
-    private void crearBotonesModificacion() {
-        if (botonesModificacion.isEmpty()) {
-            // Nombres de los botones a crear
-            String[] nombresBotones = {"Aplicar", "Cancelar"};
+    private void createModificationButtons() {
+        if (modificationButtons.isEmpty()) {
+            // Names of the buttons to create
+            String[] buttonsNames = {confUserModelEn.getConfUserText_en().get(4), confUserModelEn.getConfUserText_en().get(5)};
 
-            // Crear y configurar botones dinámicamente
-            for (String nombre : nombresBotones) {
-                JButton boton = new JButton(nombre);
-                boton.setBackground(Color.WHITE);
-                boton.setForeground(Color.BLACK);
-                boton.setFont(new Font("Arial", Font.BOLD, 12));
+            // Create and configure dynamically the buttons
+            for (String name : buttonsNames) {
+                JButton modButton = new JButton(name);
+                modButton.setBackground(Color.WHITE);
+                modButton.setForeground(Color.BLACK);
+                modButton.setFont(new Font("Arial", Font.BOLD, 12));
 
-                // Agregar funcionalidad al botón "Cancelar"
-                if (nombre.equals("Cancelar")) {
-                    boton.addActionListener(new ActionListener() {
+                // Add functionality to the button "Cancel"
+                if (name.equals(confUserModelEn.getConfUserText_en().get(5))) {
+                    modButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            for (JButton button : botonesModificacion) {
-                                botonesPanel.remove(button);
+                            for (JButton button : modificationButtons) {
+                                buttonsPanel.remove(button);
                                 buttons.get(1).setEnabled(true);
                             }
-                            botonesModificacion.clear();
-                            botonesPanel.setVisible(false); // Ocultar el panel de botones
+                            modificationButtons.clear();
+                            buttonsPanel.setVisible(false); // Hide the button panel
                             for (JTextField textField : textFields) {
-                                textField.setEnabled(false); // Desactivar los campos de texto
+                                textField.setEnabled(false); // Deactivate the text fields
                                 textField.setBackground(Color.GRAY);
-                                textField.setText(""); // Limpiar los campos de texto
+                                textField.setText(""); // Clean the text fields
                             }
-                            botonesPanel.revalidate();
-                            botonesPanel.repaint();
+                            buttonsPanel.revalidate();
+                            buttonsPanel.repaint();
                         }
                     });
                 }
 
-                botonesModificacion.add(boton);
-                botonesPanel.add(boton);
+                modificationButtons.add(modButton);
+                buttonsPanel.add(modButton);
             }
 
-            botonesPanel.setVisible(true); // Mostrar el panel de botones
-            botonesPanel.revalidate();
-            botonesPanel.repaint();
+            buttonsPanel.setVisible(true); // Show the buttons panel
+            buttonsPanel.revalidate();
+            buttonsPanel.repaint();
         }
     }
 
 
     public static void main(String[] args) {
-        // Crear y mostrar la interfaz
+        // Create and show the interface
         ConfUserView frame = new ConfUserView();
         frame.setVisible(true);
     }
