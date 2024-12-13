@@ -16,6 +16,13 @@ public class ConfUserModel_en {
         confUserText_en.add("Exit"); //Position 3
         confUserText_en.add("Apply"); //Position 4
         confUserText_en.add("Cancel"); //Position 5
+        confUserText_en.add("Nickname"); //Position 6
+        confUserText_en.add("Name"); //Position 7
+        confUserText_en.add("Last Name"); //Position 8
+        confUserText_en.add("Email"); //Position 9
+        confUserText_en.add("Password"); //Position 10
+        confUserText_en.add("DNI"); //Position 11
+        confUserText_en.add("Rol Description"); //Position 12
     }
 
     public ArrayList<String> getConfUserText_en() {

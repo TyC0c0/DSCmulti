@@ -12,8 +12,7 @@ import java.sql.Statement;
 
 /*
 
-    VistaForm - This class is the backend from the Windows VistaForm.form
-    who is the window of the login form.
+    LoginView - This class is the backend for the Login form window.
 
     @author Ramón Reina González, Alvaro Garcia Lopez
     @version 1.3
@@ -33,7 +32,7 @@ public class LoginView extends JDialog {
 
     public LoginView() {
         JFrame frame = new JFrame();
-        // Instanciar el modelo para obtener textos
+        // Set the model to obtain the texts
         VistaFormModel_en vistaFormModelEn = new VistaFormModel_en();
         setTitle("Login");
         setContentPane(loginPanel);
@@ -46,9 +45,9 @@ public class LoginView extends JDialog {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 
-        vistaFormModelEn.VistaForm(); // Inicializa el array con los textos
+        vistaFormModelEn.VistaForm(); // Starts the array with the texts
 
-        // Asignar los textos desde el modelo a los componentes
+        // Assign the texts from the model to the components
         lblWelcome.setText(vistaFormModelEn.getLoginText().get(1)); // "Welcome to the"
         lblWelcome2.setText(vistaFormModelEn.getLoginText().get(6));
         lblUsername.setText(vistaFormModelEn.getLoginText().get(2)); // "Username"
@@ -56,7 +55,7 @@ public class LoginView extends JDialog {
         btnOk.setText(vistaFormModelEn.getLoginText().get(4)); // "Ok"
         btnCancel.setText(vistaFormModelEn.getLoginText().get(5)); // "Cancel"
 
-        // Listener ok button
+        // Ok button listener
         btnOk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -117,7 +116,7 @@ public class LoginView extends JDialog {
 //            System.out.println("");
 //        }
 //        else {
-//            System.out.println("Authentification canceled...");
+//            System.out.println("Authentication canceled...");
 //        }
     }
 }

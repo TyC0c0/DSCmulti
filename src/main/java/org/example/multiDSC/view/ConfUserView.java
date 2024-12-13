@@ -31,6 +31,7 @@ public class ConfUserView extends JFrame {
 
 
     public ConfUserView() {
+        confUserModelEn = new ConfUserModel_en();
         // Initializing lists
         buttons = new ArrayList<>();
         labels = new ArrayList<>();
@@ -103,7 +104,7 @@ public class ConfUserView extends JFrame {
         rightPanel.setBackground(Color.LIGHT_GRAY);
 
         // Create labels and text fields dynamically
-        String[] labelsArray = {"Nickname", "Nombre", "Apellido", "Correo", "Contraseña", "DNI", "DescrpRol"};
+        String[] labelsArray = {confUserModelEn.getConfUserText_en().get(6), confUserModelEn.getConfUserText_en().get(7), confUserModelEn.getConfUserText_en().get(8), confUserModelEn.getConfUserText_en().get(9), confUserModelEn.getConfUserText_en().get(10), confUserModelEn.getConfUserText_en().get(11), confUserModelEn.getConfUserText_en().get(12)};
         for (String labelName : labelsArray) {
             JLabel fieldLabel = new JLabel(labelName);
             fieldLabel.setFont(new Font("Arial", Font.PLAIN, 12));
