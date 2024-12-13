@@ -62,5 +62,6 @@ public class FTPView extends JFrame {
 
     public static void main(String[] args) {
         new FTPView();
+        System.out.println("Hello world");
     }
 }
