@@ -11,7 +11,7 @@ public class PostLoginView {
 
     public static void main(String[] args) {
 
-        JFrame frame = new JFrame("Section Window");
+        JFrame frame = new JFrame("Usuario - XXXXXX");
         PostLoginView sectionWindow = new PostLoginView();
         frame.setSize(700, 500);
         frame.setResizable(false);
