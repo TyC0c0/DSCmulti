@@ -1,6 +1,6 @@
 package org.example.multiDSC.view;
 
-import org.example.multiDSC.model.FTPModel;
+import org.example.multiDSC.model.FTPModel_en;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +11,7 @@ import java.awt.*;
 public class FTPView extends JFrame {
 
     // Attributes
-    private FTPModel model;
+    private FTPModel_en model;
     private JPanel panelMain;
     private JScrollPane panelTree;
     private JTree tree;
@@ -20,17 +20,18 @@ public class FTPView extends JFrame {
     private JButton downloadFolderButton;
     private JButton manageDirectoryButton;
     private JButton exitButton;
-
+    private JPanel leftPanel; // 4 rows, 1 column
+    private JPanel rightPanel;
     // Constructor
     public FTPView() {
         // Starting elements
         JFrame frameFTP = new JFrame("FTP Window");
         frameFTP.setLayout(new BorderLayout()); // Use BorderLayout for the main frame
 
-        model = new FTPModel();
+        model = new FTPModel_en();
 
         // Left panel with buttons
-        JPanel leftPanel = new JPanel(new GridLayout(4, 1, 5, 5)); // 4 rows, 1 column
+        leftPanel = new JPanel(new GridLayout(4, 1, 5, 5)); // 4 rows, 1 column
         managePermissionsButton = new JButton(model.getFTPText_en().get(0));
         uploadFolderButton = new JButton(model.getFTPText_en().get(1));
         downloadFolderButton = new JButton(model.getFTPText_en().get(2));
@@ -42,7 +43,7 @@ public class FTPView extends JFrame {
         leftPanel.add(manageDirectoryButton);
 
         // Right panel with tree and bottom button
-        JPanel rightPanel = new JPanel(new BorderLayout());
+        rightPanel = new JPanel(new BorderLayout());
         tree = new JTree();
         panelTree = new JScrollPane(tree);
         exitButton = new JButton(model.getFTPText_en().get(4));
