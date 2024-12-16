@@ -40,6 +40,7 @@ public class SendMailView {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 400);
         frame.setLayout(new BorderLayout());
+        frame.setLocationRelativeTo(null);
 
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
