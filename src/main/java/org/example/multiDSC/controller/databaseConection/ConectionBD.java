@@ -6,11 +6,41 @@ import java.sql.SQLException;
 
 public class ConectionBD {
 
-    private static final String dbURL = "jdbc:mysql//localhost:3306//name";
-    private static final String dbUSER = "root";
-    private static final String dbPASS = "";
+    private static final String DB_URL = "jdbc:postgresql://ep-flat-breeze-a2hszb0f.eu-central-1.aws.neon.tech:5432/ProyectMulti";
+    private static final String DB_USER = "ProyectMulti_owner";
+    private static final String DB_PASS = "pML4Rfu5ngdi";
 
     private Connection connection;
 
-    // Falta mas por hacer
+    public void connect() throws SQLException {
+        if (connection == null || connection.isClosed()) {
+            try {
+                Class.forName("org.postgresql.Driver");
+                connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+                System.out.println("Conexión completada");
+            } catch (ClassNotFoundException e) {
+                throw new SQLException("Driver JDBC no encontrado.", e);
+            }
+        }
+    }
+
+    public boolean isConnected() {
+        try {
+            return connection != null && !connection.isClosed();
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public void closeConnection() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Conexión cerrada");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al cerrar la conexión: " + e.getMessage());
+        }
+    }
 }
+

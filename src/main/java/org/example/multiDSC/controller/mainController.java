@@ -15,13 +15,14 @@ public class mainController {
     }
 
     public void init(){
-        login= new LoginView();
         hiloConexion();
+        login= new LoginView();
+
     }
 
     public void hiloConexion(){
         conexion = new ConectionBD();
-        conexionThread hconect = new conexionThread();
+        conexionThread hconect = new conexionThread(conexion);
         hconect.start();
     }
 
