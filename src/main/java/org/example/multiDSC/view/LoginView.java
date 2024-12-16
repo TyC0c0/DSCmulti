@@ -1,10 +1,10 @@
 package org.example.multiDSC.view;
 
+import org.example.multiDSC.controller.listeners.LoginView.ButtonListenerLogin;
+import org.example.multiDSC.controller.listeners.LoginView.LabelListenerLogin;
 import org.example.multiDSC.model.VistaFormModel_en;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -58,23 +58,11 @@ public class LoginView extends JDialog {
         btnCancel.setText(vistaFormModelEn.getLoginText().get(5)); // "Cancel"
         lblDontHaveBeenRegistred.setText(vistaFormModelEn.getLoginText().get(7));
         // Listener ok button
-        btnOk.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String email = tfNickname.getText();
-                String password = String.valueOf(pfPassword.getPassword());
-                System.out.println("Username: " + email);
-                System.out.println("Password: " + password);
-            }
-        });
 
-        // Listener cancel button
-        btnCancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+
+        lblDontHaveBeenRegistred.addMouseListener(new LabelListenerLogin(this));
+        btnOk.addActionListener(new ButtonListenerLogin(btnOk, btnCancel, tfNickname, pfPassword, this));
+        btnCancel.addActionListener(new ButtonListenerLogin(btnOk, btnCancel, tfNickname, pfPassword, this));
 
         setVisible(true);
     }
