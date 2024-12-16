@@ -16,7 +16,7 @@ import java.sql.Statement;
     who is the window of the login form.
 
     @author Ramón Reina González, Alvaro Garcia Lopez
-    @version 1.3
+    @version 1.4
 
 */
 
@@ -30,6 +30,7 @@ public class LoginView extends JDialog {
     private JLabel lblPassword;
     private JLabel lblWelcome;
     private JLabel lblWelcome2;
+    private JLabel lblDontHaveBeenRegistred;
 
     public LoginView() {
         JFrame frame = new JFrame();
@@ -55,7 +56,7 @@ public class LoginView extends JDialog {
         lblPassword.setText(vistaFormModelEn.getLoginText().get(3)); // "Password"
         btnOk.setText(vistaFormModelEn.getLoginText().get(4)); // "Ok"
         btnCancel.setText(vistaFormModelEn.getLoginText().get(5)); // "Cancel"
-
+        lblDontHaveBeenRegistred.setText(vistaFormModelEn.getLoginText().get(7));
         // Listener ok button
         btnOk.addActionListener(new ActionListener() {
             @Override
