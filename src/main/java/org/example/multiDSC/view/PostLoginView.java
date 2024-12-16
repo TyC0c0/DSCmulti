@@ -2,68 +2,54 @@ package org.example.multiDSC.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class PostLoginView {
     private JPanel panel1;
-    private JButton FTPButton;
-    private JButton MAILButton;
-    private JButton CONFUSERButton;
-    private JButton EXITButton;
+    private static ArrayList<JButton> buttons= new ArrayList<>();
 
     public PostLoginView() {
         // Crear panel principal
         panel1 = new JPanel();
         panel1.setLayout(new GridLayout(2, 3, 10, 10)); // 2 filas, 3 columnas, espacio horizontal y vertical
+        panel1.setBackground(Color.DARK_GRAY);
 
         // Añadir botones al panel
-        panel1.add(createButton("", "FolderImage.png", ""));
-        panel1.add(createButton("", "fine_dining.png", "EMAIL"));
-        panel1.add(createButton("", "cafes.png", "CONF USU"));
-        panel1.add(createButton("", "fast_foods.png", "INFO", true));
+        panel1.add(createButton("FolderImage.png"));
+        panel1.add(createButton("Email.jpeg"));
+        panel1.add(createButton("Config.jpeg"));
+        panel1.add(createButton("Info.jpeg"));
     }
 
-    private JButton createButton(String title, String imagePath, String subtitle) {
-        return createButton(title, imagePath, subtitle, false);
-    }
-
-    private JButton createButton(String title, String imagePath, String subtitle, boolean highlighted) {
+    private JButton createButton(String imagePath) {
         // Crear botón
         JButton button = new JButton();
-        button.setLayout(new BorderLayout());
+        button.setFocusPainted(false); // Elimina el borde de foco
+        button.setContentAreaFilled(false); // Quita el relleno por defecto del botón
+        button.setBorderPainted(false); // Opcional: elimina los bordes del botón
+        button.setOpaque(true); // Habilita el fondo opaco
+        button.setBackground(Color.DARK_GRAY); // Fondo blanco para los botones
 
-        // Configurar colores si es destacado
-        if (highlighted) {
-            button.setBackground(Color.YELLOW);
-            button.setOpaque(true);
-        }
-
-        // Añadir la imagen (cargar desde resources o usar un placeholder si no se encuentra)
-        JLabel iconLabel = new JLabel();
         try {
-            // Usar ClassLoader para cargar la imagen desde el classpath
+            // Cargar la imagen desde el classpath
             ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource(imagePath));
-            Image scaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-            iconLabel.setIcon(new ImageIcon(scaledImage));
+
+            // Escalar la imagen al tamaño del botón
+            Image scaledImage = icon.getImage().getScaledInstance(250, 225, Image.SCALE_SMOOTH); // Tamaño fijo de ejemplo
+            button.setIcon(new ImageIcon(scaledImage));
+
+            // Ajustar alineación
+            button.setMargin(new Insets(0, 0, 0, 0));
+            button.setHorizontalAlignment(SwingConstants.CENTER);
+            button.setVerticalAlignment(SwingConstants.CENTER);
         } catch (Exception e) {
-            iconLabel.setText("[Img]"); // Placeholder si falla la carga
-            iconLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            button.setText("[Img]"); // Placeholder si falla la carga
         }
 
-        // Crear etiquetas de texto
-        JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
-        JLabel subtitleLabel = new JLabel(subtitle, SwingConstants.CENTER);
-
-        // Configuración adicional de las etiquetas
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        subtitleLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-
-        // Añadir componentes al botón
-        button.add(iconLabel, BorderLayout.CENTER);
-        button.add(titleLabel, BorderLayout.NORTH);
-        button.add(subtitleLabel, BorderLayout.SOUTH);
-
+        buttons.add(button);
         return button;
     }
+
 
 
     public static void main(String[] args) {
@@ -73,7 +59,6 @@ public class PostLoginView {
         frame.setResizable(false);
         frame.setContentPane(sectionWindow.panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

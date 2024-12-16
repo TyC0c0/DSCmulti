@@ -47,6 +47,7 @@ public class FTPView extends JFrame {
         topRightPanel.setLayout(new BoxLayout(topRightPanel, BoxLayout.X_AXIS));
 
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
+        topPanel.setBackground(Color.DARK_GRAY);
 
         reloadButton = createSizedButton(model.getFTPText_en().get(5), true);
         renameFieldText = new JTextField();
@@ -70,7 +71,7 @@ public class FTPView extends JFrame {
         manageDirectoryButton = createSizedButton(model.getFTPText_en().get(3), false);
         downloadButton = createSizedButton(model.getFTPText_en().get(7),false);
 
-        leftPanel.setBackground(new Color(10, 10, 10)); // Fondo gris suave para el panel izquierdo
+        leftPanel.setBackground(Color.DARK_GRAY); // Fondo gris suave para el panel izquierdo
 
         leftPanel.add(Box.createVerticalGlue());
         leftPanel.add(managePermissionsButton);
@@ -107,7 +108,7 @@ public class FTPView extends JFrame {
 
         // Panel para el botón Exit con FlowLayout
         JPanel exitPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Centra el botón
-        exitPanel.setBackground(new Color(10, 10, 10));
+        exitPanel.setBackground(Color.DARK_GRAY);
         exitButton = createSizedButton(model.getFTPText_en().get(4),false);
         exitButton.setPreferredSize(new Dimension(100, 30)); // Ajusta el tamaño del botón
         exitPanel.add(exitButton);

@@ -32,7 +32,7 @@ public class MailView extends JFrame {
         // Panel izquierdo
         JPanel panelLeft = new JPanel();
         panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
-        panelLeft.setBackground(Color.BLACK);
+        panelLeft.setBackground(Color.DARK_GRAY);
         panelLeft.setPreferredSize(new Dimension(200, getHeight())); // Ampliar el ancho del panel negro
 
         // Crear lista de botones
@@ -65,7 +65,7 @@ public class MailView extends JFrame {
 
         // Extender el panel izquierdo completamente
         JPanel panelLeftWrapper = new JPanel(new BorderLayout());
-        panelLeftWrapper.setBackground(Color.BLACK);
+        panelLeftWrapper.setBackground(Color.DARK_GRAY);
         panelLeftWrapper.add(panelLeft, BorderLayout.NORTH);
         mainPanel.add(panelLeftWrapper, BorderLayout.WEST);
 
