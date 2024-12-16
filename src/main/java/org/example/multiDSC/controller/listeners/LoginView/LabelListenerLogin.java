@@ -1,5 +1,6 @@
 package org.example.multiDSC.controller.listeners.LoginView;
 
+import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.view.LoginView;
 import org.example.multiDSC.view.UserRegistrerView;
 
@@ -9,15 +10,17 @@ import java.awt.event.MouseListener;
 public class LabelListenerLogin implements MouseListener {
 
     private final LoginView loginView;
+    private final ConectionBD conectionBD;
 
-    public LabelListenerLogin(LoginView loginView) {
+    public LabelListenerLogin(LoginView loginView, ConectionBD conectionBD) {
         this.loginView = loginView;
+        this.conectionBD = conectionBD;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         loginView.dispose();
-        new UserRegistrerView(); // Abre la ventana de registro de usuario
+        new UserRegistrerView(conectionBD); // Abre la ventana de registro de usuario
 
     }
 

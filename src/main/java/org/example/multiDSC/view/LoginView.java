@@ -1,5 +1,6 @@
 package org.example.multiDSC.view;
 
+import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.controller.listeners.LoginView.ButtonListenerLogin;
 import org.example.multiDSC.controller.listeners.LoginView.LabelListenerLogin;
 import org.example.multiDSC.model.VistaFormModel_en;
@@ -31,8 +32,10 @@ public class LoginView extends JDialog {
     private JLabel lblWelcome;
     private JLabel lblWelcome2;
     private JLabel lblDontHaveBeenRegistred;
+    ConectionBD conectionBD;
 
     public LoginView() {
+
         JFrame frame = new JFrame();
         // Instanciar el modelo para obtener textos
         VistaFormModel_en vistaFormModelEn = new VistaFormModel_en();
@@ -60,7 +63,7 @@ public class LoginView extends JDialog {
         // Listener ok button
 
 
-        lblDontHaveBeenRegistred.addMouseListener(new LabelListenerLogin(this));
+        lblDontHaveBeenRegistred.addMouseListener(new LabelListenerLogin(this, conectionBD));
         btnOk.addActionListener(new ButtonListenerLogin(btnOk, btnCancel, tfNickname, pfPassword, this));
         btnCancel.addActionListener(new ButtonListenerLogin(btnOk, btnCancel, tfNickname, pfPassword, this));
 

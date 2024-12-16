@@ -42,5 +42,19 @@ public class ConectionBD {
             System.err.println("Error al cerrar la conexión: " + e.getMessage());
         }
     }
+
+    public void insertUser(String insert) throws SQLException {
+        try {
+            // Crear un Statement para ejecutar el SQL.
+            connect();
+            connection.createStatement().executeUpdate(insert);
+            System.out.println("Usuario insertado correctamente.");
+        } catch (SQLException e) {
+            System.err.println("Error al insertar usuario: " + e.getMessage());
+            throw e; // Rethrow para manejarlo externamente si es necesario.
+        }
+
+    }
+
 }
 
