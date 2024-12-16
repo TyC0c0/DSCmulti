@@ -4,7 +4,7 @@ import java.util.ArrayList;
 /*
 class to get all the text and add it to the login
 @autor Alvaro Garcia Lopez
-@version 1.0
+@version 1.1
 */
 public class VistaFormModel_en {
     private ArrayList<String> loginText = new ArrayList<String>();
@@ -20,6 +20,7 @@ public class VistaFormModel_en {
         loginText.add("Ok");//4
         loginText.add("Cancel");//5
         loginText.add("Login form");//6
+        loginText.add("Don't have been registred?");//7
     }
 
     public ArrayList<String> getLoginText() {
