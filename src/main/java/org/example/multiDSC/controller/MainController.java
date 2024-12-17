@@ -24,7 +24,6 @@ public class MainController {
     private PostLoginView postLoginView;
 
 
-
     public MainController(){
         init();
     }
@@ -85,6 +84,22 @@ public class MainController {
 
     public static void setManager(Manager manager) {
         MainController.manager = manager;
+    }
+
+    public PostLoginView getPostLoginView() {
+        return postLoginView;
+    }
+
+    public void setPostLoginView(PostLoginView postLoginView) {
+        this.postLoginView = postLoginView;
+    }
+
+    public LoginView getLogin() {
+        return login;
+    }
+
+    public void setLogin(LoginView login) {
+        this.login = login;
     }
 }
 
