@@ -2,12 +2,18 @@ package org.example.multiDSC.controller;
 
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.controller.databaseConection.conexionThread;
+import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.viewModels.EmailModel;
 import org.example.multiDSC.view.LoginView;
+
+import java.sql.SQLException;
 
 public class mainController {
 
+    private static ConectionBD conexion;
     private LoginView login;
-    ConectionBD conexion;
+    private Utils utils;
+    private static Manager manager;
 
 
     public mainController(){
@@ -16,15 +22,33 @@ public class mainController {
 
     public void init(){
         hiloConexion();
-        login= new LoginView();
+        manager= new Manager();
+        utils= new Utils();
+        manager.setTable(utils.switchLanguage("espanol"));
+        manager.setConexion(conexion);
+        //login= new LoginView();
+        EmailModel model= new EmailModel(manager);
+
 
     }
 
-    public void hiloConexion(){
+    public void hiloConexion() {
         conexion = new ConectionBD();
+
+        try {
+            conexion.connect(); // Garantiza que la conexión se establezca antes de crear el hilo
+            System.out.println("Conexión inicial establecida correctamente ");
+
+        } catch (SQLException e) {
+            System.err.println("Error al establecer la conexión inicial: " + e.getMessage());
+            throw new RuntimeException("No se pudo establecer la conexión a la base de datos.");
+        }
+
+        // Inicia el hilo que mantendrá la conexión viva
         conexionThread hconect = new conexionThread(conexion);
         hconect.start();
     }
+
 
 
 }

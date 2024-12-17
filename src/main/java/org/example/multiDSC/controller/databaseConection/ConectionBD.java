@@ -1,16 +1,15 @@
 package org.example.multiDSC.controller.databaseConection;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConectionBD {
 
     private static final String DB_URL = "jdbc:postgresql://ep-flat-breeze-a2hszb0f.eu-central-1.aws.neon.tech:5432/ProyectMulti";
     private static final String DB_USER = "ProyectMulti_owner";
     private static final String DB_PASS = "pML4Rfu5ngdi";
-
-    private Connection connection;
+    private static  Connection connection;
 
     public void connect() throws SQLException {
         if (connection == null || connection.isClosed()) {
@@ -42,5 +41,42 @@ public class ConectionBD {
             System.err.println("Error al cerrar la conexión: " + e.getMessage());
         }
     }
+
+    public Map<Integer, Object> lecturaSQL(String query) throws SQLException {
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+
+            Map<Integer, Object> result = new HashMap<>();
+            int iteracion = 1;
+
+            while (resultSet.next()) {
+                // Se agregan todos los tipos de columna posibles
+                for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
+                    result.put(iteracion, resultSet.getObject(i));
+                    iteracion++;
+                }
+            }
+            return result;
+
+        } catch (SQLException e) {
+            // Solo se registra el error para fines de logging
+            System.err.println("Error en la consulta SQL: " + e.getMessage());
+
+            // Propagar la excepción para que el método que lo llama pueda manejarla
+            throw new SQLException("Error en la lectura de datos: ", e.getMessage());
+        } finally {
+            // Cerramos los recursos de manera segura en el bloque finally
+            try {
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+            } catch (SQLException e) {
+                System.err.println("Error cerrando los recursos: " + e.getMessage());
+            }
+        }
+    }
+
 }
 

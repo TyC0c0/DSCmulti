@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.multiDSC.controller.Utils;
 import org.example.multiDSC.controller.mainController;
 
 /**
@@ -11,8 +12,14 @@ import org.example.multiDSC.controller.mainController;
 
 public class Main {
     public static void main(String[] args) {
+        try {
+            mainController controller = new mainController();
 
-        mainController controller= new mainController();
-
+            System.out.println("Programa inicializado correctamente.");
+        } catch (RuntimeException e) {
+            System.err.println("Error al iniciar el programa: " + e.getMessage());
+            Utils.showErrorWindow(null, "Error grave: " + e.getMessage(), "Error de Conexión");
+        }
     }
+
 }
