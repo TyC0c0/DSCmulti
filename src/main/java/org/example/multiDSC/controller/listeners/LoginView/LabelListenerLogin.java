@@ -20,7 +20,7 @@ public class LabelListenerLogin implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         loginView.dispose();
-        new UserRegistrerView(conectionBD); // Abre la ventana de registro de usuario
+       // new UserRegistrerView(conectionBD); // Abre la ventana de registro de usuario
 
     }
 

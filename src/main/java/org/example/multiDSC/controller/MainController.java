@@ -2,14 +2,16 @@ package org.example.multiDSC.controller;
 
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.controller.databaseConection.conexionThread;
+import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonListenerUserRegistrer;
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.EmailModel;
 import org.example.multiDSC.view.LoginView;
 import org.example.multiDSC.view.UserRegistrerView;
 
+import javax.swing.*;
 import java.sql.SQLException;
 
-public class mainController {
+public class MainController {
 
     private static ConectionBD conexion;
     private LoginView login;
@@ -18,7 +20,7 @@ public class mainController {
     private UserRegistrerView register;
 
 
-    public mainController(){
+    public MainController(){
         init();
     }
 
@@ -29,8 +31,9 @@ public class mainController {
         manager.setTable(utils.switchLanguage("espanol"));
         manager.setConexion(conexion);
         //login= new LoginView();
-        EmailModel model= new EmailModel(manager);
-
+       // EmailModel model= new EmailModel(manager);
+        register= new UserRegistrerView();
+        addUserRegisterListeners();
 
     }
 
@@ -52,12 +55,25 @@ public class mainController {
     }
 
     public void addUserRegisterListeners(){
-        //Aqui crea los eventlistener a los botones accediendo desde register
-        //register.getbutton.addEventListener
+        register.getRegisterButton().addActionListener(new ButtonListenerUserRegistrer(this));
+
     }
 
+    public UserRegistrerView getRegister() {
+        return register;
+    }
 
+    public void setRegister(UserRegistrerView register) {
+        this.register = register;
+    }
 
+    public static Manager getManager() {
+        return manager;
+    }
+
+    public static void setManager(Manager manager) {
+        MainController.manager = manager;
+    }
 }
 
 

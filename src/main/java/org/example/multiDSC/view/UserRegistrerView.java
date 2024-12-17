@@ -21,6 +21,8 @@ public class UserRegistrerView extends JFrame {
     private JTextField dniField;
     private JTextField nicknameField;
     private JPasswordField passwordField;
+    private JButton cancelButton;
+    private JButton registerButton;
 
     public UserRegistrerView() {
         setTitle("Registro de Usuario");
@@ -55,12 +57,12 @@ public class UserRegistrerView extends JFrame {
         panel.add(createFormRow(userRegistrerModelEn.getLabelTexts().get(5), nicknameField));
         panel.add(createFormRow(userRegistrerModelEn.getLabelTexts().get(6), passwordField));
 
-        JButton registerButton = new JButton(userRegistrerModelEn.getLabelTexts().get(7));
+        registerButton = new JButton(userRegistrerModelEn.getLabelTexts().get(7));
         registerButton.setBackground(Color.WHITE); // Fondo blanco
         registerButton.setForeground(Color.BLACK); // Letras negras
 
 
-        JButton cancelButton = new JButton(userRegistrerModelEn.getLabelTexts().get(8));
+        cancelButton = new JButton(userRegistrerModelEn.getLabelTexts().get(8));
         cancelButton.setBackground(Color.WHITE); // Fondo blanco
         cancelButton.setForeground(Color.BLACK); // Letras negras
         //registerButton.addActionListener(new ButtonListenerUserRegistrer(this, emailField, nameField, lastNameField, dniField, nicknameField, passwordField,registerButton,cancelButton));
@@ -92,7 +94,71 @@ public class UserRegistrerView extends JFrame {
 
     public static void main(String[] args) {
 
-        SwingUtilities.invokeLater(UserRegistrerView::new);
-        //maincontroller.addUserRegisterListener
+//        SwingUtilities.invokeLater(UserRegistrerView::new);
+//        maincontroller.addUserRegisterListener
+    }
+
+    public JTextField getEmailField() {
+        return emailField;
+    }
+
+    public void setEmailField(JTextField emailField) {
+        this.emailField = emailField;
+    }
+
+    public JTextField getNameField() {
+        return nameField;
+    }
+
+    public void setNameField(JTextField nameField) {
+        this.nameField = nameField;
+    }
+
+    public JTextField getLastNameField() {
+        return lastNameField;
+    }
+
+    public void setLastNameField(JTextField lastNameField) {
+        this.lastNameField = lastNameField;
+    }
+
+    public JTextField getDniField() {
+        return dniField;
+    }
+
+    public void setDniField(JTextField dniField) {
+        this.dniField = dniField;
+    }
+
+    public JTextField getNicknameField() {
+        return nicknameField;
+    }
+
+    public void setNicknameField(JTextField nicknameField) {
+        this.nicknameField = nicknameField;
+    }
+
+    public JPasswordField getPasswordField() {
+        return passwordField;
+    }
+
+    public void setPasswordField(JPasswordField passwordField) {
+        this.passwordField = passwordField;
+    }
+
+    public JButton getCancelButton() {
+        return cancelButton;
+    }
+
+    public void setCancelButton(JButton cancelButton) {
+        this.cancelButton = cancelButton;
+    }
+
+    public JButton getRegisterButton() {
+        return registerButton;
+    }
+
+    public void setRegisterButton(JButton registerButton) {
+        this.registerButton = registerButton;
     }
 }
