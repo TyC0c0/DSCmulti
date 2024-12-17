@@ -1,7 +1,5 @@
 package org.example.multiDSC.view;
 
-import org.example.multiDSC.controller.databaseConection.ConectionBD;
-import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonListenerUserRegistrer;
 import org.example.multiDSC.model.UserRegistrerModel_en;
 
 import javax.swing.*;

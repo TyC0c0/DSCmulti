@@ -1,23 +1,22 @@
 package org.example.multiDSC.controller.listeners.UserRegistrerView;
 
 import org.example.multiDSC.controller.MainController;
-import org.example.multiDSC.controller.databaseConection.ConectionBD;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-public class ButtonListenerUserRegistrer implements ActionListener {
+public class ButtonListener implements ActionListener {
     private final MainController mainController;
 
-    public ButtonListenerUserRegistrer(MainController mainController) {
+    public ButtonListener(MainController mainController) {
         this.mainController = mainController;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (mainController.getRegister().getRegisterButton() == e.getSource()) {
+
             String mail = mainController.getRegister().getEmailField().getText();
             System.out.println("Correo: " + mail);
 
