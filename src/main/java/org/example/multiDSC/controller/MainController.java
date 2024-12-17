@@ -4,9 +4,12 @@ import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.controller.databaseConection.conexionThread;
 import org.example.multiDSC.controller.listeners.LoginView.ButtonListenerLogin;
 import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonListenerUserRegistrer;
+import org.example.multiDSC.model.SqlSentences;
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.EmailModel;
+import org.example.multiDSC.model.viewModels.PostLoginModel;
 import org.example.multiDSC.view.LoginView;
+import org.example.multiDSC.view.PostLoginView;
 import org.example.multiDSC.view.UserRegistrerView;
 
 import javax.swing.*;
@@ -19,6 +22,8 @@ public class MainController {
     private Utils utils;
     private static Manager manager;
     private UserRegistrerView register;
+    private PostLoginView postLoginView;
+
 
 
     public MainController(){
@@ -29,12 +34,14 @@ public class MainController {
         hiloConexion();
         manager= new Manager();
         utils= new Utils();
+
         manager.setTable(utils.switchLanguage("espanol"));
         manager.setConexion(conexion);
-
+        postLoginView = new PostLoginView();
         login= new LoginView();
         addLoginListeners();
         login.setVisible(true);
+
         //EmailModel model= new EmailModel(manager);
         //register= new UserRegistrerView();
         //addUserRegisterListeners();
@@ -92,6 +99,14 @@ public class MainController {
 
     public void setLogin(LoginView login) {
         this.login = login;
+    }
+
+    public PostLoginView getPostLoginView() {
+        return postLoginView;
+    }
+
+    public void setPostLoginView(PostLoginView postLoginView) {
+        this.postLoginView = postLoginView;
     }
 }
 

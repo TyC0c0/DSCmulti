@@ -1,10 +1,14 @@
 package org.example.multiDSC.controller.databaseConection;
 
+import org.example.multiDSC.model.SqlSentences;
+
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ConectionBD {
+    SqlSentences sqlSentences = new SqlSentences();
 
     private static final String DB_URL = "jdbc:postgresql://ep-flat-breeze-a2hszb0f.eu-central-1.aws.neon.tech:5432/ProyectMulti";
     private static final String DB_USER = "ProyectMulti_owner";
@@ -103,14 +107,23 @@ public class ConectionBD {
             }
         }
     }
-    public void getValuesFromTables(){
+    public HashMap<String, String> getValuesFromTables() {
         Statement statement = null;
+        ResultSet rs = null;
+        HashMap<String, String> nicknamesAndPasswords = new HashMap<>();
         try {
             statement = connection.createStatement();
-
+            rs = statement.executeQuery(sqlSentences.getSencences().get(0));
+            while (rs.next()) {
+                String nickname = rs.getString(1);
+                String password = rs.getString(2);
+                System.out.println("Nickname: " + nickname + ", Password: " + password);
+                nicknamesAndPasswords.put(nickname, password);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return nicknamesAndPasswords;
     }
 
 }
