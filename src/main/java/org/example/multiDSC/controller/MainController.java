@@ -3,8 +3,8 @@ package org.example.multiDSC.controller;
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.controller.databaseConection.conexionThread;
 import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonListener;
-import org.example.multiDSC.controller.listeners.UserRegistrerView.TextfieldListener;
 import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.viewModels.EmailModel;
 import org.example.multiDSC.view.LoginView;
 import org.example.multiDSC.view.UserRegistrerView;
 
@@ -30,9 +30,9 @@ public class MainController {
         manager.setTable(utils.switchLanguage("espanol"));
         manager.setConexion(conexion);
         //login= new LoginView();
-        EmailModel model= new EmailModel(manager);
-        //register= new UserRegistrerView();
-        //addUserRegisterListeners();
+       // EmailModel model= new EmailModel(manager);
+        register= new UserRegistrerView();
+        addUserRegisterListeners();
 
     }
 
@@ -56,12 +56,7 @@ public class MainController {
     public void addUserRegisterListeners(){
         register.getRegisterButton().addActionListener(new ButtonListener(this));
         register.getCancelButton().addActionListener(new ButtonListener(this));
-        register.getNameField().addActionListener(new TextfieldListener(this));
-        register.getLastNameField().addActionListener(new TextfieldListener(this));
-        register.getPasswordField().addActionListener(new TextfieldListener(this));
-        register.getDniField().addActionListener(new TextfieldListener(this));
-        register.getNicknameField().addActionListener(new TextfieldListener(this));
-        register.getEmailField().addActionListener(new TextfieldListener(this));
+
     }
 
 

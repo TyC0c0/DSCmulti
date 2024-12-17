@@ -1,6 +1,7 @@
 package org.example.multiDSC.controller.listeners.UserRegistrerView;
 
 import org.example.multiDSC.controller.MainController;
+import org.example.multiDSC.controller.Utils;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +10,7 @@ import java.sql.SQLException;
 public class ButtonListener implements ActionListener {
     private final MainController mainController;
 
+
     public ButtonListener(MainController mainController) {
         this.mainController = mainController;
     }
@@ -16,6 +18,8 @@ public class ButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (mainController.getRegister().getRegisterButton() == e.getSource()) {
+
+            checkTextfields();
 
             String mail = mainController.getRegister().getEmailField().getText();
             System.out.println("Correo: " + mail);
@@ -47,6 +51,33 @@ public class ButtonListener implements ActionListener {
             }
         } else if (mainController.getRegister().getCancelButton()== e.getSource()) {
             mainController.getRegister().dispose();
+        }
+    }
+
+    public void checkTextfields(){
+        if (mainController.getRegister().getNameField().getText().trim().isEmpty()){
+            Utils.showErrorWindow(null, "Debes completar todos los campos","Error en el campo Nombre");
+        }
+        if (mainController.getRegister().getLastNameField().getText().trim().isEmpty()){
+            Utils.showErrorWindow(null, "Debes completar todos los campos","Error en el campo Apellido");
+
+        }
+        if (mainController.getRegister().getPasswordField().getPassword().length > 0) {
+            Utils.showErrorWindow(null, "Debes completar todos los campos","Error en el campo Contraseña");
+
+        }
+
+        if (mainController.getRegister().getEmailField().getText().trim().isEmpty()){
+            Utils.showErrorWindow(null, "Debes completar todos los campos","Error en el campo Email");
+
+        }
+        if (mainController.getRegister().getDniField().getText().trim().isEmpty()){
+            Utils.showErrorWindow(null, "Debes completar todos los campos","Error en el campo DNI");
+
+        }
+        if (mainController.getRegister().getNicknameField().getText().trim().isEmpty()){
+            Utils.showErrorWindow(null, "Debes completar todos los campos","Error en el campo Nickname");
+
         }
     }
 }
