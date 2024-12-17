@@ -53,8 +53,9 @@ public class ButtonListenerUserRegistrer implements ActionListener {
             String password = new String(passwordField.getPassword());
             System.out.println("Contraseña: " + password);
 
-            String insertUserSentence = "INSERT INTO public.\"USUARIO\" (\"Correo\", \"Nombre\", \"Apellidos\", \"DNI\", \"Nickname\", \"Contraseña\")\n" +
-                    "VALUES ('"+mail+"', '"+name+"', '"+lastName+"', '"+dni+"', '"+nickname+"', '"+password+"');";
+            String insertUserSentence = "INSERT INTO \"public\".\"USUARIO\" (\"Correo\", \"Nombre\", \"Apellidos\", \"DNI\", \"Nickname\", \"Contraseña\", \"id_rol\") " +
+                    "VALUES ('" + mail + "', '" + name + "', '" + lastName + "', '" + dni + "', '" + nickname + "', '" + password + "', " + 1 + ");";
+
 
             try {
                 conectionBD.insertUser(insertUserSentence);

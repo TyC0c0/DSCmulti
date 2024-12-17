@@ -45,6 +45,7 @@ public class ConectionBD {
 
     public void insertUser(String insert) throws SQLException {
         try {
+            System.out.println("no se ha llegado aqui");
             // Crear un Statement para ejecutar el SQL.
             connect();
             connection.createStatement().executeUpdate(insert);
