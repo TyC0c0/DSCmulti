@@ -84,6 +84,8 @@ public class UserRegistrerView extends JFrame {
     }
 
     public static void main(String[] args) {
+
         SwingUtilities.invokeLater(UserRegistrerView::new);
+        //maincontroller.addUserRegisterListener
     }
 }
