@@ -9,13 +9,12 @@ import java.awt.*;
 
 /*
     Class to registrer someone who dont have acount
-    @autor Alvaro Garcia Lopez
-    @version 1.2
+    @autor Alvaro Garcia Lopez, Isaac Requena Santiago
+    @version 2.0
  */
 
 public class UserRegistrerView extends JFrame {
 
-    private static ConectionBD conectionBD;
     private JTextField emailField;
     private JTextField nameField;
     private JTextField lastNameField;
@@ -23,8 +22,7 @@ public class UserRegistrerView extends JFrame {
     private JTextField nicknameField;
     private JPasswordField passwordField;
 
-    public UserRegistrerView(ConectionBD conectionBD) {
-        this.conectionBD = conectionBD;
+    public UserRegistrerView() {
         setTitle("Registro de Usuario");
         setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,8 +63,8 @@ public class UserRegistrerView extends JFrame {
         JButton cancelButton = new JButton(userRegistrerModelEn.getLabelTexts().get(8));
         cancelButton.setBackground(Color.WHITE); // Fondo blanco
         cancelButton.setForeground(Color.BLACK); // Letras negras
-        registerButton.addActionListener(new ButtonListenerUserRegistrer(this, emailField, nameField, lastNameField, dniField, nicknameField, passwordField,registerButton,cancelButton, conectionBD));
-        cancelButton.addActionListener(new ButtonListenerUserRegistrer(this, emailField, nameField, lastNameField, dniField, nicknameField, passwordField,registerButton,cancelButton, conectionBD)); // Cierra la ventana al ser pulsado
+        //registerButton.addActionListener(new ButtonListenerUserRegistrer(this, emailField, nameField, lastNameField, dniField, nicknameField, passwordField,registerButton,cancelButton));
+        //cancelButton.addActionListener(new ButtonListenerUserRegistrer(this, emailField, nameField, lastNameField, dniField, nicknameField, passwordField,registerButton,cancelButton)); // Cierra la ventana al ser pulsado
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.DARK_GRAY); // Fondo gris oscuro
@@ -94,6 +92,7 @@ public class UserRegistrerView extends JFrame {
 
     public static void main(String[] args) {
 
-        SwingUtilities.invokeLater(() -> new UserRegistrerView(conectionBD));
+        SwingUtilities.invokeLater(UserRegistrerView::new);
+        //maincontroller.addUserRegisterListener
     }
 }

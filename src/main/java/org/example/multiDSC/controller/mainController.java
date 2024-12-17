@@ -5,6 +5,7 @@ import org.example.multiDSC.controller.databaseConection.conexionThread;
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.EmailModel;
 import org.example.multiDSC.view.LoginView;
+import org.example.multiDSC.view.UserRegistrerView;
 
 import java.sql.SQLException;
 
@@ -14,6 +15,7 @@ public class mainController {
     private LoginView login;
     private Utils utils;
     private static Manager manager;
+    private UserRegistrerView register;
 
 
     public mainController(){
@@ -47,6 +49,11 @@ public class mainController {
         // Inicia el hilo que mantendrá la conexión viva
         conexionThread hconect = new conexionThread(conexion);
         hconect.start();
+    }
+
+    public void addUserRegisterListeners(){
+        //Aqui crea los eventlistener a los botones accediendo desde register
+        //register.getbutton.addEventListener
     }
 
 
