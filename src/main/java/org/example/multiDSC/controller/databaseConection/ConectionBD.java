@@ -1,15 +1,16 @@
 package org.example.multiDSC.controller.databaseConection;
 
-import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class ConectionBD {
 
     private static final String DB_URL = "jdbc:postgresql://ep-flat-breeze-a2hszb0f.eu-central-1.aws.neon.tech:5432/ProyectMulti";
     private static final String DB_USER = "ProyectMulti_owner";
     private static final String DB_PASS = "pML4Rfu5ngdi";
-    private static  Connection connection;
+
+    private Connection connection;
 
     public void connect() throws SQLException {
         if (connection == null || connection.isClosed()) {
@@ -42,65 +43,18 @@ public class ConectionBD {
         }
     }
 
-    public Map<Integer, Object> lecturaSQL(String query) throws SQLException {
-        Statement statement = null;
-        ResultSet resultSet = null;
+    public void insertUser(String insert) throws SQLException {
         try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(query);
-
-            Map<Integer, Object> result = new HashMap<>();
-            int iteracion = 1;
-
-            while (resultSet.next()) {
-                // Se agregan todos los tipos de columna posibles
-                for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
-                    result.put(iteracion, resultSet.getObject(i));
-                    iteracion++;
-                }
-            }
-            return result;
-
+            System.out.println("no se ha llegado aqui");
+            // Crear un Statement para ejecutar el SQL.
+            connect();
+            connection.createStatement().executeUpdate(insert);
+            System.out.println("Usuario insertado correctamente.");
         } catch (SQLException e) {
-            // Solo se registra el error para fines de logging
-            System.err.println("Error en la consulta SQL: " + e.getMessage());
-
-            // Propagar la excepción para que el método que lo llama pueda manejarla
-            throw new SQLException("Error en la lectura de datos: ", e.getMessage());
-        } finally {
-            // Cerramos los recursos de manera segura en el bloque finally
-            try {
-                if (resultSet != null) resultSet.close();
-                if (statement != null) statement.close();
-            } catch (SQLException e) {
-                System.err.println("Error cerrando los recursos: " + e.getMessage());
-            }
+            System.err.println("Error al insertar usuario: " + e.getMessage());
+            throw e; // Rethrow para manejarlo externamente si es necesario.
         }
-    }
 
-    public void modificacionSQL(String query) throws SQLException {
-        Statement statement = null;
-        try {
-            // Crear la sentencia y ejecutar la consulta
-            statement = connection.createStatement();
-            int filasAfectadas = statement.executeUpdate(query);
-
-            System.out.println("Inserción completada. Filas afectadas: " + filasAfectadas);
-
-
-        } catch (SQLException e) {
-            // Registro del error y propagación
-            System.err.println("Error en la inserción SQL: " + e.getMessage());
-            throw new SQLException("Error al insertar datos: ", e);
-
-        } finally {
-            // Cerramos los recursos de manera segura
-            try {
-                if (statement != null) statement.close();
-            } catch (SQLException e) {
-                System.err.println("Error cerrando los recursos: " + e.getMessage());
-            }
-        }
     }
 
 }

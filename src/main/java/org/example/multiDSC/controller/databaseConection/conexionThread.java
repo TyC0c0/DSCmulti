@@ -14,7 +14,7 @@ public class conexionThread extends Thread {
     public void run() {
         while (keepRunning) {
             try {
-                // Verifica si la conexión está activa; si no, intenta reconectar
+                // Verifica si la conexión está activa; si no, intenta reconectarz
                 if (!conexion.isConnected()) {
                     System.out.println("Conexión perdida. Intentando reconectar...");
                     conexion.connect();
