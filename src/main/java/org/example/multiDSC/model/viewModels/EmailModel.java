@@ -19,7 +19,7 @@ public class EmailModel {
     }
 
     public void init(){
-        query= "SELECT "+ manager.getTable() +" FROM \"NOMBRES\" WHERE \"Entrada\" like \"EmailModel\"";
+        query= "SELECT "+ manager.getTable() +" FROM \"NOMBRES\" WHERE \"Entrada\" like 'EmailModel'";
 
     }
     public void fillTexts(){
