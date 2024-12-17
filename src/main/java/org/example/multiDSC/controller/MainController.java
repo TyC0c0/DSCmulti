@@ -31,7 +31,7 @@ public class MainController {
         manager.setTable(utils.switchLanguage("espanol"));
         manager.setConexion(conexion);
         //login= new LoginView();
-       // EmailModel model= new EmailModel(manager);
+        //EmailModel model= new EmailModel(manager);
         register= new UserRegistrerView();
         addUserRegisterListeners();
 
@@ -58,6 +58,7 @@ public class MainController {
         register.getRegisterButton().addActionListener(new ButtonListenerUserRegistrer(this));
 
     }
+
 
     public UserRegistrerView getRegister() {
         return register;
