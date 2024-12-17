@@ -1,8 +1,12 @@
 package org.example.multiDSC.controller.listeners.LoginView;
 
+import org.example.multiDSC.controller.MainController;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /*
     Class to do the actinos of the buttons
@@ -12,32 +16,52 @@ import java.awt.event.ActionListener;
 */
 
 public class ButtonListenerLogin implements ActionListener {
-    private final JButton btnCancel;
-    private final JButton btnOk;
-    private final JTextField tfNickname;
-    private final JPasswordField pfPassword;
-    private final JDialog parentDialog;
 
-    public ButtonListenerLogin(JButton btnOk, JButton btnCancel, JTextField tfNickname, JPasswordField pfPassword, JDialog parentDialog) {
-        this.btnOk = btnOk;
-        this.btnCancel = btnCancel;
-        this.tfNickname = tfNickname;
-        this.pfPassword = pfPassword;
-        this.parentDialog = parentDialog;
+
+    private final MainController mainController;
+
+    public ButtonListenerLogin(MainController mainController) {
+        this.mainController = mainController;
     }
 
     //Falta que haga un insert a la base de datos
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        String email = tfNickname.getText();
-        String password = String.valueOf(pfPassword.getPassword());
+        String nickname = mainController.getLogin().getTfNickname().getText();
+        String password = String.valueOf(mainController.getLogin().getPfPassword().getPassword());
 
-        if (btnCancel == e.getSource()) {
-            parentDialog.dispose(); // Cerrar la ventana
-        } else if (btnOk == e.getSource()) {
-            System.out.println(email);
-            System.out.println(password);
+        if (mainController.getLogin().getBtnCancel() == e.getSource()) {
+            mainController.getLogin().dispose(); // Cerrar la ventana
+        } else if (mainController.getLogin().getBtnOk() == e.getSource()) {
+            if (nickname.isEmpty() || password.isEmpty()) {
+                // Mostrar advertencia si alguno de los campos está vacío
+                mainController.getLogin().showWarning("The password or the user are empty");
+            } else {
+                // Obtener nicknames y contraseñas de la base de datos
+                HashMap<String, String> nicknamesAndPasswords = mainController.getManager().getConexion().getValuesFromTables();
+                System.out.println("Database records: " + nicknamesAndPasswords);
+
+                // Verificar si el nickname existe y si la contraseña coincide
+                if (nicknamesAndPasswords.containsKey(nickname)) {
+                    if (nicknamesAndPasswords.get(nickname).equals(password)) {
+                        System.out.println("Login successful!");
+                        mainController.getLogin().dispose();
+                        mainController.getPostLoginView().getFrame().setVisible(true);
+                        // Aquí puedes continuar con la lógica de inicio de sesión
+                    } else {
+                        mainController.getLogin().showWarning("The user or password is incorrect");
+                    }
+                } else {
+                    mainController.getLogin().showWarning("The user or password is incorrect");
+                }
+            }
         }
+        System.out.println("Nickname: " + nickname);
+        System.out.println("Password: " + password);
     }
+
 }
+
+

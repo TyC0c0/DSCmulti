@@ -6,9 +6,13 @@ import java.util.ArrayList;
 
 public class PostLoginView {
     private JPanel panel1;
-    private static ArrayList<JButton> buttons= new ArrayList<>();
+    private ArrayList<JButton> buttons;
+    private JFrame frame; // Cambiado de estático a no estático
 
     public PostLoginView() {
+        // Inicializar lista de botones
+        buttons = new ArrayList<>();
+
         // Crear panel principal
         panel1 = new JPanel();
         panel1.setLayout(new GridLayout(2, 3, 10, 10)); // 2 filas, 3 columnas, espacio horizontal y vertical
@@ -19,47 +23,44 @@ public class PostLoginView {
         panel1.add(createButton("Email.jpeg"));
         panel1.add(createButton("Config.jpeg"));
         panel1.add(createButton("Info.jpeg"));
+
+        // Crear y configurar JFrame
+        frame = new JFrame("Post Login View");
+        frame.setSize(700, 500);
+        frame.setResizable(false);
+        frame.setContentPane(panel1);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null); // Centrar la ventana en la pantalla
     }
 
     private JButton createButton(String imagePath) {
-        // Crear botón
         JButton button = new JButton();
-        button.setFocusPainted(false); // Elimina el borde de foco
-        button.setContentAreaFilled(false); // Quita el relleno por defecto del botón
-        button.setBorderPainted(false); // Opcional: elimina los bordes del botón
-        button.setOpaque(true); // Habilita el fondo opaco
-        button.setBackground(Color.DARK_GRAY); // Fondo blanco para los botones
+        button.setFocusPainted(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setOpaque(true);
+        button.setBackground(Color.DARK_GRAY);
 
         try {
-            // Cargar la imagen desde el classpath
             ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource(imagePath));
-
-            // Escalar la imagen al tamaño del botón
-            Image scaledImage = icon.getImage().getScaledInstance(250, 225, Image.SCALE_SMOOTH); // Tamaño fijo de ejemplo
+            Image scaledImage = icon.getImage().getScaledInstance(250, 225, Image.SCALE_SMOOTH);
             button.setIcon(new ImageIcon(scaledImage));
-
-            // Ajustar alineación
             button.setMargin(new Insets(0, 0, 0, 0));
             button.setHorizontalAlignment(SwingConstants.CENTER);
             button.setVerticalAlignment(SwingConstants.CENTER);
         } catch (Exception e) {
-            button.setText("[Img]"); // Placeholder si falla la carga
+            button.setText("[Img]");
         }
 
         buttons.add(button);
         return button;
     }
 
+    public JFrame getFrame() {
+        return frame;
+    }
 
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Usuario - XXXXXX");
-        PostLoginView sectionWindow = new PostLoginView();
-        frame.setSize(700, 500);
-        frame.setResizable(false);
-        frame.setContentPane(sectionWindow.panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+    public ArrayList<JButton> getButtons() {
+        return buttons;
     }
 }
