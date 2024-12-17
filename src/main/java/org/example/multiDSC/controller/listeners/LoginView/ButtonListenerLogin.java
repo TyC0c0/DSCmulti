@@ -1,5 +1,7 @@
 package org.example.multiDSC.controller.listeners.LoginView;
 
+import org.example.multiDSC.controller.MainController;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,32 +14,34 @@ import java.awt.event.ActionListener;
 */
 
 public class ButtonListenerLogin implements ActionListener {
-    private final JButton btnCancel;
-    private final JButton btnOk;
-    private final JTextField tfNickname;
-    private final JPasswordField pfPassword;
-    private final JDialog parentDialog;
 
-    public ButtonListenerLogin(JButton btnOk, JButton btnCancel, JTextField tfNickname, JPasswordField pfPassword, JDialog parentDialog) {
-        this.btnOk = btnOk;
-        this.btnCancel = btnCancel;
-        this.tfNickname = tfNickname;
-        this.pfPassword = pfPassword;
-        this.parentDialog = parentDialog;
+
+    private final MainController mainController;
+
+    public ButtonListenerLogin(MainController mainController) {
+        this.mainController = mainController;
     }
 
     //Falta que haga un insert a la base de datos
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String email = tfNickname.getText();
-        String password = String.valueOf(pfPassword.getPassword());
+        String email =mainController.getLogin().getTfNickname().getText();
+        String password = String.valueOf(mainController.getLogin().getPfPassword().getPassword());
 
-        if (btnCancel == e.getSource()) {
-            parentDialog.dispose(); // Cerrar la ventana
-        } else if (btnOk == e.getSource()) {
+        if (mainController.getLogin().getBtnCancel() == e.getSource()) {
+            mainController.getLogin().dispose(); // Cerrar la ventana
+        } else if (mainController.getLogin().getBtnOk() == e.getSource()) {
+            if(email.isEmpty() || password.isEmpty()){
+                //AÑADIR UN METODO PARA QUE SALGA UN AVISO DE QUE UNO DE LOS CAMPOS NO ESTAN RELLENOS
+                mainController.getLogin().showWarning("The password or the user are empty");
+            }
+            //ADD  A METHOD THAT TAKE THE VALUES OF THE COLUMNS IN THE DATA BASE AND CHECK IF THEY ARE THE SAME OR NOT
+            //else if(mainController.getManager().getConexion().){
+
+            }
             System.out.println(email);
             System.out.println(password);
         }
     }
-}
+

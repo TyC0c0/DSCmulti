@@ -2,6 +2,7 @@ package org.example.multiDSC.controller;
 
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.controller.databaseConection.conexionThread;
+import org.example.multiDSC.controller.listeners.LoginView.ButtonListenerLogin;
 import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonListenerUserRegistrer;
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.EmailModel;
@@ -30,11 +31,20 @@ public class MainController {
         utils= new Utils();
         manager.setTable(utils.switchLanguage("espanol"));
         manager.setConexion(conexion);
-        //login= new LoginView();
-        //EmailModel model= new EmailModel(manager);
-        register= new UserRegistrerView();
-        addUserRegisterListeners();
 
+        login= new LoginView();
+        addLoginListeners();
+        login.setVisible(true);
+        //EmailModel model= new EmailModel(manager);
+        //register= new UserRegistrerView();
+        //addUserRegisterListeners();
+
+
+    }
+
+    private void addLoginListeners() {
+        login.getBtnOk().addActionListener(new ButtonListenerLogin(this));
+        login.getBtnCancel().addActionListener(new ButtonListenerLogin(this));
     }
 
     public void hiloConexion() {
@@ -74,6 +84,14 @@ public class MainController {
 
     public static void setManager(Manager manager) {
         MainController.manager = manager;
+    }
+
+    public LoginView getLogin() {
+        return login;
+    }
+
+    public void setLogin(LoginView login) {
+        this.login = login;
     }
 }
 

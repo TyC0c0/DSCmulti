@@ -103,6 +103,15 @@ public class ConectionBD {
             }
         }
     }
+    public void getValuesFromTables(){
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
 
