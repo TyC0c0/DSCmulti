@@ -58,11 +58,9 @@ public class ConectionBD {
             int iteracion = 1;
 
             while (resultSet.next()) {
-                // Se agregan todos los tipos de columna posibles
-                for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
-                    result.put(iteracion, resultSet.getObject(i));
-                    iteracion++;
-                }
+                // Guarda el valor de la primera columna en el mapa
+                result.put(iteracion, resultSet.getObject(1));
+                iteracion++;
             }
             return result;
 

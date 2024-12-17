@@ -9,7 +9,7 @@ import java.util.Map;
 public class ConfUserModel {
     private Manager manager;
     private String query;
-    private ArrayList<String> texts= new ArrayList<>();
+    private ArrayList<String> text = new ArrayList<>();
 
     public ConfUserModel(Manager manager){
         this.manager=manager;
@@ -36,5 +36,13 @@ public class ConfUserModel {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public ArrayList<String> getText() {
+        return text;
+    }
+
+    public void setText(ArrayList<String> text) {
+        this.text = text;
     }
 }

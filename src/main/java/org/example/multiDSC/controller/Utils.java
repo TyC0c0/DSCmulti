@@ -13,8 +13,8 @@ public class Utils {
             case "espanol":
                 return "\"Nom_es\"";
 
-            case "english":
-                return "Nom_en";
+            case "ingles":
+                return "\"Nom_en\"";
         }
         return "";
     }

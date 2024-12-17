@@ -4,8 +4,8 @@
  */
 package org.example.multiDSC.view;
 
-import org.example.multiDSC.model.ConfUserModel_en;
-
+import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.viewModels.ConfUserModel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class ConfUserView extends JFrame {
-    private ConfUserModel_en confUserModelEn;
+    private ConfUserModel confUserModel;
     private ArrayList<JButton> buttons;
     private ArrayList<JLabel> labels;
     private ArrayList<JTextField> textFields;
@@ -25,13 +25,13 @@ public class ConfUserView extends JFrame {
      * Constructs the ConfUserView and initializes the GUI components and layout.
      * The interface includes buttons for modifying user details and applying or canceling changes.
      *
-     * @author Ivan Guerrero Romero
-     * @version 1.0
+     * @author Ivan Guerrero Romero, Isaac Requena Santiago
+     * @version 2.0
      */
 
 
     public ConfUserView() {
-        confUserModelEn = new ConfUserModel_en();
+        //confUserModel = new ConfUserModel(manager);
         // Initializing lists
         buttons = new ArrayList<>();
         labels = new ArrayList<>();
@@ -39,10 +39,11 @@ public class ConfUserView extends JFrame {
         modificationButtons = new ArrayList<>();
 
         // Configure the main panel
-        setTitle(confUserModelEn.getConfUserText_en().get(0));
+        setTitle(confUserModel.getText().get(0));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 400); // Fixed size for all the views
         setLayout(new BorderLayout());
+        setVisible(true);
 
         // Establish margins and general colours
         getContentPane().setBackground(Color.LIGHT_GRAY);
@@ -54,7 +55,7 @@ public class ConfUserView extends JFrame {
         leftPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Márgenes
 
         // Create buttons dynamically
-        String[] buttonNames = {confUserModelEn.getConfUserText_en().get(1), confUserModelEn.getConfUserText_en().get(2)};
+        String[] buttonNames = {confUserModel.getText().get(1), confUserModel.getText().get(2)};
         for (String name : buttonNames) {
             JButton button = new JButton(name);
             button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -68,7 +69,7 @@ public class ConfUserView extends JFrame {
         }
 
         // Create separated the button "exit"
-        JButton exitButton = new JButton(confUserModelEn.getConfUserText_en().get(3));
+        JButton exitButton = new JButton(confUserModel.getText().get(3));
         exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         exitButton.setBackground(Color.WHITE);
         exitButton.setForeground(Color.BLACK);
@@ -104,7 +105,7 @@ public class ConfUserView extends JFrame {
         rightPanel.setBackground(Color.LIGHT_GRAY);
 
         // Create labels and text fields dynamically
-        String[] labelsArray = {confUserModelEn.getConfUserText_en().get(6), confUserModelEn.getConfUserText_en().get(7), confUserModelEn.getConfUserText_en().get(8), confUserModelEn.getConfUserText_en().get(9), confUserModelEn.getConfUserText_en().get(10), confUserModelEn.getConfUserText_en().get(11), confUserModelEn.getConfUserText_en().get(12)};
+        String[] labelsArray = {confUserModel.getText().get(6), confUserModel.getText().get(7), confUserModel.getText().get(8), confUserModel.getText().get(9), confUserModel.getText().get(10), confUserModel.getText().get(11), confUserModel.getText().get(12)};
         for (String labelName : labelsArray) {
             JLabel fieldLabel = new JLabel(labelName);
             fieldLabel.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -139,7 +140,7 @@ public class ConfUserView extends JFrame {
     private void createModificationButtons() {
         if (modificationButtons.isEmpty()) {
             // Names of the buttons to create
-            String[] buttonsNames = {confUserModelEn.getConfUserText_en().get(4), confUserModelEn.getConfUserText_en().get(5)};
+            String[] buttonsNames = {confUserModel.getText().get(4), confUserModel.getText().get(5)};
 
             // Create and configure dynamically the buttons
             for (String name : buttonsNames) {
@@ -149,7 +150,7 @@ public class ConfUserView extends JFrame {
                 modButton.setFont(new Font("Arial", Font.BOLD, 12));
 
                 // Add functionality to the button "Cancel"
-                if (name.equals(confUserModelEn.getConfUserText_en().get(5))) {
+                if (name.equals(confUserModel.getText().get(5))) {
                     modButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -184,6 +185,6 @@ public class ConfUserView extends JFrame {
     public static void main(String[] args) {
         // Create and show the interface
         ConfUserView frame = new ConfUserView();
-        frame.setVisible(true);
+//        frame.setVisible(true);
     }
 }
