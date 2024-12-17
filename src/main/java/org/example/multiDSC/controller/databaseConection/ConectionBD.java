@@ -78,5 +78,30 @@ public class ConectionBD {
         }
     }
 
+    public void modificacionSQL(String query) throws SQLException {
+        Statement statement = null;
+        try {
+            // Crear la sentencia y ejecutar la consulta
+            statement = connection.createStatement();
+            int filasAfectadas = statement.executeUpdate(query);
+
+            System.out.println("Inserción completada. Filas afectadas: " + filasAfectadas);
+
+
+        } catch (SQLException e) {
+            // Registro del error y propagación
+            System.err.println("Error en la inserción SQL: " + e.getMessage());
+            throw new SQLException("Error al insertar datos: ", e);
+
+        } finally {
+            // Cerramos los recursos de manera segura
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {
+                System.err.println("Error cerrando los recursos: " + e.getMessage());
+            }
+        }
+    }
+
 }
 
