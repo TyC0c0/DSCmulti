@@ -1,9 +1,7 @@
 package org.example.multiDSC.controller.listeners.UserRegistrerView;
 
 import org.example.multiDSC.controller.MainController;
-import org.example.multiDSC.controller.databaseConection.ConectionBD;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -42,7 +40,7 @@ public class ButtonListenerUserRegistrer implements ActionListener {
 
             try {
                 mainController.getManager().getConexion();
-                mainController.getManager().getConexion().insertUser(insertUserSentence);
+                mainController.getManager().getConexion().sqlModification(insertUserSentence);
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }

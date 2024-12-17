@@ -79,7 +79,7 @@ public class ConectionBD {
         }
     }
 
-    public void modificacionSQL(String query) throws SQLException {
+    public void sqlModification(String query) throws SQLException {
         Statement statement = null;
         try {
             // Crear la sentencia y ejecutar la consulta
