@@ -42,7 +42,7 @@ public class ButtonListenerUserRegistrer implements ActionListener {
 
             try {
                 mainController.getManager().getConexion();
-                mainController.getManager().getConexion().insertUser(insertUserSentence);
+                mainController.getManager().getConexion().modificacionSQL(insertUserSentence);
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
