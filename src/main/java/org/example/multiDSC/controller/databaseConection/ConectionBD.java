@@ -3,6 +3,7 @@ package org.example.multiDSC.controller.databaseConection;
 import org.example.multiDSC.model.controllModels.SqlSentences;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -122,6 +123,32 @@ public class ConectionBD {
         }
         return nicknamesAndPasswords;
     }
+    public ArrayList<Map<String, String>> getUserData() throws SQLException {
+        ArrayList<Map<String, String>> userDataList = new ArrayList<>();
+        Statement statement = null;
+        ResultSet rs = null;
+
+        try {
+            statement = connection.createStatement();
+            rs = statement.executeQuery(sqlSentences.getSencences().get(2)); // Consulta de nombres, correos, y roles.
+
+            while (rs.next()) {
+                Map<String, String> userData = new HashMap<>();
+                userData.put("Nombre", rs.getString("Nombre"));
+                userData.put("Correo", rs.getString("Correo"));
+                userData.put("Rol", rs.getString("Rol"));
+                userDataList.add(userData);
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error al obtener datos de los usuarios: ", e);
+        } finally {
+            if (rs != null) rs.close();
+            if (statement != null) statement.close();
+        }
+
+        return userDataList;
+    }
+
 
 }
 
