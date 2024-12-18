@@ -9,6 +9,13 @@ import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
 import org.apache.ftpserver.usermanager.impl.BaseUser;
 import org.apache.ftpserver.usermanager.impl.WritePermission;
 
+/**
+ * ServerFTP - ServerFTP ...
+ *
+ * @author Ramón Reina González
+ * @version 1.0
+ */
+
 public class ServerFTP {
 
     // Esta clase inicia el servidor FTP que espera conexiones a través del puerto 2121, aunque está en local
@@ -28,7 +35,7 @@ public class ServerFTP {
             UserManager userManager = userManagerFactory.createUserManager();
 
             BaseUser user = new BaseUser();
-            user.setName("user"); // Nombre de usuario
+            user.setName("admin"); // Nombre de usuario
             user.setPassword("1234"); // Contraseña
             user.setHomeDirectory(new File("C:/FTPserver").getAbsolutePath()); // Directorio de inicio
             user.setAuthorities(java.util.Collections.singletonList(new WritePermission())); // Permisos de escritura
