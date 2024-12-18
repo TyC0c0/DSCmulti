@@ -10,19 +10,20 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class InfoModel {
+public class LoginModel {
     private Manager manager;
     private String query;
     private ArrayList<String> text = new ArrayList<>();
 
-    public InfoModel(Manager manager) {
+    public LoginModel(Manager manager) {
+        //CAMBIA EL NOMBRE DEL ARRAYLIST A TEXT
         this.manager = manager;
         init();
         fillTexts();
     }
 
     public void init() {
-        query = "SELECT " + manager.getTable() + " FROM \"NOMBRES\" WHERE \"Entrada\" like \"InfoModel\"";
+        query = "SELECT " + manager.getTable() + " FROM \"NOMBRES\" WHERE \"Entrada\" like 'LoginModel'";
 
     }
 
@@ -31,11 +32,11 @@ public class InfoModel {
         Map<Integer, Object> results = null;
         try {
             results = manager.getConexion().lecturaSQL(query);
-
             // Imprimir resultados
             for (Map.Entry<Integer, Object> entry : results.entrySet()) {
                 System.out.println("Row: " + entry.getKey() + " Value: " + entry.getValue());
 
+                //AÑADE ESTA LINEA
                 text.add(entry.getValue().toString());
             }
 
@@ -44,4 +45,5 @@ public class InfoModel {
         }
 
     }
+
 }

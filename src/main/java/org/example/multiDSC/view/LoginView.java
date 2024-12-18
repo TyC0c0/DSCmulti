@@ -1,9 +1,8 @@
 package org.example.multiDSC.view;
 
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
-import org.example.multiDSC.controller.listeners.LoginView.ButtonListenerLogin;
-import org.example.multiDSC.controller.listeners.LoginView.LabelListenerLogin;
-import org.example.multiDSC.model.VistaFormModel_en;
+import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.viewModels.LoginModel;
 
 import javax.swing.*;
 import java.sql.Connection;
@@ -22,6 +21,9 @@ import java.sql.Statement;
 */
 
 public class LoginView extends JDialog {
+
+    private LoginModel LoginModel;
+
     private JTextField tfNickname;
     private JPasswordField pfPassword;
     private JButton btnOk;
@@ -34,11 +36,12 @@ public class LoginView extends JDialog {
     private JLabel lblDontHaveBeenRegistred;
     ConectionBD conectionBD;
 
-    public LoginView() {
+    public LoginView(Manager manager, LoginModel loginModel) {
 
+        this.LoginModel = loginModel;
+        
         JFrame frame = new JFrame();
         // Instanciar el modelo para obtener textos
-        VistaFormModel_en vistaFormModelEn = new VistaFormModel_en();
         setTitle("Login");
         setContentPane(loginPanel);
         //setMinimumSize(new Dimension(450, 500));
@@ -49,17 +52,14 @@ public class LoginView extends JDialog {
         setLocationRelativeTo(frame);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-
-        vistaFormModelEn.VistaForm(); // Inicializa el array con los textos
-
         // Asignar los textos desde el modelo a los componentes
-        lblWelcome.setText(vistaFormModelEn.getLoginText().get(1)); // "Welcome to the"
-        lblWelcome2.setText(vistaFormModelEn.getLoginText().get(6));
-        lblUsername.setText(vistaFormModelEn.getLoginText().get(2)); // "Username"
-        lblPassword.setText(vistaFormModelEn.getLoginText().get(3)); // "Password"
-        btnOk.setText(vistaFormModelEn.getLoginText().get(4)); // "Ok"
-        btnCancel.setText(vistaFormModelEn.getLoginText().get(5)); // "Cancel"
-        lblDontHaveBeenRegistred.setText(vistaFormModelEn.getLoginText().get(7));
+        lblWelcome.setText(LoginModel.getText().get(1)); // "Welcome to the"
+        lblWelcome2.setText(LoginModel.getText().get(6));
+        lblUsername.setText(LoginModel.getText().get(2)); // "Username"
+        lblPassword.setText(LoginModel.getText().get(3)); // "Password"
+        btnOk.setText(LoginModel.getText().get(4)); // "Ok"
+        btnCancel.setText(LoginModel.getText().get(5)); // "Cancel"
+        lblDontHaveBeenRegistred.setText(LoginModel.getText().get(7));
         // Listener ok button
 
 
@@ -67,7 +67,7 @@ public class LoginView extends JDialog {
        // btnOk.addActionListener(new ButtonListenerLogin(btnOk, btnCancel, tfNickname, pfPassword, this));
        // btnCancel.addActionListener(new ButtonListenerLogin(btnOk, btnCancel, tfNickname, pfPassword, this));
 
-        //setVisible(true);//commited becouse action listener doesnt apply,so i turned visible in the mainController
+        setVisible(true);
     }
 
     public class User {
@@ -96,21 +96,6 @@ public class LoginView extends JDialog {
         }
 
         return user;
-    }
-
-    public static void main(String[] args) {
-        LoginView vista = new LoginView();
-//        User user = vista.authentificateUser();
-//
-//        if (user != null) {
-//            System.out.println("");
-//            System.out.println("");
-//            System.out.println("");
-//            System.out.println("");
-//        }
-//        else {
-//            System.out.println("Authentification canceled...");
-//        }
     }
 
     public void showWarning(String message) {

@@ -1,35 +1,37 @@
 package org.example.multiDSC.model.viewModels;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.example.multiDSC.model.controllModels.Manager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
+@Getter
+@Setter
 public class ConfUserModel {
     private Manager manager;
     private String query;
     private ArrayList<String> text = new ArrayList<>();
 
-    public ConfUserModel(Manager manager){
+    public ConfUserModel(Manager manager) {
         //CAMBIA EL NOMBRE DEL ARRAYLIST A TEXT
-        this.manager=manager;
+        this.manager = manager;
         init();
         fillTexts();
     }
 
-    public void init(){
-        query= "SELECT "+ manager.getTable() +" FROM \"NOMBRES\" WHERE \"Entrada\" like 'ConfUserModel'";
+    public void init() {
+        query = "SELECT " + manager.getTable() + " FROM \"NOMBRES\" WHERE \"Entrada\" like 'ConfUserModel'";
 
     }
-    public void fillTexts(){
+
+    public void fillTexts() {
 
         Map<Integer, Object> results = null;
-        System.out.println("ejecutando filltext");
         try {
             results = manager.getConexion().lecturaSQL(query);
-
-            System.out.println("Tamaño de results: " + results.size());
             // Imprimir resultados
             for (Map.Entry<Integer, Object> entry : results.entrySet()) {
                 System.out.println("Row: " + entry.getKey() + " Value: " + entry.getValue());
@@ -44,11 +46,4 @@ public class ConfUserModel {
 
     }
 
-    public ArrayList<String> getText() {
-        return text;
-    }
-
-    public void setText(ArrayList<String> text) {
-        this.text = text;
-    }
 }

@@ -1,6 +1,7 @@
 package org.example.multiDSC.view;
 
-import org.example.multiDSC.model.FTPModel_en;
+import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.viewModels.FTPModel;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -14,7 +15,7 @@ import java.awt.*;
 public class FTPView extends JFrame {
 
     // Attributes
-    private FTPModel_en model;
+    private FTPModel FTPModel;
     private JScrollPane panelTree;
     private JTree tree;
     private JTextField renameFieldText;
@@ -33,12 +34,12 @@ public class FTPView extends JFrame {
     private JPanel downPanel;
 
     // Constructor
-    public FTPView() {
+    public FTPView(Manager manager, FTPModel FTPmodel) {
         // Starting elements
         JFrame frameFTP = new JFrame("FTP Window");
         frameFTP.setLayout(new BorderLayout()); // Use BorderLayout for the main frame
 
-        model = new FTPModel_en();
+        this.FTPModel = FTPmodel;
 
         // Top panel for the reload button and rename components
         topPanel = new JPanel();
@@ -49,10 +50,10 @@ public class FTPView extends JFrame {
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
         topPanel.setBackground(Color.DARK_GRAY);
 
-        reloadButton = createSizedButton(model.getFTPText_en().get(5), true);
+        reloadButton = createSizedButton(FTPModel.getText().get(5), true);
         renameFieldText = new JTextField();
         renameFieldText.setPreferredSize(new Dimension(200, 30));
-        renameButton = createSizedButton(model.getFTPText_en().get(6), false);
+        renameButton = createSizedButton(FTPModel.getText().get(6), false);
 
 
         topPanel.add(reloadButton);
@@ -65,11 +66,11 @@ public class FTPView extends JFrame {
         leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS)); // Stack vertically
 
-        managePermissionsButton = createSizedButton(model.getFTPText_en().get(0), false);
-        uploadFolderButton = createSizedButton(model.getFTPText_en().get(1), false);
-        downloadFolderButton = createSizedButton(model.getFTPText_en().get(2), false);
-        manageDirectoryButton = createSizedButton(model.getFTPText_en().get(3), false);
-        downloadButton = createSizedButton(model.getFTPText_en().get(7),false);
+        managePermissionsButton = createSizedButton(FTPModel.getText().get(0), false);
+        uploadFolderButton = createSizedButton(FTPModel.getText().get(1), false);
+        downloadFolderButton = createSizedButton(FTPModel.getText().get(2), false);
+        manageDirectoryButton = createSizedButton(FTPModel.getText().get(3), false);
+        downloadButton = createSizedButton(FTPModel.getText().get(7), false);
 
         leftPanel.setBackground(Color.DARK_GRAY); // Fondo gris suave para el panel izquierdo
 
@@ -109,7 +110,7 @@ public class FTPView extends JFrame {
         // Panel para el botón Exit con FlowLayout
         JPanel exitPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Centra el botón
         exitPanel.setBackground(Color.DARK_GRAY);
-        exitButton = createSizedButton(model.getFTPText_en().get(4),false);
+        exitButton = createSizedButton(FTPModel.getText().get(4), false);
         exitButton.setPreferredSize(new Dimension(100, 30)); // Ajusta el tamaño del botón
         exitPanel.add(exitButton);
 
@@ -131,6 +132,8 @@ public class FTPView extends JFrame {
         frameFTP.setSize(700, 500); // Adjust size dynamically based on content
         frameFTP.setVisible(true);
         frameFTP.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        setVisible(true);
     }
 
     private JButton createSizedButton(String text, boolean isReloadButton) {
@@ -140,10 +143,5 @@ public class FTPView extends JFrame {
         button.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the button
         button.setMaximumSize(isReloadButton ? new Dimension(30, 40) : new Dimension(150, 30)); // Button size
         return button;
-    }
-
-    public static void main(String[] args) {
-        new FTPView();
-        System.out.println("Hello world");
     }
 }

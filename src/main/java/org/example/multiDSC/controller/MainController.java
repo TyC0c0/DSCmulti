@@ -5,13 +5,8 @@ import org.example.multiDSC.controller.databaseConection.conexionThread;
 import org.example.multiDSC.controller.listeners.LoginView.ButtonListenerLogin;
 import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonListener;
 import org.example.multiDSC.model.controllModels.Manager;
-import org.example.multiDSC.model.viewModels.ConfUserModel;
-import org.example.multiDSC.model.viewModels.EmailModel;
-import org.example.multiDSC.model.viewModels.PostLoginModel;
-import org.example.multiDSC.view.ConfUserView;
-import org.example.multiDSC.view.LoginView;
-import org.example.multiDSC.view.PostLoginView;
-import org.example.multiDSC.view.UserRegistrerView;
+import org.example.multiDSC.model.viewModels.*;
+import org.example.multiDSC.view.*;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -26,20 +21,20 @@ public class MainController {
     private PostLoginView postLoginView;
 
 
-    public MainController(){
+    public MainController() {
         init();
     }
 
-    public void init(){
+    public void init() {
         hiloConexion();
-        manager= new Manager();
-        utils= new Utils();
+        manager = new Manager();
+        utils = new Utils();
         manager.setTable(utils.switchLanguage("ingles"));
         manager.setConexion(conexion);
 
         //SOLO PARA COMPROBACION- SE CREA SU MODELO Y LA INSTANCIA DE LA CLASE
-        ConfUserModel c= new ConfUserModel(manager);
-        ConfUserView v= new ConfUserView(manager, c);
+        SendMailModel c = new SendMailModel(manager);
+        SendMailView v = new SendMailView(manager, c);
 
 
     }
@@ -61,7 +56,7 @@ public class MainController {
         hconect.start();
     }
 
-    public void addUserRegisterListeners(){
+    public void addUserRegisterListeners() {
         register.getRegisterButton().addActionListener(new ButtonListener(this));
         register.getCancelButton().addActionListener(new ButtonListener(this));
 

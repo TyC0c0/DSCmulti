@@ -1,4 +1,4 @@
-package org.example.multiDSC.model;
+package org.example.multiDSC.model.controllModels;
 
 import java.util.ArrayList;
 

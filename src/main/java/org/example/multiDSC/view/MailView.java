@@ -1,6 +1,7 @@
 package org.example.multiDSC.view;
 
-import org.example.multiDSC.model.MainViewModel;
+import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.viewModels.EmailModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,12 +13,14 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class MailView extends JFrame {
+    private EmailModel EmailModel;
     private JPanel mainPanel;
     private ArrayList<JButton> buttonList;
     private JList<String> mailList;
     private JScrollPane scrollPane;
 
-    public MailView() {
+    public MailView(Manager manager, EmailModel emailModel) {
+       this.EmailModel = emailModel;
         // Configuración del marco
         setTitle("Mail");
         setSize(900, 500);
@@ -95,21 +98,12 @@ public class MailView extends JFrame {
 
         mainPanel.add(centerPanel, BorderLayout.CENTER);
 
-        // Mostrar la ventana
-        setVisible(true);
-
-        // Configuración del modelo
-        MainViewModel model = new MainViewModel();
-        model.MailView();
-
         // Configurar texto desde el modelo
-        buttonList.get(0).setText(model.getMailText_en().get(0));
-        String[] texts = model.getMailText_en().toArray(new String[0]);
+        buttonList.get(0).setText(emailModel.getText().get(0));
+        String[] texts = emailModel.getText().toArray(new String[0]);
         refreshButton.setText(texts[7]);
         backButton.setText(texts[8]);
-    }
 
-    public static void main(String[] args) {
-        new MailView();
+        setVisible(true);
     }
 }

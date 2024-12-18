@@ -34,11 +34,8 @@ public class ConfAdminView extends JFrame {
      * Initializes the components, layouts, and adds dynamic content.
      */
 
-    public static void main(String args[]){
-        ConfAdminView frame = new ConfAdminView();
-        frame.setVisible(true);
-    }
 
+// CLASE MAL HECHA, HAY QUE ARREGLARLA
     public ConfAdminView() {
         // Configuración de la ventana
         setTitle("Configuración de Admin");
