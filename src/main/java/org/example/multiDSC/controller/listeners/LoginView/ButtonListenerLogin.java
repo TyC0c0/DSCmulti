@@ -44,7 +44,7 @@ public class ButtonListenerLogin implements ActionListener {
                Utils.showErrorWindow(null, "Complete all the information", "The password or the user are empty");
             } else {
                 // Obtener nicknames y contraseñas de la base de datos
-                HashMap<String, String> nicknamesAndPasswords = manager.getMainController().getManager().getConexion().getValuesFromTables();
+                HashMap<String, String> nicknamesAndPasswords = manager.getConexion().getValuesFromTables();
                 System.out.println("Database records: " + nicknamesAndPasswords);
 
                 // Verificar si el nickname existe y si la contraseña coincide

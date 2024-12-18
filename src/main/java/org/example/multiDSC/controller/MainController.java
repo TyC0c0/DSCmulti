@@ -1,6 +1,5 @@
 package org.example.multiDSC.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
@@ -9,15 +8,10 @@ import org.example.multiDSC.controller.listeners.LoginView.ButtonListenerLogin;
 import org.example.multiDSC.controller.listeners.LoginView.LabelListenerLogin;
 import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonListener;
 import org.example.multiDSC.model.controllModels.Manager;
-import org.example.multiDSC.model.viewModels.ConfUserModel;
-import org.example.multiDSC.model.viewModels.EmailModel;
-import org.example.multiDSC.model.viewModels.PostLoginModel;
 import org.example.multiDSC.view.*;
 
-import javax.swing.*;
 import java.sql.SQLException;
 
-@Slf4j
 @Getter
 @Setter
 public class MainController {
@@ -51,9 +45,6 @@ public class MainController {
         login.setVisible(true);
     }
 
-
-    }
-
     public void hiloConexion() {
         conexion = new ConectionBD();
 
@@ -81,7 +72,11 @@ public class MainController {
         login.getBtnCancel().addActionListener(new ButtonListenerLogin(manager));
         login.getLblDontHaveBeenRegistred().addMouseListener(new LabelListenerLogin(login,conexion,manager));
     }
+    }
 
-}
+
+
+
+
 
 

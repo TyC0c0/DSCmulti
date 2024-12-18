@@ -34,7 +34,7 @@ public class ButtonListener implements ActionListener {
                     "VALUES ('" + mail + "', '" + name + "', '" + lastName + "', '" + dni + "', '" + nickname + "', '" + password + "', " + 1 + ");";
 
             try {
-                manager.getMainController().getManager().getConexion().sqlModification(insertUserSentence);
+                manager.getConexion().sqlModification(insertUserSentence);
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
