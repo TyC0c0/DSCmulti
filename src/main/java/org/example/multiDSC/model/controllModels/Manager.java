@@ -1,26 +1,16 @@
 package org.example.multiDSC.model.controllModels;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.example.multiDSC.controller.MainController;
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
 
+@Getter
+@Setter
 public class Manager {
 
     private String table;
     private ConectionBD conexion;
-
-    public ConectionBD getConexion() {
-        return conexion;
-    }
-
-    public void setConexion(ConectionBD conexion) {
-        this.conexion = conexion;
-    }
-
-    public String getTable() {
-        return table;
-    }
-
-    public void setTable(String table) {
-        this.table = table;
-    }
+    private MainController mainController;
 
 }

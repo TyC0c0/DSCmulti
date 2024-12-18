@@ -1,11 +1,15 @@
 package org.example.multiDSC.model.viewModels;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.example.multiDSC.model.controllModels.Manager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
+@Getter
+@Setter
 public class ConfUserModel {
     private Manager manager;
     private String query;
@@ -25,7 +29,6 @@ public class ConfUserModel {
     public void fillTexts(){
 
         Map<Integer, Object> results = null;
-        System.out.println("ejecutando filltext");
         try {
             results = manager.getConexion().lecturaSQL(query);
 
@@ -44,11 +47,4 @@ public class ConfUserModel {
 
     }
 
-    public ArrayList<String> getText() {
-        return text;
-    }
-
-    public void setText(ArrayList<String> text) {
-        this.text = text;
-    }
 }

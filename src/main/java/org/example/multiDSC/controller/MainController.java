@@ -1,21 +1,22 @@
 package org.example.multiDSC.controller;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.controller.databaseConection.conexionThread;
-import org.example.multiDSC.controller.listeners.LoginView.ButtonListenerLogin;
-import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonListener;
+//import org.example.multiDSC.controller.listeners.LoginView.ButtonListenerLogin;
+//import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonListener;
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.ConfUserModel;
 import org.example.multiDSC.model.viewModels.EmailModel;
 import org.example.multiDSC.model.viewModels.PostLoginModel;
-import org.example.multiDSC.view.ConfUserView;
-import org.example.multiDSC.view.LoginView;
-import org.example.multiDSC.view.PostLoginView;
-import org.example.multiDSC.view.UserRegistrerView;
+import org.example.multiDSC.view.*;
 
 import javax.swing.*;
 import java.sql.SQLException;
 
+@Getter
+@Setter
 public class MainController {
 
     private static ConectionBD conexion;
@@ -24,6 +25,7 @@ public class MainController {
     private static Manager manager;
     private UserRegistrerView register;
     private PostLoginView postLoginView;
+    MailView m;
 
 
     public MainController(){
@@ -36,10 +38,15 @@ public class MainController {
         utils= new Utils();
         manager.setTable(utils.switchLanguage("ingles"));
         manager.setConexion(conexion);
+        manager.setMainController(this);
 
         //SOLO PARA COMPROBACION- SE CREA SU MODELO Y LA INSTANCIA DE LA CLASE
-        ConfUserModel c= new ConfUserModel(manager);
-        ConfUserView v= new ConfUserView(manager, c);
+//        ConfUserModel c= new ConfUserModel(manager);
+//        ConfUserView v= new ConfUserView(manager, c);
+        System.out.println("hilomain");
+        m= new MailView(manager);
+        Thread hilo = new Thread(m);
+        hilo.start();
 
 
     }
@@ -61,49 +68,17 @@ public class MainController {
         hconect.start();
     }
 
-    public void addUserRegisterListeners(){
-        register.getRegisterButton().addActionListener(new ButtonListener(this));
-        register.getCancelButton().addActionListener(new ButtonListener(this));
+//    public void addUserRegisterListeners(){
+//        register.getRegisterButton().addActionListener(new ButtonListener(this));
+//        register.getCancelButton().addActionListener(new ButtonListener(this));
+//
+//    }
 
-    }
+//    private void addLoginListeners() {
+//        login.getBtnOk().addActionListener(new ButtonListenerLogin(this));
+//        login.getBtnCancel().addActionListener(new ButtonListenerLogin(this));
+//    }
 
-    private void addLoginListeners() {
-        login.getBtnOk().addActionListener(new ButtonListenerLogin(this));
-        login.getBtnCancel().addActionListener(new ButtonListenerLogin(this));
-    }
-
-
-    public UserRegistrerView getRegister() {
-        return register;
-    }
-
-    public void setRegister(UserRegistrerView register) {
-        this.register = register;
-    }
-
-    public static Manager getManager() {
-        return manager;
-    }
-
-    public static void setManager(Manager manager) {
-        MainController.manager = manager;
-    }
-
-    public PostLoginView getPostLoginView() {
-        return postLoginView;
-    }
-
-    public void setPostLoginView(PostLoginView postLoginView) {
-        this.postLoginView = postLoginView;
-    }
-
-    public LoginView getLogin() {
-        return login;
-    }
-
-    public void setLogin(LoginView login) {
-        this.login = login;
-    }
 }
 
 
