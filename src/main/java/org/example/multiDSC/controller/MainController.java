@@ -48,6 +48,7 @@ public class MainController {
         addLoginListeners();
         addUserRegisterListeners();
         getLogin().setVisible(true);
+        ConfAdminView confAdminView  = new ConfAdminView();
 
 
     }
