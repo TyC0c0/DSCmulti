@@ -77,7 +77,7 @@ public class ConfAdminView extends JFrame {
 
             JTextField nombreField = createTextField(userData.get("Nombre"));
             JTextField correoField = createTextField(userData.get("Correo"));
-            JTextField rolField = createTextField(userData.get("Rol"));
+            JTextField rolField = createTextField(userData.get("Rol_Nombre"));
             JTextField actionField = createTextField(""); // Campo para futuras acciones.
 
             rowPanel.add(nombreField);

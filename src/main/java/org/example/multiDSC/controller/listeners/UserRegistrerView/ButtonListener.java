@@ -34,7 +34,7 @@ public class ButtonListener implements ActionListener {
             String password = new String(manager.getMainController().getRegister().getPasswordField().getPassword());
 
             String insertUserSentence = "INSERT INTO \"public\".\"USUARIO\" (\"Correo\", \"Nombre\", \"Apellidos\", \"DNI\", \"Nickname\", \"Contraseña\", \"id_rol\") " +
-                    "VALUES ('" + mail + "', '" + name + "', '" + lastName + "', '" + dni + "', '" + nickname + "', '" + password + "', " + 1 + ");";
+                    "VALUES ('" + mail + "', '" + name + "', '" + lastName + "', '" + dni + "', '" + nickname + "', '" + password + "', " + 2 + ");";
 
             try {
                 manager.getConexion().sqlModification(insertUserSentence);

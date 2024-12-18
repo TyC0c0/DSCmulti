@@ -136,7 +136,7 @@ public class ConectionBD {
                 Map<String, String> userData = new HashMap<>();
                 userData.put("Nombre", rs.getString("Nombre"));
                 userData.put("Correo", rs.getString("Correo"));
-                userData.put("Rol", rs.getString("Rol"));
+                userData.put("Rol_Nombre", rs.getString("Rol_Nombre"));
                 userDataList.add(userData);
             }
         } catch (SQLException e) {
