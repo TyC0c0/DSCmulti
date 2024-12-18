@@ -1,23 +1,35 @@
 package org.example.multiDSC.view;
 
+import org.example.multiDSC.controller.smptEmail.ReceiveEmail;
 import org.example.multiDSC.model.MainViewModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.SneakyThrows;
+import org.example.multiDSC.model.controllModels.Manager;
+
 /**
  * MailView - Represents the main view of a mail application.*
  * @author Ivan Guerrero Romero
  * @version 1.0
  */
-public class MailView extends JFrame {
+
+@Getter
+@Setter
+public class MailView extends JFrame implements Runnable{
     private JPanel mainPanel;
     private ArrayList<JButton> buttonList;
     private JList<String> mailList;
     private JScrollPane scrollPane;
+    private ReceiveEmail receiveEmail;
+    private boolean keepChecking=true;
+    private int recharges =0;
 
-    public MailView() {
+    public MailView(Manager manager) {
         // Configuración del marco
         setTitle("Mail");
         setSize(900, 500);
@@ -74,9 +86,11 @@ public class MailView extends JFrame {
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.setBackground(Color.darkGray);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Margen para el panel central
-        mailList = new JList<>();
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        mailList = new JList<>(listModel);
         mailList.setBackground(Color.LIGHT_GRAY); // Color de fondo del JList
         mailList.setForeground(Color.BLACK); // Color del texto del JList
+
         scrollPane = new JScrollPane(mailList);
         scrollPane.setBorder(BorderFactory.createEmptyBorder()); // Eliminar el borde del JScrollPane
         centerPanel.add(scrollPane, BorderLayout.CENTER);
@@ -97,19 +111,43 @@ public class MailView extends JFrame {
 
         // Mostrar la ventana
         setVisible(true);
-
         // Configuración del modelo
         MainViewModel model = new MainViewModel();
         model.MailView();
-
         // Configurar texto desde el modelo
         buttonList.get(0).setText(model.getMailText_en().get(0));
         String[] texts = model.getMailText_en().toArray(new String[0]);
         refreshButton.setText(texts[7]);
         backButton.setText(texts[8]);
+
+        //setVisible(true);
+        receiveEmail = new ReceiveEmail(manager);
     }
 
-    public static void main(String[] args) {
-        new MailView();
+    @SneakyThrows
+    @Override
+    public void run() {
+        System.out.println("runsi");
+        while(keepChecking){
+
+            System.out.println("runemail");
+            checkEmails();
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (Exception e1){
+                System.out.println("Error al revisar correos: "+ e1.getMessage());
+                e1.printStackTrace();
+            }
+
+        }
+    }
+
+    private void checkEmails(){
+        System.out.println("chechmail");
+        receiveEmail.check();
+        System.out.println("Inbox recargado"+ recharges);
+        recharges++;
     }
 }

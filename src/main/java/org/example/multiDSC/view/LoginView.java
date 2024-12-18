@@ -1,8 +1,6 @@
 package org.example.multiDSC.view;
 
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
-import org.example.multiDSC.controller.listeners.LoginView.ButtonListenerLogin;
-import org.example.multiDSC.controller.listeners.LoginView.LabelListenerLogin;
 import org.example.multiDSC.model.VistaFormModel_en;
 
 import javax.swing.*;
