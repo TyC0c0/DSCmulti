@@ -37,13 +37,11 @@ public class MainController {
         manager.setConexion(conexion);
         manager.setMainController(this);
 
-        // Inicializar vistas
-        postLoginView = new PostLoginView();
-        login = new LoginView();
-        register = new UserRegistrerView(conexion); // Instanciar UserRegistrerView
+        // Inicializar vista
+        LoginModel model= new LoginModel(manager);
+        login = new LoginView(manager, model);
         addLoginListeners();
-        addUserRegisterListeners(); // Añadir listeners después de inicializar register
-        login.setVisible(true);
+
     }
 
     public void hiloConexion() {

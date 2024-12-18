@@ -132,9 +132,9 @@ public class ClientFTP {
         // ADMIN_PASS)
         if (cliente.connectFTP(USER, PASS)) {
             cliente.listFilesAndDirectories("/");
-            cliente.createDirectory("/nuevoDirectorio");
-            cliente.dowloadFile("/localFile", "/remoteFile");
-            cliente.deleteFile("/archivo_a_eliminar.txt");
+//            cliente.createDirectory("/nuevoDirectorio");
+//            cliente.dowloadFile("/localFile", "/remoteFile");
+//            cliente.deleteFile("/archivo_a_eliminar.txt");
             cliente.disconnectFTP();
         }
     }

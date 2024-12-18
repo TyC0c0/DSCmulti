@@ -2,8 +2,8 @@ package org.example.multiDSC.controller.listeners.UserRegistrerView;
 
 import org.example.multiDSC.controller.MainController;
 import org.example.multiDSC.controller.Utils;
-import org.example.multiDSC.model.SqlSentences;
 import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.controllModels.SqlSentences;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
