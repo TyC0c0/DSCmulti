@@ -12,5 +12,7 @@ public class Manager {
     private String table;
     private ConectionBD conexion;
     private MainController mainController;
+    private String userEmail;
+    private String userPassword;
 
 }
