@@ -11,7 +11,7 @@ import org.apache.ftpserver.usermanager.impl.WritePermission;
 
 public class ServerFTP {
 
-    // Esta clase unicamente inicia el servidor FTP en MI DIRECTORIO (RAMÓN)
+    // Esta clase inicia el servidor FTP que espera conexiones a través del puerto 2121, aunque está en local
 
     public static void main(String[] args) {
         try {
@@ -28,21 +28,28 @@ public class ServerFTP {
             UserManager userManager = userManagerFactory.createUserManager();
 
             BaseUser user = new BaseUser();
-            user.setName("ftpuser"); // Nombre de usuario
-            user.setPassword("ftp123"); // Contraseña
+            user.setName("user"); // Nombre de usuario
+            user.setPassword("1234"); // Contraseña
             user.setHomeDirectory(new File("C:/FTPserver").getAbsolutePath()); // Directorio de inicio
             user.setAuthorities(java.util.Collections.singletonList(new WritePermission())); // Permisos de escritura
             userManager.save(user);
 
             serverFactory.setUserManager(userManager);
 
+            // Crear un directorio si no existe
+            File homeDir = new File("C:/FTPserver");
+            if (!homeDir.exists()) {
+                homeDir.mkdirs();
+                System.out.println("Se te ha creado un Directorio FTP: " + homeDir.getAbsolutePath());
+            }
+
             // Iniciar el servidor FTP
             FtpServer server = serverFactory.createServer();
-            System.out.println("Servidor FTP iniciado en el puerto 2121...");
+            System.out.println("El servidor FTP está iniciado en el puerto "+listenerFactory.getPort());
             server.start();
 
         } catch (Exception e) {
-            System.err.println("Error iniciando el servidor FTP: " + e.getMessage());
+            System.err.println("Ha habido un arrancando el Servidor FTP: " + e.getMessage());
         }
     }
 }
