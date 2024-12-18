@@ -1,14 +1,11 @@
 package org.example.multiDSC.controller.listeners.LoginView;
 
-import org.example.multiDSC.controller.MainController;
 import org.example.multiDSC.controller.Utils;
+import org.example.multiDSC.controller.databaseConection.ConexionThread;
 import org.example.multiDSC.model.controllModels.Manager;
-import org.example.multiDSC.view.PostLoginView;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /*
@@ -37,6 +34,7 @@ public class ButtonListenerLogin implements ActionListener {
         String password = String.valueOf(manager.getMainController().getLogin().getPfPassword().getPassword());
 
         if (manager.getMainController().getLogin().getBtnCancel() == e.getSource()) {
+            manager.getConexionThread().stopThread();
             manager.getMainController().getLogin().dispose(); // Cerrar la ventana
         } else if (manager.getMainController().getLogin().getBtnOk() == e.getSource()) {
             if (nickname.isEmpty() || password.isEmpty()) {

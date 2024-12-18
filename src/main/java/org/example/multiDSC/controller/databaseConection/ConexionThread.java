@@ -1,11 +1,11 @@
 package org.example.multiDSC.controller.databaseConection;
 
-public class conexionThread extends Thread {
+public class ConexionThread extends Thread {
 
     private final ConectionBD conexion;
     private boolean keepRunning = true;
 
-    public conexionThread(ConectionBD conexion) {
+    public ConexionThread(ConectionBD conexion) {
 
         this.conexion = conexion;
     }

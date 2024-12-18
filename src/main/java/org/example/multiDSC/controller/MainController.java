@@ -3,7 +3,7 @@ package org.example.multiDSC.controller;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
-import org.example.multiDSC.controller.databaseConection.conexionThread;
+import org.example.multiDSC.controller.databaseConection.ConexionThread;
 import org.example.multiDSC.controller.listeners.LoginView.ButtonListenerLogin;
 import org.example.multiDSC.controller.listeners.LoginView.LabelListenerLogin;
 import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonListener;
@@ -22,8 +22,10 @@ public class MainController {
     private Utils utils;
     private static Manager manager;
     private UserRegistrerView register;
+    private UserRegisterModel userRegisterModel;
     private PostLoginView postLoginView;
     MailView m;
+    private ConexionThread hconect;
 
     public MainController() {
         init();
@@ -36,11 +38,17 @@ public class MainController {
         manager.setTable(utils.switchLanguage("ingles"));
         manager.setConexion(conexion);
         manager.setMainController(this);
+        manager.setConexionThread(hconect);
 
         // Inicializar vista
         LoginModel model= new LoginModel(manager);
         login = new LoginView(manager, model);
+        userRegisterModel = new UserRegisterModel(manager);
+        register = new UserRegistrerView(manager, userRegisterModel);
         addLoginListeners();
+        addUserRegisterListeners();
+        getLogin().setVisible(true);
+
 
     }
 
@@ -57,7 +65,7 @@ public class MainController {
         }
 
         // Inicia el hilo que mantendrá la conexión viva
-        conexionThread hconect = new conexionThread(conexion);
+        hconect = new ConexionThread(conexion);
         hconect.start();
     }
 

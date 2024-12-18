@@ -80,7 +80,7 @@ public class UserRegistrerView extends JFrame {
         panel.add(buttonPanel);
 
         add(panel);
-        setVisible(true);
+
     }
 
     private JPanel createFormRow(String labelText, JTextField textField) {

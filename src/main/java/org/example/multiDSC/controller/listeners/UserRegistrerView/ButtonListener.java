@@ -56,6 +56,7 @@ public class ButtonListener implements ActionListener {
 
         String email = manager.getMainController().getRegister().getEmailField().getText().trim();
         String dni = manager.getMainController().getRegister().getDniField().getText().trim();
+        String password = new String(manager.getMainController().getRegister().getPasswordField().getPassword());
 
         if (manager.getMainController().getRegister().getNameField().getText().trim().isEmpty()) {
             errorMessages.append("Debes completar el campo Nombre.\n");
@@ -65,8 +66,11 @@ public class ButtonListener implements ActionListener {
             errorMessages.append("Debes completar el campo Apellido.\n");
             hasErrors = true;
         }
-        if (manager.getMainController().getRegister().getPasswordField().getPassword().length == 0) {
+        if (password.isEmpty()) {
             errorMessages.append("Debes completar el campo Contraseña.\n");
+            hasErrors = true;
+        } else if (!manager.getMainController().getUtils().isStrongPassword(manager)) {
+            errorMessages.append("La contraseña debe tener al menos 8 caracteres, incluyendo una letra, un número y un carácter especial.\n");
             hasErrors = true;
         }
         if (email.isEmpty()) {
@@ -97,6 +101,7 @@ public class ButtonListener implements ActionListener {
 
         return !hasErrors; // Retorna true si no hay errores
     }
+
     private boolean isEmailRegistered(String email) {
         SqlSentences sqlSentences = new SqlSentences();
         String sentence = sqlSentences.getSencences().get(1);
