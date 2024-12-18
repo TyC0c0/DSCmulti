@@ -10,6 +10,7 @@ public class SqlSentences {
 
     private void addTextToArrayList() {
         sencences.add("SELECT \"Nickname\", \"Contraseña\" FROM \"USUARIO\"");//0
+        sencences.add("SELECT \"Apellidos\" FROM public.\"USUARIO\"");//1
     }
 
     public ArrayList<String> getSencences() {

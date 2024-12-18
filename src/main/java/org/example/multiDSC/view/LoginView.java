@@ -99,7 +99,7 @@ public class LoginView extends JDialog {
     }
 
     public static void main(String[] args) {
-        LoginView vista = new LoginView();
+   //     LoginView vista = new LoginView();
 //        User user = vista.authentificateUser();
 //
 //        if (user != null) {
@@ -113,9 +113,9 @@ public class LoginView extends JDialog {
 //        }
     }
 
-    public void showWarning(String message) {
-        JOptionPane.showMessageDialog(this, message, "Warning", JOptionPane.WARNING_MESSAGE);
-    }
+//    public void showWarning(String message) {
+//        JOptionPane.showMessageDialog(this, message, "Warning", JOptionPane.WARNING_MESSAGE);
+//    }
 
     public JTextField getTfNickname() {
         return tfNickname;

@@ -1,5 +1,7 @@
 package org.example.multiDSC.view;
 
+import org.example.multiDSC.controller.MainController;
+import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.model.UserRegistrerModel_en;
 
 import javax.swing.*;
@@ -22,7 +24,7 @@ public class UserRegistrerView extends JFrame {
     private JButton cancelButton;
     private JButton registerButton;
 
-    public UserRegistrerView() {
+    public UserRegistrerView(ConectionBD conectionBD) {
         setTitle("Registro de Usuario");
         setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,7 +67,6 @@ public class UserRegistrerView extends JFrame {
         cancelButton.setForeground(Color.BLACK); // Letras negras
         //registerButton.addActionListener(new ButtonListenerUserRegistrer(this, emailField, nameField, lastNameField, dniField, nicknameField, passwordField,registerButton,cancelButton));
         //cancelButton.addActionListener(new ButtonListenerUserRegistrer(this, emailField, nameField, lastNameField, dniField, nicknameField, passwordField,registerButton,cancelButton)); // Cierra la ventana al ser pulsado
-
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.DARK_GRAY); // Fondo gris oscuro
         buttonPanel.add(registerButton);
@@ -73,7 +74,9 @@ public class UserRegistrerView extends JFrame {
         panel.add(buttonPanel);
 
         add(panel);
-        setVisible(true);
+
+        //lo quito para luego que se visualize cuando clickee el label
+       // setVisible(true);
     }
 
     private JPanel createFormRow(String labelText, JTextField textField) {
