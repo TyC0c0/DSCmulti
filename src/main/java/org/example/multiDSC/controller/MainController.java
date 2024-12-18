@@ -8,6 +8,7 @@ import org.example.multiDSC.controller.listeners.LoginView.ButtonListenerLogin;
 import org.example.multiDSC.controller.listeners.LoginView.LabelListenerLogin;
 import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonListener;
 import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.viewModels.*;
 import org.example.multiDSC.view.*;
 
 import java.sql.SQLException;
@@ -24,14 +25,14 @@ public class MainController {
     private PostLoginView postLoginView;
     MailView m;
 
-    public MainController(){
+    public MainController() {
         init();
     }
 
     public void init() {
         hiloConexion();
-        manager= new Manager();
-        utils= new Utils();
+        manager = new Manager();
+        utils = new Utils();
         manager.setTable(utils.switchLanguage("ingles"));
         manager.setConexion(conexion);
         manager.setMainController(this);

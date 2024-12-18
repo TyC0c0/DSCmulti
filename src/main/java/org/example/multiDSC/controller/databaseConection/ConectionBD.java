@@ -1,9 +1,8 @@
 package org.example.multiDSC.controller.databaseConection;
 
-import org.example.multiDSC.model.SqlSentences;
+import org.example.multiDSC.model.controllModels.SqlSentences;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 

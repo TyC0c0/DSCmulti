@@ -15,20 +15,22 @@ public class ConfUserModel {
     private String query;
     private ArrayList<String> text = new ArrayList<>();
 
-    public ConfUserModel(Manager manager){
+    public ConfUserModel(Manager manager) {
         //CAMBIA EL NOMBRE DEL ARRAYLIST A TEXT
-        this.manager=manager;
+        this.manager = manager;
         init();
         fillTexts();
     }
 
-    public void init(){
-        query= "SELECT "+ manager.getTable() +" FROM \"NOMBRES\" WHERE \"Entrada\" like 'ConfUserModel'";
+    public void init() {
+        query = "SELECT " + manager.getTable() + " FROM \"NOMBRES\" WHERE \"Entrada\" like 'ConfUserModel'";
 
     }
-    public void fillTexts(){
+
+    public void fillTexts() {
 
         Map<Integer, Object> results = null;
+        System.out.println("ejecutando filltext");
         try {
             results = manager.getConexion().lecturaSQL(query);
 

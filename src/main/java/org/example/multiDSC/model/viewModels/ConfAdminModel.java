@@ -1,15 +1,19 @@
 package org.example.multiDSC.model.viewModels;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.example.multiDSC.model.controllModels.Manager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
+@Getter
+@Setter
 public class ConfAdminModel {
     private Manager manager;
     private String query;
-    private ArrayList<String> texts= new ArrayList<>();
+    private ArrayList<String> text = new ArrayList<>();
 
     public ConfAdminModel(Manager manager){
         this.manager=manager;
@@ -30,6 +34,8 @@ public class ConfAdminModel {
             // Imprimir resultados
             for (Map.Entry<Integer, Object> entry : results.entrySet()) {
                 System.out.println("Row: " + entry.getKey() + " Value: " + entry.getValue());
+
+                text.add(entry.getValue().toString());
             }
 
         } catch (SQLException e) {

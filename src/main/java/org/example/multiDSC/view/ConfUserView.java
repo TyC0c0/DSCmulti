@@ -6,6 +6,7 @@ package org.example.multiDSC.view;
 
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.ConfUserModel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -32,7 +33,7 @@ public class ConfUserView extends JFrame {
 
     public ConfUserView(Manager manager, ConfUserModel confUserModel) {
         //EN VEZ DE HACERLE AQUI UN NEW MODEL LE PONES EL THIS.
-        this.confUserModel=confUserModel;
+        this.confUserModel = confUserModel;
         //ELIMINA EL MAIN DE ABAJO Y AL FINAL DEL PUBLIC CONFUSER AÑADES SETVISIBLE(TRUE)
         // CAMBIAR TODOS LOS ...MODEL_ES.GETCONFUSERTEXT POR ...MODEL.GETTEXT
 
@@ -185,11 +186,4 @@ public class ConfUserView extends JFrame {
             buttonsPanel.repaint();
         }
     }
-
-
-//    public static void main(String[] args) {
-//        // Create and show the interface
-//        ConfUserView frame = new ConfUserView();
-////        frame.setVisible(true);
-//    }
 }

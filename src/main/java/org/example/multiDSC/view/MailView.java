@@ -1,7 +1,8 @@
 package org.example.multiDSC.view;
 
+import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.viewModels.EmailModel;
 import org.example.multiDSC.controller.smptEmail.ReceiveEmail;
-import org.example.multiDSC.model.MainViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +22,8 @@ import org.example.multiDSC.model.controllModels.Manager;
 @Getter
 @Setter
 public class MailView extends JFrame implements Runnable{
+
+    private EmailModel EmailModel;
     private JPanel mainPanel;
     private ArrayList<JButton> buttonList;
     private JList<String> mailList;
@@ -29,7 +32,8 @@ public class MailView extends JFrame implements Runnable{
     private boolean keepChecking=true;
     private int recharges =0;
 
-    public MailView(Manager manager) {
+    public MailView(Manager manager, EmailModel emailModel) {
+       this.EmailModel = emailModel;
         // Configuración del marco
         setTitle("Mail");
         setSize(900, 500);
@@ -109,14 +113,9 @@ public class MailView extends JFrame implements Runnable{
 
         mainPanel.add(centerPanel, BorderLayout.CENTER);
 
-        // Mostrar la ventana
-        setVisible(true);
-        // Configuración del modelo
-        MainViewModel model = new MainViewModel();
-        model.MailView();
         // Configurar texto desde el modelo
-        buttonList.get(0).setText(model.getMailText_en().get(0));
-        String[] texts = model.getMailText_en().toArray(new String[0]);
+        buttonList.get(0).setText(emailModel.getText().get(0));
+        String[] texts = emailModel.getText().toArray(new String[0]);
         refreshButton.setText(texts[7]);
         backButton.setText(texts[8]);
 
@@ -141,6 +140,7 @@ public class MailView extends JFrame implements Runnable{
                 e1.printStackTrace();
             }
 
+        setVisible(true);
         }
     }
 

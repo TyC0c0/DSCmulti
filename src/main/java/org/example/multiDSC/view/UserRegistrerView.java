@@ -1,8 +1,9 @@
 package org.example.multiDSC.view;
 
-import org.example.multiDSC.controller.MainController;
-import org.example.multiDSC.controller.databaseConection.ConectionBD;
-import org.example.multiDSC.model.UserRegistrerModel_en;
+import lombok.Getter;
+import lombok.Setter;
+import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.viewModels.UserRegisterModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,8 +14,11 @@ import java.awt.*;
     @version 2.0
  */
 
+@Getter
+@Setter
 public class UserRegistrerView extends JFrame {
 
+    private UserRegisterModel UserRegisterModel;
     private JTextField emailField;
     private JTextField nameField;
     private JTextField lastNameField;
@@ -24,7 +28,10 @@ public class UserRegistrerView extends JFrame {
     private JButton cancelButton;
     private JButton registerButton;
 
-    public UserRegistrerView(ConectionBD conectionBD) {
+    public UserRegistrerView(Manager manager, UserRegisterModel userRegisterModel) {
+
+        this.UserRegisterModel = userRegisterModel;
+
         setTitle("Registro de Usuario");
         setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,9 +42,7 @@ public class UserRegistrerView extends JFrame {
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panel.setBackground(Color.DARK_GRAY); // Fondo gris oscuro
 
-        UserRegistrerModel_en userRegistrerModelEn = new UserRegistrerModel_en();
-
-        JLabel titulo = new JLabel(userRegistrerModelEn.getLabelTexts().get(0));
+        JLabel titulo = new JLabel(userRegisterModel.getText().get(0));
         titulo.setFont(new Font("Arial", Font.BOLD, 20)); // Aumenta el tamaño del título
         titulo.setForeground(Color.WHITE); // Color del texto del título
 
@@ -50,23 +55,24 @@ public class UserRegistrerView extends JFrame {
         nicknameField = new JTextField(15);
         passwordField = new JPasswordField(15);
 
-        panel.add(createFormRow(userRegistrerModelEn.getLabelTexts().get(1), emailField));
-        panel.add(createFormRow(userRegistrerModelEn.getLabelTexts().get(2), nameField));
-        panel.add(createFormRow(userRegistrerModelEn.getLabelTexts().get(3), lastNameField));
-        panel.add(createFormRow(userRegistrerModelEn.getLabelTexts().get(4), dniField));
-        panel.add(createFormRow(userRegistrerModelEn.getLabelTexts().get(5), nicknameField));
-        panel.add(createFormRow(userRegistrerModelEn.getLabelTexts().get(6), passwordField));
+        panel.add(createFormRow(userRegisterModel.getText().get(1), emailField));
+        panel.add(createFormRow(userRegisterModel.getText().get(2), nameField));
+        panel.add(createFormRow(userRegisterModel.getText().get(3), lastNameField));
+        panel.add(createFormRow(userRegisterModel.getText().get(4), dniField));
+        panel.add(createFormRow(userRegisterModel.getText().get(5), nicknameField));
+        panel.add(createFormRow(userRegisterModel.getText().get(6), passwordField));
 
-        registerButton = new JButton(userRegistrerModelEn.getLabelTexts().get(7));
+        registerButton = new JButton(userRegisterModel.getText().get(7));
         registerButton.setBackground(Color.WHITE); // Fondo blanco
         registerButton.setForeground(Color.BLACK); // Letras negras
 
 
-        cancelButton = new JButton(userRegistrerModelEn.getLabelTexts().get(8));
+        cancelButton = new JButton(userRegisterModel.getText().get(8));
         cancelButton.setBackground(Color.WHITE); // Fondo blanco
         cancelButton.setForeground(Color.BLACK); // Letras negras
         //registerButton.addActionListener(new ButtonListenerUserRegistrer(this, emailField, nameField, lastNameField, dniField, nicknameField, passwordField,registerButton,cancelButton));
         //cancelButton.addActionListener(new ButtonListenerUserRegistrer(this, emailField, nameField, lastNameField, dniField, nicknameField, passwordField,registerButton,cancelButton)); // Cierra la ventana al ser pulsado
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.DARK_GRAY); // Fondo gris oscuro
         buttonPanel.add(registerButton);
@@ -74,9 +80,7 @@ public class UserRegistrerView extends JFrame {
         panel.add(buttonPanel);
 
         add(panel);
-
-        //lo quito para luego que se visualize cuando clickee el label
-       // setVisible(true);
+        setVisible(true);
     }
 
     private JPanel createFormRow(String labelText, JTextField textField) {
@@ -91,75 +95,5 @@ public class UserRegistrerView extends JFrame {
         rowPanel.add(textField, BorderLayout.CENTER);
         rowPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         return rowPanel;
-    }
-
-    public static void main(String[] args) {
-
-//        SwingUtilities.invokeLater(UserRegistrerView::new);
-//        maincontroller.addUserRegisterListener
-    }
-
-    public JTextField getEmailField() {
-        return emailField;
-    }
-
-    public void setEmailField(JTextField emailField) {
-        this.emailField = emailField;
-    }
-
-    public JTextField getNameField() {
-        return nameField;
-    }
-
-    public void setNameField(JTextField nameField) {
-        this.nameField = nameField;
-    }
-
-    public JTextField getLastNameField() {
-        return lastNameField;
-    }
-
-    public void setLastNameField(JTextField lastNameField) {
-        this.lastNameField = lastNameField;
-    }
-
-    public JTextField getDniField() {
-        return dniField;
-    }
-
-    public void setDniField(JTextField dniField) {
-        this.dniField = dniField;
-    }
-
-    public JTextField getNicknameField() {
-        return nicknameField;
-    }
-
-    public void setNicknameField(JTextField nicknameField) {
-        this.nicknameField = nicknameField;
-    }
-
-    public JPasswordField getPasswordField() {
-        return passwordField;
-    }
-
-    public void setPasswordField(JPasswordField passwordField) {
-        this.passwordField = passwordField;
-    }
-
-    public JButton getCancelButton() {
-        return cancelButton;
-    }
-
-    public void setCancelButton(JButton cancelButton) {
-        this.cancelButton = cancelButton;
-    }
-
-    public JButton getRegisterButton() {
-        return registerButton;
-    }
-
-    public void setRegisterButton(JButton registerButton) {
-        this.registerButton = registerButton;
     }
 }

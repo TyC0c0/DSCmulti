@@ -1,11 +1,20 @@
 package org.example.multiDSC.view;
 
+import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.viewModels.InfoModel;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class InfoView extends JFrame {
 
-    public InfoView() {
+
+    private InfoModel InfoModel;
+
+    public InfoView(Manager manager, InfoModel infoModel) {
+
+        this.InfoModel = infoModel;
+
         // Configuración de la ventana principal
         setTitle("Acerca De DataConnect Solutions");
         setSize(600, 400);
@@ -19,7 +28,7 @@ public class InfoView extends JFrame {
         mainPanel.setLayout(new BorderLayout());
 
         // Título principal
-        JLabel titleLabel = new JLabel("DataConnect Solutions v1.0", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel(InfoModel.getText().get(0), SwingConstants.CENTER);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, 28));
         titleLabel.setForeground(new Color(60, 60, 60)); // Color gris oscuro
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
@@ -32,7 +41,7 @@ public class InfoView extends JFrame {
         centerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Desarrolladores
-        JLabel developersTitle = new JLabel("Desarrolladores:");
+        JLabel developersTitle = new JLabel(InfoModel.getText().get(1));
         developersTitle.setFont(new Font("SansSerif", Font.PLAIN, 18));
         developersTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         centerPanel.add(developersTitle);
@@ -57,12 +66,12 @@ public class InfoView extends JFrame {
         centerPanel.add(Box.createVerticalStrut(15)); // Espacio
 
         // Derechos de autor
-        JLabel copyrightLabel = new JLabel("© 2024 DataConnect Solutions S.A.");
+        JLabel copyrightLabel = new JLabel(InfoModel.getText().get(2));
         copyrightLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
         copyrightLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         centerPanel.add(copyrightLabel);
 
-        JLabel rightsLabel = new JLabel("Todos los derechos reservados.");
+        JLabel rightsLabel = new JLabel(InfoModel.getText().get(3));
         rightsLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
         rightsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         centerPanel.add(rightsLabel);
@@ -72,7 +81,7 @@ public class InfoView extends JFrame {
         Image scaledImage = icon.getImage().getScaledInstance(150, 50, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
-// Crear un JLabel con la imagen escalada
+        // Crear un JLabel con la imagen escalada
         JLabel iconLabel = new JLabel(scaledIcon);
         iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -84,12 +93,7 @@ public class InfoView extends JFrame {
 
         // Agregar el panel principal a la ventana
         add(mainPanel);
-    }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            InfoView window = new InfoView();
-            window.setVisible(true);
-        });
+        setVisible(true);
     }
 }
