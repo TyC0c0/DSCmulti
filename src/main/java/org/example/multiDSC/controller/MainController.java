@@ -5,8 +5,10 @@ import org.example.multiDSC.controller.databaseConection.conexionThread;
 import org.example.multiDSC.controller.listeners.LoginView.ButtonListenerLogin;
 import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonListener;
 import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.viewModels.ConfUserModel;
 import org.example.multiDSC.model.viewModels.EmailModel;
 import org.example.multiDSC.model.viewModels.PostLoginModel;
+import org.example.multiDSC.view.ConfUserView;
 import org.example.multiDSC.view.LoginView;
 import org.example.multiDSC.view.PostLoginView;
 import org.example.multiDSC.view.UserRegistrerView;
@@ -32,12 +34,13 @@ public class MainController {
         hiloConexion();
         manager= new Manager();
         utils= new Utils();
-        manager.setTable(utils.switchLanguage("espanol"));
+        manager.setTable(utils.switchLanguage("ingles"));
         manager.setConexion(conexion);
-        //login= new LoginView();
-        EmailModel model= new EmailModel(manager);
-        //register= new UserRegistrerView();
-        //addUserRegisterListeners();
+
+        //SOLO PARA COMPROBACION- SE CREA SU MODELO Y LA INSTANCIA DE LA CLASE
+        ConfUserModel c= new ConfUserModel(manager);
+        ConfUserView v= new ConfUserView(manager, c);
+
 
     }
 

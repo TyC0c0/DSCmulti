@@ -30,8 +30,12 @@ public class ConfUserView extends JFrame {
      */
 
 
-    public ConfUserView() {
-        //confUserModel = new ConfUserModel(manager);
+    public ConfUserView(Manager manager, ConfUserModel confUserModel) {
+        //EN VEZ DE HACERLE AQUI UN NEW MODEL LE PONES EL THIS.
+        this.confUserModel=confUserModel;
+        //ELIMINA EL MAIN DE ABAJO Y AL FINAL DEL PUBLIC CONFUSER AÑADES SETVISIBLE(TRUE)
+        // CAMBIAR TODOS LOS ...MODEL_ES.GETCONFUSERTEXT POR ...MODEL.GETTEXT
+
         // Initializing lists
         buttons = new ArrayList<>();
         labels = new ArrayList<>();
@@ -43,7 +47,6 @@ public class ConfUserView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 400); // Fixed size for all the views
         setLayout(new BorderLayout());
-        setVisible(true);
 
         // Establish margins and general colours
         getContentPane().setBackground(Color.LIGHT_GRAY);
@@ -131,6 +134,8 @@ public class ConfUserView extends JFrame {
         add(leftPanel, BorderLayout.WEST);
         add(rightPanel, BorderLayout.CENTER);
         add(buttonsPanel, BorderLayout.SOUTH);
+
+        setVisible(true);
     }
 
     /**
@@ -182,9 +187,9 @@ public class ConfUserView extends JFrame {
     }
 
 
-    public static void main(String[] args) {
-        // Create and show the interface
-        ConfUserView frame = new ConfUserView();
-//        frame.setVisible(true);
-    }
+//    public static void main(String[] args) {
+//        // Create and show the interface
+//        ConfUserView frame = new ConfUserView();
+////        frame.setVisible(true);
+//    }
 }
