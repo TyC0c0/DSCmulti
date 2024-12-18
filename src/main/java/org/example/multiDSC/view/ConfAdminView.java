@@ -43,7 +43,7 @@ public class ConfAdminView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(true);
-        setVisible(true);
+
 
         // Inicializar los ArrayLists
         nombres = new ArrayList<>();
@@ -150,6 +150,7 @@ public class ConfAdminView extends JFrame {
 
         // Añadir el panel principal al frame
         add(mainPanel);
+        setVisible(true);
     }
 
 }

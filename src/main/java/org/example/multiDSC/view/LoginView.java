@@ -10,13 +10,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
-/**
- * VistaForm - This class is the backend from the View
- *     VistaForm.form who is the view of the login form.
- *
- * @author Ramón Reina González, Alvaro Garcia Lopez
- * @version 1.5
- */
+/*
+
+    VistaForm - This class is the backend from the Windows VistaForm.form
+    who is the window of the login form.
+
+    @author Ramón Reina González, Alvaro Garcia Lopez
+    @version 1.6
+
+*/
 
 public class LoginView extends JDialog {
 
@@ -58,42 +60,7 @@ public class LoginView extends JDialog {
         btnOk.setText(LoginModel.getText().get(4)); // "Ok"
         btnCancel.setText(LoginModel.getText().get(5)); // "Cancel"
         lblDontHaveBeenRegistred.setText(LoginModel.getText().get(7));
-        // Listener ok button
 
-
-      //  lblDontHaveBeenRegistred.addMouseListener(new LabelListenerLogin(this, conectionBD));
-       // btnOk.addActionListener(new ButtonListenerLogin(btnOk, btnCancel, tfNickname, pfPassword, this));
-       // btnCancel.addActionListener(new ButtonListenerLogin(btnOk, btnCancel, tfNickname, pfPassword, this));
-
-        setVisible(true);
-    }
-
-    public class User {
-        String username;
-        String password;
-    }
-
-    public User authentificateUser() {
-        User user = null;
-
-        // DB connection
-
-        final String db_url = "jdbc:mysql://localhost";
-        final String username = "root";
-        final String password = "";
-
-        try {
-            Connection conn = DriverManager.getConnection(db_url, username, password);
-
-            Statement statement = conn.createStatement();
-            String sql = "";
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return user;
     }
 
     public void showWarning(String message) {

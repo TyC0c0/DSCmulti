@@ -22,7 +22,7 @@ public class UserRegisterModel {
     }
 
     public void init() {
-        query = "SELECT " + manager.getTable() + " FROM \"NOMBRES\" WHERE \"Entrada\" like \"UserRegisterModel\"";
+        query = "SELECT " + manager.getTable() + " FROM \"NOMBRES\" WHERE \"Entrada\" like 'UserRegisterModel'";
 
     }
 
