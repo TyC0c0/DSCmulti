@@ -6,12 +6,19 @@ import org.apache.commons.net.ftp.FTPFile;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+/**
+ * ClientFTP - ClientFTP ...
+ *
+ * @author Ramón Reina González
+ * @version 1.0
+ */
+
 public class ClientFTP {
 
     private static final String SERVER = "localhost"; // IP del servidor FTP
     private static final int PORT = 2121; // Puerto FTP
-    private static final String USER = "user";
-    private static final String PASS = "1234";
+    private static final String ADMIN_USER = "admin";
+    private static final String ADMIN_PASS = "1234";
 
     private FTPClient user;
 
@@ -29,12 +36,12 @@ public class ClientFTP {
     // mientras que los usuarios sin permisos de administrador solo tienen acceso a
     // su directorio
 
-    private boolean connectFTP(String username, String password) {
+    public boolean connectFTP() {
         try {
             System.out.println("Intentando conexión con el Servidor FTP...");
             user.connect(SERVER, PORT);
 
-            if (!user.login(username, password)) {
+            if (!user.login(ADMIN_USER, ADMIN_PASS)) {
                 System.out.println("Ha habido un problema en el login (Usuario o contraseña incorrectos)");
                 return false;
             } else {
@@ -71,7 +78,7 @@ public class ClientFTP {
                     if (file.isDirectory()) {
                         System.out.println("[Directorio] " + file.getName());
                     } else if (file.isFile()) {
-                        System.out.println("[Archivo] " + file.getName());
+                        System.out.println(" -Archivo: " + file.getName());
                     }
                 }
             } else {
@@ -125,16 +132,27 @@ public class ClientFTP {
         }
     }
 
+    public FTPFile[] showDirectoriesUser(String directoryName) {
+        try {
+            return user.listFiles(directoryName);
+        } catch (IOException e) {
+            System.out.println("Ha habido un error listando los directorios del usuario... "+directoryName);
+            e.printStackTrace();
+            return new FTPFile[0];
+        }
+    }
+
+
     public static void main(String[] args) {
         ClientFTP cliente = new ClientFTP();
 
         // Existe un propiedad que es exactamente igual que esta linea pero (ADMIN_USER,
         // ADMIN_PASS)
-        if (cliente.connectFTP(USER, PASS)) {
+        if (cliente.connectFTP()) {
             cliente.listFilesAndDirectories("/");
-            cliente.createDirectory("/nuevoDirectorio");
-            cliente.dowloadFile("/localFile", "/remoteFile");
-            cliente.deleteFile("/archivo_a_eliminar.txt");
+            //cliente.createDirectory("/nuevoDirectorio");
+            //cliente.dowloadFile("/localFile", "/remoteFile");
+            //cliente.deleteFile("/archivo_a_eliminar.txt");
             cliente.disconnectFTP();
         }
     }

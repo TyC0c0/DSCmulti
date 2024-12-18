@@ -72,11 +72,5 @@ public class MainController {
         login.getBtnCancel().addActionListener(new ButtonListenerLogin(manager));
         login.getLblDontHaveBeenRegistred().addMouseListener(new LabelListenerLogin(login,conexion,manager));
     }
-    }
 
-
-
-
-
-
-
+}

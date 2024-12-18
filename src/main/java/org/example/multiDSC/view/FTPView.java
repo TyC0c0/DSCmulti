@@ -1,16 +1,26 @@
 package org.example.multiDSC.view;
 
+import org.apache.commons.net.ftp.FTPFile;
+import org.example.multiDSC.controller.ftpServer.ClientFTP;
+import org.example.multiDSC.controller.listeners.ftp.ButtonListenerFTP;
 import org.example.multiDSC.model.FTPModel_en;
 
 import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
+import java.io.File;
 
 /**
  * FTPView - Main view for the FTP functions of the app.
  *
- * @version 1.1
+ * @author Ramón Reina González, Alvaro Garcia Lopez
+ * @version 1.3
  */
+
 public class FTPView extends JFrame {
 
     // Attributes
@@ -31,12 +41,22 @@ public class FTPView extends JFrame {
     private JPanel topPanel;
     private JPanel topRightPanel;
     private JPanel downPanel;
+    private ClientFTP clientFTP;
 
     // Constructor
-    public FTPView() {
+    public FTPView(String directoryName) {
         // Starting elements
-        JFrame frameFTP = new JFrame("FTP Window");
-        frameFTP.setLayout(new BorderLayout()); // Use BorderLayout for the main frame
+        clientFTP = new ClientFTP();
+        if (!clientFTP.connectFTP()) {
+            System.out.println("Error de conexión con el servidor FTP...");
+            return;
+        }
+
+        setTitle("FTP Window");
+        setLayout(new BorderLayout()); // Use BorderLayout for the main frame
+        setSize(700, 500); // Adjust size dynamically based on content
+        setDefaultCloseOperation(EXIT_ON_CLOSE); // Exit on close
+
 
         model = new FTPModel_en();
 
@@ -54,6 +74,7 @@ public class FTPView extends JFrame {
         renameFieldText.setPreferredSize(new Dimension(200, 30));
         renameButton = createSizedButton(model.getFTPText_en().get(6), false);
 
+        topPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
         topPanel.add(reloadButton);
         topPanel.add(Box.createRigidArea(new Dimension(78, 0))); // Add space between components
@@ -107,10 +128,12 @@ public class FTPView extends JFrame {
         panelTree.setBackground(new Color(100, 100, 100));
 
         // Panel para el botón Exit con FlowLayout
-        JPanel exitPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Centra el botón
+        JPanel exitPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT)); // Centra el botón
         exitPanel.setBackground(Color.DARK_GRAY);
         exitButton = createSizedButton(model.getFTPText_en().get(4),false);
         exitButton.setPreferredSize(new Dimension(100, 30)); // Ajusta el tamaño del botón
+        exitButton.setActionCommand("Exit");
+        exitButton.addActionListener(new ButtonListenerFTP(this));
         exitPanel.add(exitButton);
 
         rightPanel.add(topPanel, BorderLayout.NORTH);
@@ -122,16 +145,86 @@ public class FTPView extends JFrame {
         downPanel.setForeground(Color.WHITE); // Texto blanco
 
         // Add panels to the main frame
-        frameFTP.add(topPanel, BorderLayout.NORTH); // Top panel with reload and rename
-        frameFTP.add(leftPanel, BorderLayout.WEST);
-        frameFTP.add(rightPanel, BorderLayout.CENTER);
-        frameFTP.add(downPanel, BorderLayout.SOUTH);
+        add(leftPanel, BorderLayout.WEST);
+        add(topPanel, BorderLayout.NORTH); // Top panel with reload and rename
+        add(rightPanel, BorderLayout.CENTER);
+        add(downPanel, BorderLayout.SOUTH);
 
-        // Create window format
-        frameFTP.setSize(700, 500); // Adjust size dynamically based on content
-        frameFTP.setVisible(true);
-        frameFTP.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        loadDirectories(directoryName);
+        setVisible(true);
     }
+
+    public void loadDirectories(String directoryName) {
+        DefaultMutableTreeNode mainDir = new DefaultMutableTreeNode(directoryName.equals("/") ? "Main FTP" : directoryName);
+
+        try {
+            // Cogemos los directorios de un usuario para cargarlo
+            FTPFile[] files = clientFTP.showDirectoriesUser(directoryName);
+
+            if (files != null && files.length > 0) {
+                for (FTPFile f : files) {
+                    // Filter server FTP files
+                    if (f.isDirectory()) {
+                        mainDir.add(new DefaultMutableTreeNode("📁 "+f.getName()));
+                    } else if (f.isFile()) {
+                        mainDir.add(new DefaultMutableTreeNode("🗎 "+f.getName()));
+                    } else if (f.isSymbolicLink()) {
+                        mainDir.add(new DefaultMutableTreeNode("[Link] "+f.getName()));
+                    } else if (f.isUnknown()) {
+                        mainDir.add(new DefaultMutableTreeNode("[?] "+f.getName() + " (Unknown file)"));
+                    }
+                }
+            } else {
+                System.out.println("No hay directorios disponibles para este usuario.");
+            }
+        } catch (Exception e) {
+            System.out.println("Ha habido un problema en la carga de directorios");
+            e.printStackTrace();
+        }
+        DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) tree.getCellRenderer();
+        renderer.setLeafIcon(new ImageIcon("Delete Icon")); // This delete the icon in the tree
+
+        tree.setModel(new DefaultTreeModel(mainDir));
+
+        // Añadir TreeSelectionListener para manejar clics en los nodos
+        tree.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent event) {
+                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+                if (selectedNode == null) {
+                    return;
+                }
+                String nodeName = selectedNode.getUserObject().toString().replace("📁 ", "").replace("🗎 ", "");
+                loadDirectoryContent(selectedNode, directoryName+ "/" + nodeName);
+            }
+        });
+    }
+
+    private void loadDirectoryContent(DefaultMutableTreeNode parentNode, String directoryName) {
+        try {
+            // Obtener el contenido del directorio seleccionado
+            FTPFile[] files = clientFTP.showDirectoriesUser(directoryName);
+
+            if (files != null && files.length > 0) {
+                parentNode.removeAllChildren(); // Limpia el nodo actual antes de añadir contenido
+
+                for (FTPFile f : files) {
+                    if (f.isDirectory()) {
+                        parentNode.add(new DefaultMutableTreeNode("📁 " + f.getName())); // Subdirectorio
+                    } else if (f.isFile()) {
+                        parentNode.add(new DefaultMutableTreeNode("🗎 " + f.getName())); // Archivo
+                    }
+                }
+                ((DefaultTreeModel) tree.getModel()).reload(parentNode); // Recargar nodo en el árbol
+            } else {
+                System.out.println("El directorio está vacío: " + directoryName);
+            }
+        } catch (Exception e) {
+            System.out.println("Error al cargar el contenido del directorio: " + directoryName);
+            e.printStackTrace();
+        }
+    }
+
 
     private JButton createSizedButton(String text, boolean isReloadButton) {
         JButton button = new JButton(text);
@@ -143,7 +236,7 @@ public class FTPView extends JFrame {
     }
 
     public static void main(String[] args) {
-        new FTPView();
-        System.out.println("Hello world");
+        new FTPView("/");
+        //System.out.println("Hello world");
     }
 }
