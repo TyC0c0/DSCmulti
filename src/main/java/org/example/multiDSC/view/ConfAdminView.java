@@ -97,6 +97,55 @@ public class ConfAdminView extends JFrame {
 
         // Añadir el panel principal al frame
         add(mainPanel);
+        // Añadir componentes al panel principal
+        mainPanel.add(scrollPane, BorderLayout.CENTER); // Área con scroll
+
+// Panel con botones (restaurado como lo tenías antes)
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        buttonPanel.setBackground(Color.DARK_GRAY);
+
+
+        JButton editarButton = new JButton("Modify");
+        JButton eliminarButton = new JButton("Delete");
+
+// Configuración de estilo para los botones
+        Font buttonFont = new Font("Arial", Font.BOLD, 14);
+        Color buttonColor = Color.LIGHT_GRAY;
+
+
+        editarButton.setFont(buttonFont);
+        editarButton.setBackground(buttonColor);
+        eliminarButton.setFont(buttonFont);
+        eliminarButton.setBackground(buttonColor);
+
+// Añadir botones al panel de botones
+
+        buttonPanel.add(editarButton);
+        buttonPanel.add(eliminarButton);
+
+// Panel inferior con un JTextField y un botón (restaurado)
+        JPanel textFieldPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        textFieldPanel.setBackground(Color.DARK_GRAY);
+
+        JTextField inputField = new JTextField();
+        inputField.setPreferredSize(new Dimension(250, 30));
+        inputField.setFont(new Font("Arial", Font.PLAIN, 14));
+        inputField.setForeground(Color.WHITE);
+        inputField.setBackground(Color.GRAY);
+        inputField.setCaretColor(Color.WHITE);
+
+        JButton enviarButton = new JButton("Search");
+        enviarButton.setFont(new Font("Arial", Font.BOLD, 14));
+        enviarButton.setBackground(buttonColor);
+
+// Añadir componentes al panel inferior
+        textFieldPanel.add(inputField);
+        textFieldPanel.add(enviarButton);
+
+// Añadir ambos paneles al panel principal
+        mainPanel.add(buttonPanel, BorderLayout.NORTH); // Panel de botones en la parte superior
+        mainPanel.add(textFieldPanel, BorderLayout.SOUTH); // Panel inferior con JTextField
+
         setVisible(true);
     }
 
