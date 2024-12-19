@@ -29,7 +29,7 @@ import org.example.multiDSC.model.viewModels.ConfAdminModel;
 @Setter
 public class ConfAdminView extends JFrame {
     private final Manager manager;
-
+    private ConfAdminModel confAdminModel;
     private JPanel fieldsPanel;
     private JButton editarButton;
     private JButton eliminarButton;
@@ -41,8 +41,9 @@ public class ConfAdminView extends JFrame {
     private ArrayList<JButton> modifyButtons = new ArrayList<>();
     private ArrayList<JButton> deleteButtons = new ArrayList<>();
 
-    public ConfAdminView(Manager manager) {
+    public ConfAdminView(Manager manager, ConfAdminModel confAdminModel) {
         this.manager = manager;
+        this.confAdminModel=confAdminModel;
         setTitle("Configuración de Admin");
         setSize(1500, 500);  // Tamaño más grande
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
