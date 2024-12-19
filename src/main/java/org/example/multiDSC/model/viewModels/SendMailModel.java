@@ -22,7 +22,7 @@ public class SendMailModel {
     }
 
     public void init() {
-        query = "SELECT " + manager.getTable() + " FROM \"NOMBRES\" WHERE \"Entrada\" like \"SendMailModel\"";
+        query = "SELECT " + manager.getTable() + " FROM \"NOMBRES\" WHERE \"Entrada\" like 'SendMailModel'";
 
     }
 

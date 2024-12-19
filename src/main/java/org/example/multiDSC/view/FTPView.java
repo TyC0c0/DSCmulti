@@ -3,7 +3,6 @@ package org.example.multiDSC.view;
 import org.apache.commons.net.ftp.FTPFile;
 import org.example.multiDSC.controller.ftpServer.ClientFTP;
 import org.example.multiDSC.controller.listeners.ftp.ButtonListenerFTP;
-//import org.example.multiDSC.model.*;
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.FTPModel;
 
@@ -59,10 +58,6 @@ public class FTPView extends JFrame {
         setLayout(new BorderLayout()); // Use BorderLayout for the main frame
         setSize(700, 500); // Adjust size dynamically based on content
         setDefaultCloseOperation(EXIT_ON_CLOSE); // Exit on close
-
-
-        //model = new FTPModel();
-
         // Top panel for the reload button and rename components
         topPanel = new JPanel();
         topRightPanel = new JPanel();
@@ -238,8 +233,4 @@ public class FTPView extends JFrame {
         return button;
     }
 
-//    public static void main(String[] args) {
-//        new FTPView("/");
-//        System.out.println("Hello world");
-//    }
 }

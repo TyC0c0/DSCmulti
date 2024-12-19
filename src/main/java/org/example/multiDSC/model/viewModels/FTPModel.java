@@ -22,7 +22,7 @@ public class FTPModel {
     }
 
     public void init(){
-        query= "SELECT "+ manager.getTable() +" FROM \"NOMBRES\" WHERE \"Entrada\" like \"FTPModel\"";
+        query= "SELECT "+ manager.getTable() +" FROM \"NOMBRES\" WHERE \"Entrada\" like 'FTPModel'";
 
     }
     public void fillTexts(){

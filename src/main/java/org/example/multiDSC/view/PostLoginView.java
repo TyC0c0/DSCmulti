@@ -1,9 +1,14 @@
 package org.example.multiDSC.view;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+@Getter
+@Setter
 public class PostLoginView {
     private JPanel panel1;
     private ArrayList<JButton> buttons;
@@ -56,11 +61,4 @@ public class PostLoginView {
         return button;
     }
 
-    public JFrame getFrame() {
-        return frame;
-    }
-
-    public ArrayList<JButton> getButtons() {
-        return buttons;
-    }
 }
