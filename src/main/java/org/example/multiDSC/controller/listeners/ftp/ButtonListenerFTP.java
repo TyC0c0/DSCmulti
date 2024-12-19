@@ -5,6 +5,8 @@ import org.example.multiDSC.controller.ftpServer.LocalServiceFTP;
 import org.example.multiDSC.view.FTPView;
 import org.example.multiDSC.view.PostLoginView;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -41,18 +43,20 @@ public class ButtonListenerFTP implements ActionListener {
                 localServiceFTP.renameFile();
                 break;
 
+            case "Upload":
+                //localServiceFTP.uploadFile();
+                break;
             case "Create":
 
-                clientFTP.createDirectory("");
+                //clientFTP.createDirectory("");
                 break;
 
             case "Delete":
-                localServiceFTP.deleteFtp();
+                localServiceFTP.deleteSelectedFile();
                 break;
 
             case "Download":
                 break;
-
 
             default:
                 System.out.println("Unknown command..."+command);
