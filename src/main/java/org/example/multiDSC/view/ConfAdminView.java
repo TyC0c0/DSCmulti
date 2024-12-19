@@ -3,6 +3,8 @@ package org.example.multiDSC.view;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
+import org.example.multiDSC.controller.listeners.ConfAdminView.ConfAdminButtonListener;
+import org.example.multiDSC.model.controllModels.Manager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +26,7 @@ import org.example.multiDSC.model.viewModels.ConfAdminModel;
  */
 
 public class ConfAdminView extends JFrame {
+    private final Manager manager;
     @Getter
     @Setter
     private JPanel fieldsPanel;
@@ -34,17 +37,13 @@ public class ConfAdminView extends JFrame {
     private ArrayList<JComboBox<String>> comboBoxes;
     private ArrayList<JTextField> textFields;
     private JComboBox<String> rolComboBox;
+    private ArrayList<JButton> modifyButtons = new ArrayList<>();
+    private ArrayList<JButton> deleteButtons = new ArrayList<>();
 
-    private JPanel fieldsPanel; // Panel to hold dynamic user rows.
-
-    /**
-     * Constructs the ConfAdminView GUI.
-     * Initializes components, connects to the database, and creates user input fields.
-     */
-    public ConfAdminView(Manager manager, ConfAdminModel confAdminModel) {
-        // Configuración de la ventana
+    public ConfAdminView(Manager manager) {
+        this.manager = manager;
         setTitle("Configuración de Admin");
-        setSize(900, 400);
+        setSize(1500, 500);  // Tamaño más grande
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(true);
@@ -56,9 +55,9 @@ public class ConfAdminView extends JFrame {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainPanel.setBackground(Color.DARK_GRAY);
 
-        JPanel labelsPanel = new JPanel(new GridLayout(1, 4, 10, 10));
+        JPanel labelsPanel = new JPanel(new GridLayout(1, 5, 10, 10));  // Añadí una columna extra para los botones
         labelsPanel.setBackground(Color.DARK_GRAY);
-        String[] etiquetas = {"Nombre:", "Correo:", "Rol:", "Acción:"};
+        String[] etiquetas = {"Nombre:", "Correo:", "Rol:", "", ""};  // Última columna para los botones
 
         for (String etiqueta : etiquetas) {
             JLabel label = new JLabel(etiqueta, SwingConstants.CENTER);
@@ -74,57 +73,69 @@ public class ConfAdminView extends JFrame {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setBorder(null);
 
-        ConectionBD conectionBD = new ConectionBD();
+       // ConectionBD conectionBD = new ConectionBD();
         ArrayList<Map<String, String>> userDataList = new ArrayList<>();
 
         try {
-            conectionBD.connect();
-            userDataList = conectionBD.getUserData();
+            //conectionBD.connect();
+            manager.getConexion().connect();
+            userDataList = manager.getConexion().getUserData();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
         for (Map<String, String> userData : userDataList) {
-            JPanel rowPanel = new JPanel(new GridLayout(1, 4, 10, 10));
+            JPanel rowPanel = new JPanel(new GridLayout(1, 5, 10, 10));
             rowPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
             rowPanel.setBackground(Color.DARK_GRAY);
 
+            // Obtener el id de la base de datos
+            String userId = userData.get("id");  // Aquí obtienes el id
+
+            // Crear los campos de texto y otros elementos
             JTextField nombreField = createTextField(userData.get("Nombre"));
             JTextField correoField = createTextField(userData.get("Correo"));
             textFields.add(nombreField);
             textFields.add(correoField);
 
             // Crear JComboBox para roles
-            String[] roles = {"Admin", "Usuario"};  // Asegúrate de que estos roles están en la base de datos
+            String[] roles = {"Admin", "Usuario"};
             rolComboBox = new JComboBox<>(roles);
             rolComboBox.setSelectedItem(userData.get("Rol_Nombre"));
-            rolComboBox.setEnabled(false); // Desactivar inicialmente
+            rolComboBox.setEnabled(false);
             comboBoxes.add(rolComboBox);
 
+            // Botones de Modify y Delete
+            JButton modifyButton = new JButton("Modify");
+            modifyButton.setActionCommand(userId); // Set the userId as ActionCommand
+            JButton deleteButton = new JButton("Delete");
+
+            modifyButtons.add(modifyButton);
+            deleteButtons.add(deleteButton);
+
+            modifyButton.setPreferredSize(new Dimension(5, 30));
+            deleteButton.setPreferredSize(new Dimension(5, 30));
+
+            // Añadir el listener al botón "Modificar"
+            //modifyButton.addActionListener(new ConfAdminButtonListener(manager));
+
+            // Agregar los componentes a la fila
             rowPanel.add(nombreField);
             rowPanel.add(correoField);
             rowPanel.add(rolComboBox);
+            rowPanel.add(modifyButton);
+            rowPanel.add(deleteButton);
 
+            // Añadir la fila al panel
             fieldsPanel.add(rowPanel);
 
+            // Separador entre filas
             JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
             separator.setBackground(Color.WHITE);
             fieldsPanel.add(separator);
         }
 
         mainPanel.add(scrollPane, BorderLayout.CENTER);
-
-        // Panel de botones superior
-        JPanel topButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        topButtonPanel.setBackground(Color.DARK_GRAY);
-
-        editarButton = new JButton("Modify");
-        eliminarButton = new JButton("Delete");
-
-        topButtonPanel.add(editarButton);
-        topButtonPanel.add(eliminarButton);
-
-        mainPanel.add(topButtonPanel, BorderLayout.NORTH);
 
         // Panel inferior con el JTextField y el botón adicional
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -153,55 +164,29 @@ public class ConfAdminView extends JFrame {
         return textField;
     }
 
-    public void addButtonNextToDelete(String buttonText) {
-        if (!botonAñadido) {
-            applyButton = new JButton(buttonText);
-            applyButton.setFont(new Font("Arial", Font.BOLD, 14));
-            applyButton.setBackground(Color.WHITE);
-
-            JPanel buttonPanel = (JPanel) eliminarButton.getParent();
-            buttonPanel.add(applyButton);
-            botonAñadido = true;
-
-            buttonPanel.revalidate();
-            buttonPanel.repaint();
-        }
-    }
-
-    public void removeNewButton() {
-        if (botonAñadido && applyButton != null) {
-            JPanel buttonPanel = (JPanel) applyButton.getParent();
-            buttonPanel.remove(applyButton);
-            botonAñadido = false;
-            applyButton = null;
-
-            buttonPanel.revalidate();
-            buttonPanel.repaint();
-        }
-    }
 
     public JButton getEditarButton() {
-        return editarButton;
+        return null;  // Se eliminó el botón superior "Editar"
     }
 
     public void setEditarButton(JButton editarButton) {
-        this.editarButton = editarButton;
+        // Este método se eliminó, ya que los botones se agregan en cada fila
     }
 
     public JButton getApplyButton() {
-        return applyButton;
+        return null;  // No se utiliza el botón "Apply"
     }
 
     public void setApplyButton(JButton applyButton) {
-        this.applyButton = applyButton;
+        // Este método se eliminó
     }
 
     public JButton getEliminarButton() {
-        return eliminarButton;
+        return null;  // Se eliminó el botón superior "Eliminar"
     }
 
     public void setEliminarButton(JButton eliminarButton) {
-        this.eliminarButton = eliminarButton;
+        // Este método se eliminó
     }
 
     public ArrayList<JComboBox<String>> getComboBoxes() {
@@ -224,5 +209,21 @@ public class ConfAdminView extends JFrame {
     }
     public void setTextField(ArrayList<JTextField> textFields) {
         this.textFields = textFields;
+    }
+
+    public ArrayList<JButton> getModifyButtons() {
+        return modifyButtons;
+    }
+
+    public void setModifyButtons(ArrayList<JButton> modifyButtons) {
+        this.modifyButtons = modifyButtons;
+    }
+
+    public ArrayList<JButton> getDeleteButtons() {
+        return deleteButtons;
+    }
+
+    public void setDeleteButtons(ArrayList<JButton> deleteButtons) {
+        this.deleteButtons = deleteButtons;
     }
 }

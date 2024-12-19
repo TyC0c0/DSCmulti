@@ -185,6 +185,7 @@ public class ConectionBD {
 
             while (rs.next()) {
                 Map<String, String> userData = new HashMap<>();
+                userData.put("id", rs.getString("id"));
                 userData.put("Nombre", rs.getString("Nombre"));
                 userData.put("Correo", rs.getString("Correo"));
                 userData.put("Rol_Nombre", rs.getString("Rol_Nombre"));

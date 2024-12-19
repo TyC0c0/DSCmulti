@@ -1,12 +1,14 @@
 package org.example.multiDSC.controller.listeners.ConfAdminView;
 
 import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.view.EditWindow;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class ConfAdminButtonListener implements ActionListener {
 
@@ -18,79 +20,37 @@ public class ConfAdminButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Botón Editar
-        if (e.getSource() == manager.getMainController().getConfAdmin().getEditarButton()) {
-            // Habilitar los JTextField y JComboBox para edición
-            for (Component component : manager.getMainController().getConfAdmin().getFieldsPanel().getComponents()) {
-                if (component instanceof JPanel) {
-                    JPanel rowPanel = (JPanel) component;
-                    for (Component field : rowPanel.getComponents()) {
-                        if (field instanceof JTextField) {
-                            JTextField textField = (JTextField) field;
-                            textField.setEditable(true);
-                            textField.setBackground(Color.LIGHT_GRAY); // Indicar edición con un color
-                        } else if (field instanceof JComboBox) {
-                            JComboBox comboBox = (JComboBox) field;
-                            comboBox.setEnabled(true);
-                        }
+        // Verificar si el evento fue disparado por el botón "Modificar"
+        if (e.getSource() instanceof JButton) {
+            JButton sourceButton = (JButton) e.getSource();
+
+            // Obtener el ActionCommand del botón, que es el id del usuario
+            String userIdStr = sourceButton.getActionCommand();
+            int userId = Integer.parseInt(userIdStr); // Convertirlo a entero
+
+            // Mostrar el id en la consola
+            System.out.println("El ID del usuario que ha pulsado el botón es: " + userId);
+
+            // Realizar la consulta para obtener los datos del usuario
+            try {
+                // Llamamos al método getUserData() para obtener los datos de la base de datos
+                ArrayList<Map<String, String>> userDataList = manager.getConexion().getUserData();
+
+                // Buscar el usuario con el id que acabamos de obtener
+                for (Map<String, String> userData : userDataList) {
+                    if (Integer.parseInt(userData.get("id")) == userId) {
+                        // Si encontramos el usuario con el id correcto, abrimos la ventana de edición
+                        EditWindow editWindow = new EditWindow(userData, userId);
+                        manager.getMainController().setEditWindow(editWindow);
+                        manager.getMainController().EditWindowAddActionListener(userData, userId);
+                        editWindow.setVisible(true);
+                        break;
                     }
                 }
+            } catch (SQLException ex) {
+                System.err.println("Error al obtener los datos: " + ex.getMessage());
             }
-
-            // Agregar el botón Apply si aún no está
-            manager.getMainController().getConfAdmin().addButtonNextToDelete("Apply");
-
-            // Asignar el ActionListener dinámicamente al nuevo botón Apply
-            JButton applyButton = manager.getMainController().getConfAdmin().getApplyButton();
-            if (applyButton != null) {
-                applyButton.addActionListener(this); // Asociar el mismo ActionListener
-            }
-        }
-
-        // Botón Apply
-        else if (e.getSource() == manager.getMainController().getConfAdmin().getApplyButton()) {
-            // Deshabilitar los JTextField y JComboBox
-            for (Component component : manager.getMainController().getConfAdmin().getFieldsPanel().getComponents()) {
-                if (component instanceof JPanel) {
-                    JPanel rowPanel = (JPanel) component;
-                    String correo = "";
-                    String nuevoCorreo = "";
-                    String nombre = "";
-                    String rolNombre = "";
-                    for (Component field : rowPanel.getComponents()) {
-                        if (field instanceof JTextField) {
-                            JTextField textField = (JTextField) field;
-                            textField.setEditable(false);
-                            textField.setBackground(Color.GRAY); // Restaurar el color original
-                            if (textField.getColumns() == 20) { // Suponiendo que el campo de correo tiene 20 columnas
-                                nuevoCorreo = textField.getText();
-                            } else {
-                                nombre = textField.getText();
-                            }
-                        } else if (field instanceof JComboBox) {
-                            JComboBox comboBox = (JComboBox) field;
-                            comboBox.setEnabled(false);
-                            rolNombre = (String) comboBox.getSelectedItem();
-                        }
-                    }
-
-                    // Actualizar usuario en la base de datos
-                    try {
-                        String updateQuery = "UPDATE \"USUARIO\" u " +
-                                "SET \"Correo\" = '" + nuevoCorreo + "', \"Nombre\" = '" + nombre + "' " +
-                                "FROM \"ROLES\" r " +
-                                "WHERE u.id_rol = r.id " +
-                                "AND r.\"Nombre\" = '" + rolNombre + "'" +
-                                "RETURNING u.\"Correo\", u.\"Nombre\", r.\"Nombre\" AS \"Rol_Nombre\"";
-                        manager.getConexion().sqlModification(updateQuery);
-                    } catch (SQLException ex) {
-                        System.err.println("Error al actualizar datos: " + ex.getMessage());
-                    }
-                }
-            }
-
-            // Eliminar el botón Apply
-            manager.getMainController().getConfAdmin().removeNewButton();
         }
     }
 }
+

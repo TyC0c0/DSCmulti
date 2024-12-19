@@ -16,6 +16,7 @@ import org.example.multiDSC.view.*;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -44,6 +45,7 @@ public class MainController {
     private ConfUserModel confUserModel;
     private ConfAdminView confAdmin;
     private ConfAdminModel confAdminModel;
+    private EditWindow editWindow;
 
     public MainController() {
         init();
@@ -64,7 +66,24 @@ public class MainController {
         addLoginListeners();
         login.setVisible(true);
 
+
+//        confAdminModel = new ConfAdminModel(manager);
+//        confAdmin = new ConfAdminView();
+//        confAdmin.addButtonNextToDelete("Apply");
+//        ConfAdminAddActionListeners();
+//        confAdmin.setVisible(true);
     }
+
+    public void ConfAdminAddActionListeners() {
+        for (int i = 0; i < manager.getMainController().getConfAdmin().getModifyButtons().size(); i++){
+            manager.getMainController().getConfAdmin().getModifyButtons().get(i).addActionListener(new ConfAdminButtonListener(manager));
+            manager.getMainController().getConfAdmin().getDeleteButtons().get(i).addActionListener(new ConfAdminButtonListener(manager));
+        }
+    }
+    public void EditWindowAddActionListener(Map<String, String> userData, int userId) {
+        manager.getMainController().getEditWindow().getApplyButton().addActionListener(new ConfAdminEditTextListener(manager, userData, userId));
+    }
+
 
     public void hiloConexion() {
         conexion = new ConectionBD();
