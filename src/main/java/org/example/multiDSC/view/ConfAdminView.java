@@ -1,41 +1,28 @@
 package org.example.multiDSC.view;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
+
+import org.example.multiDSC.controller.databaseConection.ConectionBD;
 
 /**
  * A JFrame class that displays a user configuration form.
- * This form includes labeled input fields, action buttons, and supports scrolling for dynamic content.
- * @author Ivan Guerrero Romero, Isaac Requena Santiago
- * @version 2.0*/
+ * Dynamically creates input fields based on database user data.
+ * @author Ivan Guerrero Romero, Isaac Requena Santiago, Alvaro Garcia Lopez
+ * @version 2.1
+ */
 
 public class ConfAdminView extends JFrame {
 
-    /**
-     * List of JLabels used to display the headers for the input fields.
-     */
-    private ArrayList<JLabel> nombres;
+    private JPanel fieldsPanel; // Panel to hold dynamic user rows.
 
     /**
-     * List of JButtons representing the action buttons.
+     * Constructs the ConfAdminView GUI.
+     * Initializes components, connects to the database, and creates user input fields.
      */
-    private ArrayList<JButton> botones;
-
-    /**
-     * Panel containing all input fields and dynamic rows.
-     */
-    private JPanel fieldsPanel;
-
-    /**
-     * Constructs the ConfUserView GUI.
-     * Initializes the components, layouts, and adds dynamic content.
-     */
-
-
-// CLASE MAL HECHA, HAY QUE ARREGLARLA
     public ConfAdminView() {
         // Configuración de la ventana
         setTitle("Configuración de Admin");
@@ -43,11 +30,6 @@ public class ConfAdminView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(true);
-
-
-        // Inicializar los ArrayLists
-        nombres = new ArrayList<>();
-        botones = new ArrayList<>();
 
         // Crear el panel principal con BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
@@ -57,11 +39,10 @@ public class ConfAdminView extends JFrame {
         // Panel con las etiquetas superiores
         JPanel labelsPanel = new JPanel(new GridLayout(1, 4, 10, 10));
         labelsPanel.setBackground(Color.DARK_GRAY);
-        String[] etiquetas = {"Nombre:", "Correo:", "Permiso:", "Rol:"};
+        String[] etiquetas = {"Nombre:", "Correo:", "Rol:", "Acción:"};
 
         for (String etiqueta : etiquetas) {
             JLabel label = new JLabel(etiqueta, SwingConstants.CENTER);
-            nombres.add(label);
             label.setForeground(Color.WHITE);
             labelsPanel.add(label);
         }
@@ -75,25 +56,35 @@ public class ConfAdminView extends JFrame {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setBorder(null);
 
-        // Crear filas dinámicas
-        for (int i = 0; i < 50; i++) {
+        // Conectar a la base de datos y obtener los datos de los usuarios
+        ConectionBD conectionBD = new ConectionBD();
+        ArrayList<Map<String, String>> userDataList = new ArrayList<>();
+
+        try {
+            conectionBD.connect();
+            userDataList = conectionBD.getUserData();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+
+        // Crear filas dinámicas según la cantidad de usuarios
+        for (Map<String, String> userData : userDataList) {
             JPanel rowPanel = new JPanel(new GridLayout(1, 4, 10, 10));
             rowPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
             rowPanel.setBackground(Color.DARK_GRAY);
 
-            JTextField[] textFields = new JTextField[4];
-            for (int j = 0; j < textFields.length; j++) {
-                final int index = j;
-                textFields[j] = new JTextField();
-                textFields[j].setBackground(Color.GRAY);
-                textFields[j].setBorder(null);
-                textFields[j].setForeground(Color.WHITE);
-                textFields[j].setFont(new Font("Arial", Font.BOLD, 18));
-                textFields[j].setHorizontalAlignment(JTextField.LEFT);
-                textFields[j].setPreferredSize(new Dimension(1, 22));
-                textFields[j].setMaximumSize(textFields[j].getPreferredSize());
-                rowPanel.add(textFields[j]);
-            }
+            JTextField nombreField = createTextField(userData.get("Nombre"));
+            JTextField correoField = createTextField(userData.get("Correo"));
+            JTextField rolField = createTextField(userData.get("Rol_Nombre"));
+            JTextField actionField = createTextField(""); // Campo para futuras acciones.
+
+            rowPanel.add(nombreField);
+            rowPanel.add(correoField);
+            rowPanel.add(rolField);
+            rowPanel.add(actionField);
+
             fieldsPanel.add(rowPanel);
 
             JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
@@ -101,73 +92,78 @@ public class ConfAdminView extends JFrame {
             fieldsPanel.add(separator);
         }
 
-        // Panel de botones (Crear, Modificar, Borrar) a la derecha
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
-        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        buttonsPanel.setBackground(Color.DARK_GRAY);
-
-        String[] nombresBotones = {"Crear", "Modificar", "Borrar"};
-        for (String nombreBoton : nombresBotones) {
-            JButton boton = new JButton(nombreBoton);
-            boton.setAlignmentX(Component.CENTER_ALIGNMENT);
-            boton.setMaximumSize(new Dimension(Short.MAX_VALUE, 30));
-            boton.setBackground(Color.WHITE);
-            botones.add(boton);
-            buttonsPanel.add(Box.createVerticalStrut(10)); // Espaciado entre botones
-            buttonsPanel.add(boton);
-        }
-
-        // Panel de búsqueda centrado
-        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        JTextField searchField = new JTextField(20); // Barra de búsqueda
-        JButton searchButton = new JButton("Buscar"); // Botón de búsqueda
-        searchPanel.setBackground(Color.DARK_GRAY);
-        searchButton.setBackground(Color.WHITE);
-        JLabel buscarLabel = new JLabel("Buscar:");
-        buscarLabel.setForeground(Color.WHITE);
-        searchPanel.add(searchField);
-        searchPanel.add(searchButton);
-
-        // Botón "Volver" en la parte inferior derecha
-        JPanel volverPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT)); // Volver a la derecha
-        JButton volverButton = new JButton("Volver");
-        volverPanel.setBackground(Color.DARK_GRAY);
-        volverButton.setBackground(Color.WHITE);
-        volverButton.setPreferredSize(new Dimension(90, 30));
-        botones.add(volverButton);
-        volverPanel.add(volverButton);
-
-        // Panel combinado para la parte inferior
-        JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.add(searchPanel, BorderLayout.CENTER); // Búsqueda centrada
-        bottomPanel.add(volverPanel, BorderLayout.EAST); // Botón Volver a la derecha
-
         // Añadir componentes al panel principal
-        mainPanel.add(scrollPane, BorderLayout.CENTER);  // Área con scroll
-        mainPanel.add(buttonsPanel, BorderLayout.EAST);  // Botones principales
-        mainPanel.add(bottomPanel, BorderLayout.SOUTH);  // Parte inferior: búsqueda centrada y botón "Volver"
+        mainPanel.add(scrollPane, BorderLayout.CENTER); // Área con scroll
 
         // Añadir el panel principal al frame
         add(mainPanel);
+        // Añadir componentes al panel principal
+        mainPanel.add(scrollPane, BorderLayout.CENTER); // Área con scroll
+
+// Panel con botones (restaurado como lo tenías antes)
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        buttonPanel.setBackground(Color.DARK_GRAY);
+
+
+        JButton editarButton = new JButton("Modify");
+        JButton eliminarButton = new JButton("Delete");
+
+// Configuración de estilo para los botones
+        Font buttonFont = new Font("Arial", Font.BOLD, 14);
+        Color buttonColor = Color.LIGHT_GRAY;
+
+
+        editarButton.setFont(buttonFont);
+        editarButton.setBackground(buttonColor);
+        eliminarButton.setFont(buttonFont);
+        eliminarButton.setBackground(buttonColor);
+
+// Añadir botones al panel de botones
+
+        buttonPanel.add(editarButton);
+        buttonPanel.add(eliminarButton);
+
+// Panel inferior con un JTextField y un botón (restaurado)
+        JPanel textFieldPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        textFieldPanel.setBackground(Color.DARK_GRAY);
+
+        JTextField inputField = new JTextField();
+        inputField.setPreferredSize(new Dimension(250, 30));
+        inputField.setFont(new Font("Arial", Font.PLAIN, 14));
+        inputField.setForeground(Color.WHITE);
+        inputField.setBackground(Color.GRAY);
+        inputField.setCaretColor(Color.WHITE);
+
+        JButton enviarButton = new JButton("Search");
+        enviarButton.setFont(new Font("Arial", Font.BOLD, 14));
+        enviarButton.setBackground(buttonColor);
+
+// Añadir componentes al panel inferior
+        textFieldPanel.add(inputField);
+        textFieldPanel.add(enviarButton);
+
+// Añadir ambos paneles al panel principal
+        mainPanel.add(buttonPanel, BorderLayout.NORTH); // Panel de botones en la parte superior
+        mainPanel.add(textFieldPanel, BorderLayout.SOUTH); // Panel inferior con JTextField
+
         setVisible(true);
     }
 
+    /**
+     * Método auxiliar para crear JTextFields con un estilo consistente.
+     * @param text El texto que mostrará el JTextField.
+     * @return JTextField configurado.
+     */
+    private JTextField createTextField(String text) {
+        JTextField textField = new JTextField(text);
+        textField.setBackground(Color.GRAY);
+        textField.setBorder(null);
+        textField.setForeground(Color.WHITE);
+        textField.setFont(new Font("Arial", Font.BOLD, 18));
+        textField.setHorizontalAlignment(JTextField.LEFT);
+        textField.setPreferredSize(new Dimension(1, 22));
+        textField.setMaximumSize(textField.getPreferredSize());
+        textField.setEditable(false); // Deshabilitamos edición si es necesario.
+        return textField;
+    }
 }
-//// Añadir DocumentListener para mantener la alineación al perder el foco
-//textFields[j].getDocument().addDocumentListener(new DocumentListener() {
-//    @Override
-//    public void insertUpdate(DocumentEvent e) {
-//        textFields[index].setHorizontalAlignment(JTextField.LEFT);
-//    }
-//
-//    @Override
-//    public void removeUpdate(DocumentEvent e) {
-//        textFields[index].setHorizontalAlignment(JTextField.LEFT);
-//    }
-//
-//    @Override
-//    public void changedUpdate(DocumentEvent e) {
-//        textFields[index].setHorizontalAlignment(JTextField.LEFT);
-//    }
-//});

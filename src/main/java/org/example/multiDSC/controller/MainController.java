@@ -9,6 +9,7 @@ import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonsListen
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.*;
 import org.example.multiDSC.view.*;
+
 import java.sql.SQLException;
 
 @Getter
@@ -96,11 +97,5 @@ public class MainController {
         login.getBtnCancel().addActionListener(new org.example.multiDSC.controller.listeners.LoginView.ButtonsListener(manager));
         login.getLblDontHaveBeenRegistred().addMouseListener(new LabelListener(login,conexion,manager));
     }
+
 }
-
-
-
-
-
-
-
