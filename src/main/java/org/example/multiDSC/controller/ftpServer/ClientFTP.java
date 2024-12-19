@@ -23,7 +23,12 @@ public class ClientFTP {
     private FTPClient user;
 
     public ClientFTP() {
+
         user = new FTPClient();
+    }
+
+    public FTPClient getFtpClient() {
+        return user;
     }
 
     // Esta clase se conecta al servidor FTP de manera local y realiza la acción de
@@ -35,6 +40,22 @@ public class ClientFTP {
     // todso los directorios
     // mientras que los usuarios sin permisos de administrador solo tienen acceso a
     // su directorio
+
+    public boolean rename(String oldName, String newName) {
+        try {
+            boolean success = user.rename(oldName, newName);
+            if (success) {
+                System.out.println("Archivo renombrado!");
+                return true;
+            } else {
+                System.out.println("Error al renombrar...");
+                return false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public boolean connectFTP() {
         try {
@@ -67,26 +88,68 @@ public class ClientFTP {
         }
     }
 
-    public void listFilesAndDirectories(String remotePath) {
+    public boolean deleteFile(String path) {
+        try {
+            boolean success = user.deleteFile(path);
+            if (success) {
+                System.out.printf("Archivo eliminado correctamente: %s%n", path);
+            } else {
+                System.err.printf("No se pudo eliminar el archivo: %s%n", path);
+            }
+            return success;
+        } catch (IOException e) {
+            System.err.printf("Error al eliminar el archivo: %s. Mensaje: %s%n", path, e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean removeDirectory(String path) {
+        try {
+            boolean success = user.removeDirectory(path);
+            if (success) {
+                System.out.printf("Directorio eliminado correctamente: %s%n", path);
+            } else {
+                System.err.printf("No se pudo eliminar el directorio: %s%n", path);
+            }
+            return success;
+        } catch (IOException e) {
+            System.err.printf("Error al eliminar el directorio: %s. Mensaje: %s%n", path, e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public FTPFile[] listFilesAndDirectories(String remotePath) {
         System.out.println("Listando archivos y directorios en: " + remotePath);
 
         FTPFile[] files;
         try {
-            files = user.listFiles(remotePath);
-            if (files != null && files.length > 0) {
-                for (FTPFile file : files) {
-                    if (file.isDirectory()) {
-                        System.out.println("[Directorio] " + file.getName());
-                    } else if (file.isFile()) {
-                        System.out.println(" -Archivo: " + file.getName());
-                    }
-                }
-            } else {
+            // Llamada al cliente FTP para listar archivos en la ruta remota
+            files = user.listFiles(remotePath); // 'user' es el objeto FTPClient que maneja la conexión
+
+            if (files == null || files.length == 0) {
                 System.out.println("No existen archivos o directorios en: " + remotePath);
+                return new FTPFile[0]; // Devolver un array vacío si no hay resultados
             }
+
+            // Iterar sobre los archivos y directorios devueltos
+            for (FTPFile file : files) {
+                if (file.isDirectory()) {
+                    System.out.println("[Directorio] " + file.getName());
+                } else if (file.isFile()) {
+                    System.out.println(" -Archivo: " + file.getName());
+                } else {
+                    System.out.println("[Otro tipo] " + file.getName());
+                }
+            }
+
+            return files; // Devolver el array de FTPFile con los resultados
         } catch (IOException e) {
-            System.out.println("Ha habido un problema al listar los directorios...");
+            // Manejo de errores al listar archivos y directorios
+            System.err.println("Ha habido un problema al listar los directorios...");
             e.printStackTrace();
+            return new FTPFile[0]; // Devolver un array vacío en caso de error
         }
     }
 
@@ -100,20 +163,6 @@ public class ClientFTP {
             }
         } catch (IOException e) {
             System.out.println("Ha habido un problema a la hora de crear un directorio.");
-            e.printStackTrace();
-        }
-    }
-
-    public void deleteFile(String file) {
-        System.out.println("Eliminando el archivo.");
-        try {
-            if (user.deleteFile(file)) {
-                System.out.println("Archivo " + file + " eliminado!");
-            } else {
-                System.out.println("Ha habido un problema eliminando el archivo " + file);
-            }
-        } catch (IOException e) {
-            System.out.println("Ha habido un problema eliminando el archivo...");
             e.printStackTrace();
         }
     }
