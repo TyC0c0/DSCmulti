@@ -7,10 +7,6 @@ import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.LoginModel;
 
 import javax.swing.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 
 /*
 
@@ -26,7 +22,7 @@ import java.sql.Statement;
 @Setter
 public class LoginView extends JDialog {
 
-    private LoginModel LoginModel;
+    private LoginModel model;
     private JTextField tfNickname;
     private JPasswordField pfPassword;
     private JButton btnOk;
@@ -41,7 +37,7 @@ public class LoginView extends JDialog {
 
     public LoginView(Manager manager, LoginModel loginModel) {
 
-        this.LoginModel = loginModel;
+        this.model = loginModel;
 
         JFrame frame = new JFrame();
         // Instanciar el modelo para obtener textos
@@ -56,13 +52,13 @@ public class LoginView extends JDialog {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         // Asignar los textos desde el modelo a los componentes
-        lblWelcome.setText(LoginModel.getText().get(1)); // "Welcome to the"
-        lblWelcome2.setText(LoginModel.getText().get(6));
-        lblUsername.setText(LoginModel.getText().get(2)); // "Username"
-        lblPassword.setText(LoginModel.getText().get(3)); // "Password"
-        btnOk.setText(LoginModel.getText().get(4)); // "Ok"
-        btnCancel.setText(LoginModel.getText().get(5)); // "Cancel"
-        lblDontHaveBeenRegistred.setText(LoginModel.getText().get(7));
+        lblWelcome.setText(model.getText().get(1)); // "Welcome to the"
+        lblWelcome2.setText(model.getText().get(6));
+        lblUsername.setText(model.getText().get(2)); // "Username"
+        lblPassword.setText(model.getText().get(3)); // "Password"
+        btnOk.setText(model.getText().get(4)); // "Ok"
+        btnCancel.setText(model.getText().get(5)); // "Cancel"
+        lblDontHaveBeenRegistred.setText(model.getText().get(7));
 
 
       //  lblDontHaveBeenRegistred.addMouseListener(new LabelListenerLogin(this, conectionBD));

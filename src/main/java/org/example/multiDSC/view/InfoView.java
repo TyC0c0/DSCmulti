@@ -9,11 +9,11 @@ import java.awt.*;
 public class InfoView extends JFrame {
 
 
-    private InfoModel InfoModel;
+    private InfoModel model;
 
     public InfoView(Manager manager, InfoModel infoModel) {
 
-        this.InfoModel = infoModel;
+        this.model = infoModel;
 
         // Configuración de la ventana principal
         setTitle("Acerca De DataConnect Solutions");
@@ -28,7 +28,7 @@ public class InfoView extends JFrame {
         mainPanel.setLayout(new BorderLayout());
 
         // Título principal
-        JLabel titleLabel = new JLabel(InfoModel.getText().get(0), SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel(model.getText().get(0), SwingConstants.CENTER);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, 28));
         titleLabel.setForeground(new Color(60, 60, 60)); // Color gris oscuro
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
@@ -41,7 +41,7 @@ public class InfoView extends JFrame {
         centerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Desarrolladores
-        JLabel developersTitle = new JLabel(InfoModel.getText().get(1));
+        JLabel developersTitle = new JLabel(model.getText().get(1));
         developersTitle.setFont(new Font("SansSerif", Font.PLAIN, 18));
         developersTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         centerPanel.add(developersTitle);
@@ -66,12 +66,12 @@ public class InfoView extends JFrame {
         centerPanel.add(Box.createVerticalStrut(15)); // Espacio
 
         // Derechos de autor
-        JLabel copyrightLabel = new JLabel(InfoModel.getText().get(2));
+        JLabel copyrightLabel = new JLabel(model.getText().get(2));
         copyrightLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
         copyrightLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         centerPanel.add(copyrightLabel);
 
-        JLabel rightsLabel = new JLabel(InfoModel.getText().get(3));
+        JLabel rightsLabel = new JLabel(model.getText().get(3));
         rightsLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
         rightsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         centerPanel.add(rightsLabel);

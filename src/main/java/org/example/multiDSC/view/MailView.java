@@ -22,7 +22,7 @@ import lombok.SneakyThrows;
 @Setter
 public class MailView extends JFrame implements Runnable{
 
-    private MailModel MailModel;
+    private MailModel model;
     private JPanel mainPanel;
     private ArrayList<JButton> buttonList;
     private JList<String> mailList;
@@ -32,7 +32,7 @@ public class MailView extends JFrame implements Runnable{
     private int recharges =0;
 
     public MailView(Manager manager, MailModel mailModel) {
-       this.MailModel = mailModel;
+       this.model = mailModel;
         // Configuración del marco
         setTitle("Mail");
         setSize(900, 500);

@@ -18,7 +18,7 @@ import java.awt.*;
 @Setter
 public class UserRegistrerView extends JFrame {
 
-    private UserRegisterModel UserRegisterModel;
+    private UserRegisterModel model;
     private JTextField emailField;
     private JTextField nameField;
     private JTextField lastNameField;
@@ -30,7 +30,7 @@ public class UserRegistrerView extends JFrame {
 
     public UserRegistrerView(Manager manager, UserRegisterModel userRegisterModel) {
 
-        this.UserRegisterModel = userRegisterModel;
+        this.model = userRegisterModel;
 
         setTitle("Registro de Usuario");
         setSize(500, 400);

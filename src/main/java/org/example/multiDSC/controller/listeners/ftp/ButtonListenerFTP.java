@@ -25,7 +25,7 @@ public class ButtonListenerFTP implements ActionListener {
         switch (command) {
             case "Exit":
                 ftpView.dispose();
-                new PostLoginView();
+                //new PostLoginView();
                 break;
 
             default:

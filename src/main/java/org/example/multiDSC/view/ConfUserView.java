@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class ConfUserView extends JFrame {
-    private ConfUserModel confUserModel;
+    private ConfUserModel model;
     private ArrayList<JButton> buttons;
     private ArrayList<JLabel> labels;
     private ArrayList<JTextField> textFields;
@@ -33,7 +33,7 @@ public class ConfUserView extends JFrame {
 
     public ConfUserView(Manager manager, ConfUserModel confUserModel) {
         //EN VEZ DE HACERLE AQUI UN NEW MODEL LE PONES EL THIS.
-        this.confUserModel = confUserModel;
+        this.model = confUserModel;
         //ELIMINA EL MAIN DE ABAJO Y AL FINAL DEL PUBLIC CONFUSER AÑADES SETVISIBLE(TRUE)
         // CAMBIAR TODOS LOS ...MODEL_ES.GETCONFUSERTEXT POR ...MODEL.GETTEXT
 
@@ -146,7 +146,7 @@ public class ConfUserView extends JFrame {
     private void createModificationButtons() {
         if (modificationButtons.isEmpty()) {
             // Names of the buttons to create
-            String[] buttonsNames = {confUserModel.getText().get(4), confUserModel.getText().get(5)};
+            String[] buttonsNames = {model.getText().get(4), model.getText().get(5)};
 
             // Create and configure dynamically the buttons
             for (String name : buttonsNames) {
@@ -156,7 +156,7 @@ public class ConfUserView extends JFrame {
                 modButton.setFont(new Font("Arial", Font.BOLD, 12));
 
                 // Add functionality to the button "Cancel"
-                if (name.equals(confUserModel.getText().get(5))) {
+                if (name.equals(model.getText().get(5))) {
                     modButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {

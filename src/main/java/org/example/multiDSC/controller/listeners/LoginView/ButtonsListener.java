@@ -52,7 +52,7 @@ public class ButtonsListener implements ActionListener {
                         manager.getMainController().getLogin().dispose();
 
                         manager.getMainController().setPostLoginModel(new PostLoginModel(manager));
-                        manager.getMainController().setPostLogin(new PostLoginView());
+                        manager.getMainController().setPostLogin(new PostLoginView(manager,manager.getMainController().getPostLoginModel()));
                         //addlisteners
                         //setvisibleTrue
 

@@ -9,7 +9,7 @@ import java.util.Map;
 public class PostLoginModel {
     private Manager manager;
     private String query;
-    private ArrayList<String> texts= new ArrayList<>();
+    private ArrayList<String> text = new ArrayList<>();
 
     public PostLoginModel(Manager manager){
         this.manager=manager;
@@ -30,6 +30,8 @@ public class PostLoginModel {
             // Imprimir resultados
             for (Map.Entry<Integer, Object> entry : results.entrySet()) {
                 System.out.println("Row: " + entry.getKey() + " Value: " + entry.getValue());
+
+                text.add(entry.getValue().toString());
             }
 
         } catch (SQLException e) {

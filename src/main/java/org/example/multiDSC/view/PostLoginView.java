@@ -2,6 +2,8 @@ package org.example.multiDSC.view;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.viewModels.PostLoginModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,11 +12,15 @@ import java.util.ArrayList;
 @Getter
 @Setter
 public class PostLoginView {
+    private PostLoginModel model;
     private JPanel panel1;
     private ArrayList<JButton> buttons;
     private JFrame frame; // Cambiado de estático a no estático
 
-    public PostLoginView() {
+    public PostLoginView(Manager manager, PostLoginModel postLoginModel) {
+
+        this.model = postLoginModel;
+
         // Inicializar lista de botones
         buttons = new ArrayList<>();
 
@@ -36,6 +42,8 @@ public class PostLoginView {
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null); // Centrar la ventana en la pantalla
+
+        frame.setVisible(true);
     }
 
     private JButton createButton(String imagePath) {

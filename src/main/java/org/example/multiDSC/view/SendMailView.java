@@ -13,7 +13,7 @@ Class to configure the view which allows to the users sending emails
 @version 1.1
 */
 public class SendMailView {
-    private SendMailModel SendMailModel;
+    private SendMailModel model;
     private JTextField textField1;
     private JTextField textField2;
     private JButton sendButton;
@@ -37,7 +37,7 @@ public class SendMailView {
 
     public SendMailView(Manager manager, SendMailModel sendMailModel) {
 
-        this.SendMailModel = sendMailModel;
+        this.model = sendMailModel;
 
         JFrame frame = new JFrame("Send Mail");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,21 +52,21 @@ public class SendMailView {
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
 
         row1 = new JPanel(new BorderLayout());
-        label1 = new JLabel(SendMailModel.getText().get(0));
+        label1 = new JLabel(model.getText().get(0));
         label1.setFont(label1.getFont().deriveFont(Font.BOLD));
         textField1 = new JTextField();
         row1.add(label1, BorderLayout.WEST);
         row1.add(textField1, BorderLayout.CENTER);
 
         row2 = new JPanel(new BorderLayout());
-        label2 = new JLabel(SendMailModel.getText().get(1));
+        label2 = new JLabel(model.getText().get(1));
         label2.setFont(label2.getFont().deriveFont(Font.BOLD));
         textField2 = new JTextField();
         row2.add(label2, BorderLayout.WEST);
         row2.add(textField2, BorderLayout.CENTER);
 
         row3 = new JPanel(new BorderLayout());
-        label3 = new JLabel(SendMailModel.getText().get(2));
+        label3 = new JLabel(model.getText().get(2));
         label3.setFont(label3.getFont().deriveFont(Font.BOLD));
         row3.add(label3, BorderLayout.WEST);
         row3.add(new JLabel(), BorderLayout.CENTER);
@@ -84,9 +84,9 @@ public class SendMailView {
         bottomPanel = new JPanel(new BorderLayout());
 
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        sendButton = new JButton(SendMailModel.getText().get(3));
-        addFileButton = new JButton(SendMailModel.getText().get(4));
-        cancelButton = new JButton(SendMailModel.getText().get(5));
+        sendButton = new JButton(model.getText().get(3));
+        addFileButton = new JButton(model.getText().get(4));
+        cancelButton = new JButton(model.getText().get(5));
 
         sendButton.setBackground(Color.BLACK);
         sendButton.setForeground(Color.WHITE);
