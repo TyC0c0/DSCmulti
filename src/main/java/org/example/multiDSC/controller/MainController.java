@@ -4,13 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.controller.databaseConection.conexionThread;
-import org.example.multiDSC.controller.listeners.LoginView.ButtonListenerLogin;
-import org.example.multiDSC.controller.listeners.LoginView.LabelListenerLogin;
-import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonListener;
+import org.example.multiDSC.controller.listeners.LoginView.LabelListener;
+import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonsListener;
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.*;
 import org.example.multiDSC.view.*;
-
 import java.sql.SQLException;
 
 @Getter
@@ -18,12 +16,27 @@ import java.sql.SQLException;
 public class MainController {
 
     private static ConectionBD conexion;
-    private LoginView login;
-    private Utils utils;
     private static Manager manager;
+    private Utils utils;
+
+    private LoginView login;
+    private LoginModel loginModel;
     private UserRegistrerView register;
-    private PostLoginView postLoginView;
-    MailView m;
+    private UserRegisterModel registerModel;
+    private SendMailView sendMail;
+    private SendMailModel sendMailModel;
+    private PostLoginView postLogin;
+    private PostLoginModel postLoginModel;
+    private MailView mail;
+    private MailModel mailModel;
+    private InfoView info;
+    private InfoModel infoModel;
+    private FTPView ftp;
+    private FTPModel ftpModel;
+    private ConfUserView confUser;
+    private ConfUserModel confUserModel;
+    private ConfAdminView confAdmin;
+    private ConfAdminModel confAdminModel;
 
     public MainController() {
         init();
@@ -38,9 +51,10 @@ public class MainController {
         manager.setMainController(this);
 
         // Inicializar vista
-        LoginModel model= new LoginModel(manager);
-        login = new LoginView(manager, model);
+        loginModel= new LoginModel(manager);
+        login = new LoginView(manager, loginModel);
         addLoginListeners();
+        login.setVisible(true);
 
     }
 
@@ -62,14 +76,14 @@ public class MainController {
     }
 
     public void addUserRegisterListeners() {
-        register.getRegisterButton().addActionListener(new ButtonListener(manager));
-        register.getCancelButton().addActionListener(new ButtonListener(manager));
+        register.getRegisterButton().addActionListener(new ButtonsListener(manager));
+        register.getCancelButton().addActionListener(new ButtonsListener(manager));
     }
 
     private void addLoginListeners() {
-        manager.getMainController().getLogin().getBtnOk().addActionListener(new ButtonListenerLogin(manager));
-        login.getBtnCancel().addActionListener(new ButtonListenerLogin(manager));
-        login.getLblDontHaveBeenRegistred().addMouseListener(new LabelListenerLogin(login,conexion,manager));
+        manager.getMainController().getLogin().getBtnOk().addActionListener(new org.example.multiDSC.controller.listeners.LoginView.ButtonsListener(manager));
+        login.getBtnCancel().addActionListener(new org.example.multiDSC.controller.listeners.LoginView.ButtonsListener(manager));
+        login.getLblDontHaveBeenRegistred().addMouseListener(new LabelListener(login,conexion,manager));
     }
     }
 

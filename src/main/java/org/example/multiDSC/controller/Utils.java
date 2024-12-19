@@ -1,10 +1,14 @@
 package org.example.multiDSC.controller;
 
 import org.example.multiDSC.model.controllModels.Manager;
-import org.example.multiDSC.view.UserRegistrerView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 public class Utils {
 
@@ -24,6 +28,23 @@ public class Utils {
 
     public static void showErrorWindow(Component parentComponent, String errorMessage, String title) {
         JOptionPane.showMessageDialog(parentComponent, errorMessage, title, JOptionPane.ERROR_MESSAGE);
+    }
+
+    public static void LogRegister(Manager manager, String accion, boolean completado){
+        LocalDate currentDate = LocalDate.now();
+        LocalDateTime dateTime = LocalDateTime.now();
+        LocalTime time = dateTime.toLocalTime().truncatedTo(ChronoUnit.SECONDS);
+        java.sql.Date sqlDate = java.sql.Date.valueOf(currentDate);
+
+        String query= "INSERT INTO \"LOGS\" (\"Fecha\", \"Hora\", \"Accion\", \"IP\", \"Completado\") VALUES "+
+                                          "('"+sqlDate+"', '"+time+"', '"+accion+"', '"+manager.getUserIP()+"', '"+ completado+"')";
+
+        try {
+            manager.getConexion().sqlModification(query);
+        } catch (SQLException e) {
+            System.err.println("Se ha producido un error en la insercion de log "+ e.getMessage());
+            Utils.showErrorWindow(null, "Se ha producido un error interno de logs", "Error subiendo log");
+        }
     }
 
     public boolean isValidDNI(String dni) {

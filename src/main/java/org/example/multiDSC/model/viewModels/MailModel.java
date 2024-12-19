@@ -10,13 +10,13 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class EmailModel {
+public class MailModel {
 
     private Manager manager;
     private String query;
     private ArrayList<String> text = new ArrayList<>();
 
-    public EmailModel(Manager manager){
+    public MailModel(Manager manager){
         this.manager=manager;
         init();
         fillTexts();

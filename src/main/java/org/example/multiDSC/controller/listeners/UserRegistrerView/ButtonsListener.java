@@ -1,6 +1,5 @@
 package org.example.multiDSC.controller.listeners.UserRegistrerView;
 
-import org.example.multiDSC.controller.MainController;
 import org.example.multiDSC.controller.Utils;
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.controllModels.SqlSentences;
@@ -8,13 +7,13 @@ import org.example.multiDSC.model.controllModels.SqlSentences;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Map;
 
-public class ButtonListener implements ActionListener {
+public class ButtonsListener implements ActionListener {
     private final Manager manager;
 
-    public ButtonListener(Manager manager) {
+    public ButtonsListener(Manager manager) {
+
         this.manager = manager;
     }
 
@@ -54,8 +53,8 @@ public class ButtonListener implements ActionListener {
         boolean hasErrors = false;
         StringBuilder errorMessages = new StringBuilder();
 
-        String email = manager.getMainController().getRegister().getEmailField().getText().trim();
-        String dni = manager.getMainController().getRegister().getDniField().getText().trim();
+        String email = manager.getUserEmail().trim();
+        String dni = manager.getUserDNI().trim();
 
         if (manager.getMainController().getRegister().getNameField().getText().trim().isEmpty()) {
             errorMessages.append("Debes completar el campo Nombre.\n");
