@@ -3,7 +3,7 @@ package org.example.multiDSC.controller;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
-import org.example.multiDSC.controller.databaseConection.conexionThread;
+import org.example.multiDSC.controller.databaseConection.ConexionThread;
 import org.example.multiDSC.controller.listeners.LoginView.LabelListener;
 import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonsListener;
 import org.example.multiDSC.model.controllModels.Manager;
@@ -18,6 +18,7 @@ public class MainController {
     private static ConectionBD conexion;
     private static Manager manager;
     private Utils utils;
+    private ConexionThread hconect;
 
     private LoginView login;
     private LoginModel loginModel;
