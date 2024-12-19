@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.controller.databaseConection.ConexionThread;
 import org.example.multiDSC.controller.listeners.LoginView.LabelListener;
+import org.example.multiDSC.controller.listeners.LoginView.LoginViewButtonsListener;
 import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonsListener;
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.*;
@@ -54,19 +55,20 @@ public class MainController {
         manager.setConexionThread(hconect);
 
         // Inicializar vista
-        loginModel= new LoginModel(manager);
-        login = new LoginView(manager, loginModel);
-        addLoginListeners();
-        login.setVisible(true);
+//        loginModel= new LoginModel(manager);
+//        login = new LoginView(manager, loginModel);
+//        addLoginListeners();
+//        login.setVisible(true);
 
         // ALVARO
-        //LoginModel model= new LoginModel(manager);
-        //login = new LoginView(manager, model);
-        //userRegisterModel = new UserRegisterModel(manager);
-        //register = new UserRegistrerView(manager, userRegisterModel);
-        //addLoginListeners();
-        //addUserRegisterListeners();
-        //getLogin().setVisible(true);
+        LoginModel model= new LoginModel(manager);
+        login = new LoginView(manager, model);
+        addLoginListeners();
+        registerModel = new UserRegisterModel(manager);
+        register = new UserRegistrerView(manager, registerModel);
+
+        addUserRegisterListeners();
+        getLogin().setVisible(true);
 
     }
 
@@ -93,9 +95,9 @@ public class MainController {
     }
 
     private void addLoginListeners() {
-        manager.getMainController().getLogin().getBtnOk().addActionListener(new org.example.multiDSC.controller.listeners.LoginView.ButtonsListener(manager));
-        login.getBtnCancel().addActionListener(new org.example.multiDSC.controller.listeners.LoginView.ButtonsListener(manager));
-        login.getLblDontHaveBeenRegistred().addMouseListener(new LabelListener(login,conexion,manager));
+        manager.getMainController().getLogin().getBtnOk().addActionListener(new LoginViewButtonsListener(manager));
+        manager.getMainController().getLogin().getBtnCancel().addActionListener(new LoginViewButtonsListener(manager));
+        manager.getMainController().getLogin().getLblDontHaveBeenRegistred().addMouseListener(new LabelListener(manager.getMainController().getLogin(), conexion, manager));
     }
 
 }

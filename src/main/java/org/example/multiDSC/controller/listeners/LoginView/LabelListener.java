@@ -3,6 +3,7 @@ package org.example.multiDSC.controller.listeners.LoginView;
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.view.LoginView;
+import org.example.multiDSC.view.UserRegistrerView;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

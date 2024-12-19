@@ -1,12 +1,10 @@
 package org.example.multiDSC.controller.listeners.LoginView;
 
 import org.example.multiDSC.controller.Utils;
-import org.example.multiDSC.controller.databaseConection.ConexionThread;
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.PostLoginModel;
 import org.example.multiDSC.view.PostLoginView;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -18,12 +16,12 @@ import java.util.HashMap;
 
 */
 
-public class ButtonsListener implements ActionListener {
+public class LoginViewButtonsListener implements ActionListener {
 
 
     private final Manager manager;
 
-    public ButtonsListener(Manager manager) {
+    public LoginViewButtonsListener(Manager manager) {
 
         this.manager = manager;
     }
