@@ -107,7 +107,7 @@ public class MainController {
         register.getCancelButton().addActionListener(new ButtonsListener(manager));
     }
 
-    private void addLoginListeners() {
+    public void addLoginListeners() {
         manager.getMainController().getLogin().getBtnOk().addActionListener(new LoginViewButtonsListener(manager));
         manager.getMainController().getLogin().getBtnCancel().addActionListener(new LoginViewButtonsListener(manager));
         manager.getMainController().getLogin().getLblDontHaveBeenRegistred().addMouseListener(new LabelListener(manager.getMainController().getLogin(), conexion, manager));
