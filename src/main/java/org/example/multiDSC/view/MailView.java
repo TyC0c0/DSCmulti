@@ -113,8 +113,8 @@ public class MailView extends JFrame implements Runnable{
         mainPanel.add(centerPanel, BorderLayout.CENTER);
 
         // Configurar texto desde el modelo
-        buttonList.get(0).setText(MailModel.getText().get(0));
-        String[] texts = MailModel.getText().toArray(new String[0]);
+        buttonList.get(0).setText(model.getText().get(0));
+        String[] texts = model.getText().toArray(new String[0]);
         refreshButton.setText(texts[7]);
         backButton.setText(texts[8]);
 

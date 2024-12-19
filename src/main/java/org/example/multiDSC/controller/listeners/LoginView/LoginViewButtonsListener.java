@@ -52,7 +52,7 @@ public class LoginViewButtonsListener implements ActionListener {
 
                         //Abre correctamente postLogin
                         manager.getMainController().setPostLoginModel(new PostLoginModel(manager));
-                        manager.getMainController().setPostLogin(new PostLoginView());
+                        manager.getMainController().setPostLogin(new PostLoginView(manager, manager.getMainController().getPostLoginModel()));
                         manager.getMainController().addPostLoginListeners();
                         manager.getMainController().getPostLogin().getFrame().setVisible(true);
 
