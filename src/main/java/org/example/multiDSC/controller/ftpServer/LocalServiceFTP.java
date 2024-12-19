@@ -3,6 +3,7 @@ package org.example.multiDSC.controller.ftpServer;
 import org.apache.commons.net.ftp.FTPFile;
 import org.example.multiDSC.controller.Utils;
 import org.example.multiDSC.controller.ftpServer.ClientFTP;
+import org.example.multiDSC.view.FTPView;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -10,7 +11,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
-import java.io.IOException;
+import javax.swing.tree.TreeNode;
 
 public class LocalServiceFTP {
 
@@ -22,97 +23,64 @@ public class LocalServiceFTP {
         this.tree = tree;
     }
 
-    public boolean delete(String path) {
-        try {
-            // Listar archivos y directorios en la ruta especificada
-            FTPFile[] files = clientFTP.listFilesAndDirectories(path);
-
-            if (files != null && files.length > 0) {
-                // Si tiene contenido, eliminar recursivamente
-                for (FTPFile file : files) {
-                    String filePath = path + "/" + file.getName();
-                    if (file.isDirectory()) {
-                        // Eliminar subdirectorios recursivamente
-                        if (!delete(filePath)) {
-                            System.err.printf("Error al eliminar subdirectorio: %s%n", filePath);
-                            return false;
-                        }
-                    } else {
-                        // Eliminar archivo
-                        if (!clientFTP.deleteFile(filePath)) {
-                            System.err.printf("No se pudo eliminar archivo: %s%n", filePath);
-                            return false;
-                        } else {
-                            System.out.printf("Archivo eliminado ", filePath);
-                        }
-                    }
-                }
-            }
-
-            // Intentar eliminar el directorio vacío o archivo
-            if (clientFTP.removeDirectory(path)) {
-                System.out.printf("Directorio eliminado: %s%n", path);
-                return true;
-            } else if (clientFTP.deleteFile(path)) {
-                System.out.printf("Archivo eliminado: %s%n", path);
-                return true;
-            } else {
-                System.err.printf("No se pudo eliminar el archivo o directorio: %s%n", path);
-                return false;
-            }
-        } catch (Exception e) {
-            System.err.printf("Error al eliminar '%s': %s%n", path, e.getMessage());
-            e.printStackTrace();
-            return false;
-        }
-    }
-
+    // This method is the most important method of delete, because the method can filter directories and files, and delete the selected one
     public void deleteSelectedFile() {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 
         if (selectedNode == null) {
-            System.err.println("No se ha seleccionado ningún archivo.");
+            Utils.showWarningWindow(null, "No se ha seleccionado ningún archivo o directorio.", "Aviso");
+            System.err.println("No se ha seleccionado ningún archivo o directorio...");
             return;
         }
 
-        String filePath = selectedNode.getUserObject().toString().replace("📁 ", "").replace("🗎 ", "");
+        String direction = getFullPathFromNode(selectedNode);
+        System.out.println("Intentando eliminar: " + direction);
 
-        System.out.println("Intentando eliminar archivo: " + filePath);
+        boolean success = false; // Inicializar como false por defecto
+        int confirm = Utils.showConfirmDialog(null, "¿Seguro que lo quieres eliminar?", "Aviso");
 
-        if (clientFTP.deleteFile(filePath)) {
-            System.out.println("El archivo fue eliminado correctamente.");
-            reloadTree(); // Recarga el árbol para reflejar los cambios
+        if (confirm == JOptionPane.YES_OPTION) { // Solo proceder si el usuario confirma
+            if (isDirectoryNode(selectedNode)) { // Si es un directorio, eliminamos de manera recursiva
+                success = clientFTP.deleteDirectoryRecursive(direction);
+            } else { // Si es un archivo, eliminar un archivo
+                success = clientFTP.deleteFile(direction);
+            }
+
+            if (success) {
+                System.out.println("Eliminación completada correctamente: " + direction);
+                reloadTree();
+            } else {
+                Utils.showErrorWindow(null, "No se ha podido eliminar el archivo o directorio seleccionado.", "Error");
+            }
         } else {
-            System.err.println("No se pudo eliminar el archivo.");
+            System.out.println("La eliminación se ha cancelada.");
         }
     }
 
+    private String getFullPathFromNode(DefaultMutableTreeNode node) {
+        StringBuilder fullPath = new StringBuilder("C:\\FTPserver"); // Ruta base física
 
-    // Eliminar el nodo seleccionado en el árbol JTree
-    public void deleteFtp() {
-        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-        if (selectedNode == null) {
-            System.err.println("No se ha seleccionado ningún archivo o directorio.");
-            return;
+        TreeNode[] nodes = node.getPath();
+        for (int i = 1; i < nodes.length; i++) { // Omitir la raíz lógica (FTP Server)
+            DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodes[i];
+            String part = currentNode.getUserObject().toString().replace("📁 ", "").replace("🗎 ", "");
+            if (!part.isEmpty()) {
+                fullPath.append("\\").append(part);
+            }
         }
+        return fullPath.toString();
+    }
 
-        String path = selectedNode.getUserObject().toString().replace("📁 ", "").replace("🗎 ", "");
-        System.out.println("Intentando eliminar: " + path);
-
-        if (delete(path)) {
-            System.out.println("Eliminación completada correctamente.");
-            reloadTree(); // Recargar árbol para reflejar los cambios
-        } else {
-            System.err.println("No se pudo eliminar el archivo o directorio.");
-        }
+    private boolean isDirectoryNode(DefaultMutableTreeNode node) {
+        return node.toString().startsWith("📁");
     }
 
     public void reloadTree() {
         loadDirectories("/");
     }
 
+    // This method do the function of the button rename
     public void renameFile() {
-        // Obtener el nodo seleccionado en el árbol
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 
         if (selectedNode == null) {
@@ -120,15 +88,33 @@ public class LocalServiceFTP {
             return;
         }
 
-        // Obtener el nombre actual del archivo o directorio
         String oldName = selectedNode.getUserObject().toString().replace("📁 ", "").replace("🗎 ", "");
 
-        // Solicitar al usuario el nuevo nombre
+        // Determinar si es un archivo o un directorio
+        boolean isFile = oldName.contains(".");
         String newName = JOptionPane.showInputDialog(null, "Introduce el nuevo nombre:", oldName);
 
         if (newName == null || newName.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "El nombre no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+            Utils.showErrorWindow(null, "El nombre no puede estar vacío.", "Error");
             return;
+        }
+
+        // Validar que el archivo mantenga su extensión (ejemplo hacer rename a foto.png --> mantener el png)
+        if (isFile) {
+            String extension = oldName.substring(oldName.lastIndexOf(".") + 1); // Obtener la extensión del archivo
+            if (!newName.contains(".")) {
+                // Si no contiene un punto, agregar la extensión automáticamente
+                newName += "." + extension;
+            } else {
+                // Verificar si el usuario cambió la extensión
+                String newExtension = newName.substring(newName.lastIndexOf(".") + 1);
+                if (!newExtension.equalsIgnoreCase(extension)) {
+                    int response = Utils.showConfirmDialog(null, "Estás cambiando la extensión de " + extension + " a "+newExtension+".  ¿Quieres continuar?\"", "Aviso");
+                    if (response != JOptionPane.YES_OPTION) {
+                        return;
+                    }
+                }
+            }
         }
 
         try {
@@ -140,91 +126,125 @@ public class LocalServiceFTP {
             boolean success = clientFTP.rename(oldPath, newPath);
 
             if (success) {
-                JOptionPane.showMessageDialog(null, "Renombrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                reloadTree(); // Recargar el árbol para reflejar los cambios
+                Utils.showConfirmDialog(null, "Renombrado exitosamente.", "Éxito");
+                reloadTree();
             } else {
-                JOptionPane.showMessageDialog(null, "No se pudo renombrar el archivo o directorio.", "Error", JOptionPane.ERROR_MESSAGE);
+                Utils.showErrorWindow(null, "No se pudo renombrar el archivo o directorio.", "Error");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar renombrar.", "Error", JOptionPane.ERROR_MESSAGE);
+            Utils.showErrorWindow(null, "Ocurrió un error al intentar renombrar.", "Error");
         }
     }
 
     public void loadDirectories(String directoryName) {
-        DefaultMutableTreeNode mainDir = new DefaultMutableTreeNode(directoryName.equals("/") ? "Main FTP" : directoryName);
+        DefaultMutableTreeNode mainDir = new DefaultMutableTreeNode("FTP Server");
 
         try {
-            // Cogemos los directorios de un usuario para cargarlo
             FTPFile[] files = clientFTP.showDirectoriesUser(directoryName);
 
             if (files != null && files.length > 0) {
-                for (FTPFile f : files) {
-                    // Filter server FTP files
-                    if (f.isDirectory()) {
-                        mainDir.add(new DefaultMutableTreeNode("📁 "+f.getName()));
-                    } else if (f.isFile()) {
-                        mainDir.add(new DefaultMutableTreeNode("🗎 "+f.getName()));
-                    } else if (f.isSymbolicLink()) {
-                        mainDir.add(new DefaultMutableTreeNode("[Link] "+f.getName()));
-                    } else if (f.isUnknown()) {
-                        mainDir.add(new DefaultMutableTreeNode("[?] "+f.getName() + " (Unknown file)"));
+                for (FTPFile file : files) {
+                    if (file.isDirectory()) {
+                        // Mostrar el nombre del directorio con el emoticono
+                        DefaultMutableTreeNode dirNode = new DefaultMutableTreeNode("📁 " + file.getName());
+
+                        // Añadir marcador para carga dinámica (En caso de que tarde en cargar algun directorio)
+                        dirNode.add(new DefaultMutableTreeNode("Cargando..."));
+                        mainDir.add(dirNode);
+                        //completado(true) porque carga los directorios
+
+                    } else if (file.isFile()) {
+                        // Mostrar el nombre del archivo con el emoticono
+                        DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode("🗎 " + file.getName());
+                        mainDir.add(fileNode);
+
+                        //completado(true) porque carga los archivos
                     }
                 }
             } else {
-                System.out.println("No hay directorios disponibles para este usuario.");
+                Utils.showInfoWindow(null, "El directorio raíz está vacío.", "Información");
+                System.out.println("El directorio raíz está vacío: " + directoryName);
+                //Utils.LogRegister();
+
             }
         } catch (Exception e) {
-            System.out.println("Ha habido un problema en la carga de directorios");
+            Utils.showErrorWindow(null, "Error al cargar los directorios desde la raíz.", "Error");
+            System.out.println("Error al cargar los directorios desde la raíz: " + directoryName);
+            //Utils.LogRegister();
             e.printStackTrace();
         }
-        DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) tree.getCellRenderer();
-        renderer.setLeafIcon(new ImageIcon("Delete Icon")); // This delete the icon in the tree
 
+        ((DefaultTreeCellRenderer) tree.getCellRenderer()).setLeafIcon(null);
+
+        // Asignamos el modelo al árbol (jtree)
         tree.setModel(new DefaultTreeModel(mainDir));
 
-        // Añadir TreeSelectionListener para manejar clicks en los nodos
-        tree.addTreeSelectionListener(new TreeSelectionListener() {
+        // Añadimos un listener para la expansión dinámica de los directorios
+        tree.addTreeWillExpandListener(new javax.swing.event.TreeWillExpandListener() {
             @Override
-            public void valueChanged(TreeSelectionEvent event) {
-                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-                if (selectedNode == null) {
-                    return;
-                }
+            public void treeWillExpand(javax.swing.event.TreeExpansionEvent event) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) event.getPath().getLastPathComponent();
 
-                // Check if the node selected is a file or a folder
-                String nodeName = selectedNode.getUserObject().toString();
-                if (nodeName.startsWith("📁")) {
-                    nodeName = nodeName.replace("📁 ", "");
-                    loadDirectoryContent(selectedNode, directoryName + "/" + nodeName);
-                } else {
-                    System.out.println("Archivo seleccionado: " + nodeName);
+                // Verificar si el nodo tiene un marcador de carga
+                if (node.getChildCount() == 1 && node.getFirstChild().toString().equals("Cargando...")) {
+                    // Eliminar el marcador antes de cargar contenido real
+                    node.removeAllChildren();
+
+                    // Usar el nombre del nodo para cargar la ruta
+                    String parentPath = getParentPath(node);
+                    loadSubDirectory(node, parentPath);
+
+                    // Actualizar el modelo
+                    ((DefaultTreeModel) tree.getModel()).reload(node);
                 }
+            }
+
+            @Override
+            public void treeWillCollapse(javax.swing.event.TreeExpansionEvent event) {
+                // No es necesario manejar colapsos en esta implementación
             }
         });
     }
 
-    private void loadDirectoryContent(DefaultMutableTreeNode parentNode, String directoryName) {
+    private String getParentPath(DefaultMutableTreeNode node) {
+        StringBuilder pathBuilder = new StringBuilder();
+        TreeNode[] pathNodes = node.getPath();
+
+        for (int i = 1; i < pathNodes.length; i++) {
+            pathBuilder.append("/").append(pathNodes[i].toString().replace("📁 ", "").replace("🗎 ", ""));
+        }
+        return pathBuilder.toString();
+    }
+
+    // This method run the subdirectories of the ftp
+    private void loadSubDirectory(DefaultMutableTreeNode parentNode, String directoryName) {
         try {
-            // Obtener el contenido del directorio seleccionado
             FTPFile[] files = clientFTP.showDirectoriesUser(directoryName);
 
             if (files != null && files.length > 0) {
-                parentNode.removeAllChildren(); // Limpia el nodo actual antes de añadir contenido
+                for (FTPFile file : files) {
+                    if (file.isDirectory()) {
+                        DefaultMutableTreeNode dirNode = new DefaultMutableTreeNode("📁 " + file.getName());
 
-                for (FTPFile f : files) {
-                    if (f.isDirectory()) {
-                        parentNode.add(new DefaultMutableTreeNode("📁 " + f.getName())); // Subdirectorio
-                    } else if (f.isFile()) {
-                        parentNode.add(new DefaultMutableTreeNode("🗎 " + f.getName())); // Archivo
+                        // Añadir marcador para carga dinámica
+                        dirNode.add(new DefaultMutableTreeNode("Cargando..."));
+                        parentNode.add(dirNode);
+                        // Añade el directorio al nodo
+
+                    } else if (file.isFile()) {
+                        DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode("🗎 " + file.getName());
+                        parentNode.add(fileNode);
+                        // Añade el archivo al nodo
                     }
                 }
-                ((DefaultTreeModel) tree.getModel()).reload(parentNode); // Recargar nodo en el árbol
             } else {
+                Utils.showInfoWindow(null, "El directorio está vacío.", "Información");
                 System.out.println("El directorio está vacío: " + directoryName);
             }
         } catch (Exception e) {
-            System.out.println("Error al cargar el contenido del directorio: " + directoryName);
+            Utils.showErrorWindow(null, "Error al cargar el contenido del directorio:", "Error");
+            System.err.println("Error al cargar el contenido del directorio: " + directoryName);
             e.printStackTrace();
         }
     }

@@ -36,9 +36,14 @@ public class Utils {
         JOptionPane.showMessageDialog(parentComponent, infoMessage, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
+//    public static void showInputDialog(Component parentComponent, String message, String title) {
+//        JOptionPane.showInputDialog(parentComponent, , title, JOptionPane.INPUT_VALUE_PROPERTY);
+//    }
+
     public static int showConfirmDialog(Component parentComponent, String message, String title) {
-        return JOptionPane.showConfirmDialog(parentComponent, message, title, JOptionPane.YES_NO_OPTION);
+        return JOptionPane.showConfirmDialog(parentComponent, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
     }
+
 
     public static void LogRegister(Manager manager, String accion, boolean completado){
         LocalDate currentDate = LocalDate.now();
