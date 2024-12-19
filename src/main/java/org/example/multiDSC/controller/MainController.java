@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.controller.databaseConection.ConexionThread;
+import org.example.multiDSC.controller.listeners.ConfAdminView.ConfAdminButtonListener;
+import org.example.multiDSC.controller.listeners.ConfAdminView.ConfAdminEditTextListener;
 import org.example.multiDSC.controller.listeners.LoginView.LabelListener;
 import org.example.multiDSC.controller.listeners.LoginView.LoginViewButtonsListener;
 import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonsListener;
@@ -60,16 +62,26 @@ public class MainController {
 //        addLoginListeners();
 //        login.setVisible(true);
 
-        // ALVARO
-        LoginModel model= new LoginModel(manager);
-        login = new LoginView(manager, model);
-        addLoginListeners();
-        registerModel = new UserRegisterModel(manager);
-        register = new UserRegistrerView(manager, registerModel);
+         //ALVARO
+//        LoginModel model= new LoginModel(manager);
+//        login = new LoginView(manager, model);
+//        addLoginListeners();
+//        registerModel = new UserRegisterModel(manager);
+//        register = new UserRegistrerView(manager, registerModel);
+//        addUserRegisterListeners();
+//        getLogin().setVisible(true);
 
-        addUserRegisterListeners();
-        getLogin().setVisible(true);
 
+//        confAdminModel = new ConfAdminModel(manager);
+//        confAdmin = new ConfAdminView();
+//        confAdmin.addButtonNextToDelete("Apply");
+//        ConfAdminAddActionListeners();
+//        confAdmin.setVisible(true);
+    }
+
+    private void ConfAdminAddActionListeners() {
+       manager.getMainController().getConfAdmin().getEditarButton().addActionListener(new ConfAdminButtonListener(manager));
+        manager.getMainController().getConfAdmin().getApplyButton().addActionListener(new ConfAdminButtonListener(manager));
     }
 
     public void hiloConexion() {

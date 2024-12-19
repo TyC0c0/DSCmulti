@@ -129,6 +129,7 @@ public class ConectionBD {
         ResultSet rs = null;
 
         try {
+            connect(); // Asegúrate de que la conexión está establecida
             statement = connection.createStatement();
             rs = statement.executeQuery(sqlSentences.getSencences().get(2)); // Consulta de nombres, correos, y roles.
 
@@ -138,8 +139,12 @@ public class ConectionBD {
                 userData.put("Correo", rs.getString("Correo"));
                 userData.put("Rol_Nombre", rs.getString("Rol_Nombre"));
                 userDataList.add(userData);
+
+                // Imprimir los datos para depuración
+                System.out.println(userData);
             }
         } catch (SQLException e) {
+            e.printStackTrace(); // Añadir para depuración
             throw new SQLException("Error al obtener datos de los usuarios: ", e);
         } finally {
             if (rs != null) rs.close();
@@ -148,6 +153,8 @@ public class ConectionBD {
 
         return userDataList;
     }
+
+
 
 
 }

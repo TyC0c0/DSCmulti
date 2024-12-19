@@ -14,6 +14,8 @@ public class SqlSentences {
         sencences.add("SELECT u.\"Correo\", u.\"Nombre\", r.\"Nombre\" AS \"Rol_Nombre\"\n" +
                 "FROM \"USUARIO\" u\n" +
                 "JOIN \"ROLES\" r ON u.id_rol = r.id");//2
+
+
     }
 
 
