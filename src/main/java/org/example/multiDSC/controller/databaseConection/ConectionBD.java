@@ -115,6 +115,7 @@ public class ConectionBD {
             while (rs.next()) {
                 String nickname = rs.getString(1);
                 String password = rs.getString(2);
+
                 System.out.println("Nickname: " + nickname + ", Password: " + password);
                 nicknamesAndPasswords.put(nickname, password);
             }
@@ -123,6 +124,55 @@ public class ConectionBD {
         }
         return nicknamesAndPasswords;
     }
+
+
+    public HashMap<Object, Object[]> getValuesFromTables2(String query, int columnas, int[] selecciones) {
+        Statement statement = null;
+        ResultSet rs = null;
+        HashMap<Object, Object[]> valuesMap = new HashMap<>();
+
+        try {
+            statement = connection.createStatement();
+            rs = statement.executeQuery(query);
+
+            // Iterar sobre el ResultSet
+            int index=1;
+            while (rs.next()) {
+                // Crear un arreglo para almacenar los valores de las columnas seleccionadas
+                Object[] rowValues = new Object[columnas];
+
+                // Iterar sobre las columnas seleccionadas
+                for (int i = 0; i < columnas; i++) {
+                    // Obtener el valor de la columna utilizando el índice de selección
+                    rowValues[i] = rs.getObject(selecciones[i]); // Usar getObject para obtener cualquier tipo de columna
+                }
+
+                // Usamos el valor de la primera columna seleccionada como la clave
+                Object key = rs.getObject(index); // Obtener el valor de la primera columna seleccionada como clave
+                index++;
+
+                // Guardar la fila en el HashMap
+                valuesMap.put(key, rowValues);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al ejecutar la consulta: " + e.getMessage());
+            throw new RuntimeException("Error al obtener los valores de la tabla.", e);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (statement != null) statement.close();
+            } catch (SQLException e) {
+                System.err.println("Error al cerrar los recursos: " + e.getMessage());
+            }
+        }
+
+        return valuesMap;
+    }
+
+
+
+
+
     public ArrayList<Map<String, String>> getUserData() throws SQLException {
         ArrayList<Map<String, String>> userDataList = new ArrayList<>();
         Statement statement = null;

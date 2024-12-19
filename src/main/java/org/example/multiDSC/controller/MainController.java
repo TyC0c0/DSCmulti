@@ -7,12 +7,14 @@ import org.example.multiDSC.controller.databaseConection.ConexionThread;
 import org.example.multiDSC.controller.listeners.ConfAdminView.ConfAdminButtonListener;
 import org.example.multiDSC.controller.listeners.ConfAdminView.ConfAdminEditTextListener;
 import org.example.multiDSC.controller.listeners.LoginView.LabelListener;
+import org.example.multiDSC.controller.listeners.PostLogin.PostLoginButtonsListener;
 import org.example.multiDSC.controller.listeners.LoginView.LoginViewButtonsListener;
 import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonsListener;
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.*;
 import org.example.multiDSC.view.*;
 
+import javax.swing.*;
 import java.sql.SQLException;
 
 @Getter
@@ -57,31 +59,11 @@ public class MainController {
         manager.setConexionThread(hconect);
 
         // Inicializar vista
-//        loginModel= new LoginModel(manager);
-//        login = new LoginView(manager, loginModel);
-//        addLoginListeners();
-//        login.setVisible(true);
+        loginModel= new LoginModel(manager);
+        login = new LoginView(manager, loginModel);
+        addLoginListeners();
+        login.setVisible(true);
 
-         //ALVARO
-//        LoginModel model= new LoginModel(manager);
-//        login = new LoginView(manager, model);
-//        addLoginListeners();
-//        registerModel = new UserRegisterModel(manager);
-//        register = new UserRegistrerView(manager, registerModel);
-//        addUserRegisterListeners();
-//        getLogin().setVisible(true);
-
-
-//        confAdminModel = new ConfAdminModel(manager);
-//        confAdmin = new ConfAdminView();
-//        confAdmin.addButtonNextToDelete("Apply");
-//        ConfAdminAddActionListeners();
-//        confAdmin.setVisible(true);
-    }
-
-    private void ConfAdminAddActionListeners() {
-       manager.getMainController().getConfAdmin().getEditarButton().addActionListener(new ConfAdminButtonListener(manager));
-        manager.getMainController().getConfAdmin().getApplyButton().addActionListener(new ConfAdminButtonListener(manager));
     }
 
     public void hiloConexion() {
@@ -110,6 +92,12 @@ public class MainController {
         manager.getMainController().getLogin().getBtnOk().addActionListener(new LoginViewButtonsListener(manager));
         manager.getMainController().getLogin().getBtnCancel().addActionListener(new LoginViewButtonsListener(manager));
         manager.getMainController().getLogin().getLblDontHaveBeenRegistred().addMouseListener(new LabelListener(manager.getMainController().getLogin(), conexion, manager));
+    }
+
+    public void addPostLoginListeners(){
+        for (JButton button : postLogin.getButtons()){
+            button.addActionListener(new PostLoginButtonsListener(manager));
+        }
     }
 
 }

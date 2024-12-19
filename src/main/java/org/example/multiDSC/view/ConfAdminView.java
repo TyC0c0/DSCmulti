@@ -12,6 +12,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.example.multiDSC.controller.databaseConection.ConectionBD;
+import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.viewModels.ConfAdminModel;
+
+/**
+ * A JFrame class that displays a user configuration form.
+ * Dynamically creates input fields based on database user data.
+ * @author Ivan Guerrero Romero, Isaac Requena Santiago, Alvaro Garcia Lopez
+ * @version 2.1
+ */
+
 public class ConfAdminView extends JFrame {
     @Getter
     @Setter
@@ -24,7 +35,14 @@ public class ConfAdminView extends JFrame {
     private ArrayList<JTextField> textFields;
     private JComboBox<String> rolComboBox;
 
-    public ConfAdminView() {
+    private JPanel fieldsPanel; // Panel to hold dynamic user rows.
+
+    /**
+     * Constructs the ConfAdminView GUI.
+     * Initializes components, connects to the database, and creates user input fields.
+     */
+    public ConfAdminView(Manager manager, ConfAdminModel confAdminModel) {
+        // Configuración de la ventana
         setTitle("Configuración de Admin");
         setSize(900, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
