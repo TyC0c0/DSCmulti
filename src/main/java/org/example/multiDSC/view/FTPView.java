@@ -10,7 +10,11 @@ import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.FTPModel;
 
 import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeNode;
 import java.awt.*;
 import java.sql.SQLException;
 
@@ -18,17 +22,17 @@ import java.sql.SQLException;
  * FTPView - Main view for the FTP functions of the app.
  *
  * @author Ramón Reina González, Alvaro Garcia Lopez
- * @version 1.5
+ * @version 1.6
  */
 
 public class FTPView extends JFrame {
 
     // Attributes
     private FTPModel model;
-    private JScrollPane panelTree;
     private JTree tree;
-    private JTextField renameFieldText;
+    private JLabel label;
 
+    private JButton uploadButton;
     private JButton reloadButton;
     private JButton renameButton;
     private JButton createButton;
@@ -56,7 +60,7 @@ public class FTPView extends JFrame {
         setupPanels();
         setupActions();
         localServiceFTP.loadDirectories(directoryName);
-
+        configureTreeSelectionListener();
         setVisible(true);
     }
 
@@ -87,20 +91,30 @@ public class FTPView extends JFrame {
         rightPanel = new JPanel(new BorderLayout());
         downPanel = new JPanel(new BorderLayout());
 
-        reloadButton = createSizedButton(model.getText().get(5), true);
-        renameFieldText = new JTextField();
-        renameFieldText.setPreferredSize(new Dimension(200, 30));
-        renameButton = createSizedButton(model.getText().get(6), false);
-        createButton = createSizedButton(model.getText().get(0), false);
-        deleteButton = createSizedButton(model.getText().get(1), false);
-        downloadButton = createSizedButton(model.getText().get(2), false);
-        exitButton = createSizedButton(model.getText().get(4), false);
+        label = new JLabel("/");
+
+        // Crear el JLabel para mostrar la ruta
+        label.setOpaque(true); // Hacer que el JLabel tenga un fondo visible
+        label.setBackground(Color.WHITE); // Fondo blanco para parecerse a un campo de texto
+        label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        label.setPreferredSize(new Dimension(500, 30));
+        label.setHorizontalAlignment(SwingConstants.LEFT); // Alinear el texto a la izquierda
+        label.setFont(new Font("Arial", Font.PLAIN, 16));
+
+        reloadButton = createSizedButton(model.getText().get(0), true);
+        renameButton = createSizedButton(model.getText().get(1), false);
+        createButton = createSizedButton(model.getText().get(2), false);
+        uploadButton = createSizedButton(model.getText().get(3), false);
+        deleteButton = createSizedButton(model.getText().get(4), false);
+        downloadButton = createSizedButton(model.getText().get(5), false);
+        exitButton = createSizedButton(model.getText().get(6), false);
 
         setupTreeRenderer();
     }
 
     private void setupTreeRenderer() {
         tree.setBackground(new Color(100, 100, 100));
+        tree.setBorder(BorderFactory.createEmptyBorder());
         DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) tree.getCellRenderer();
         renderer.setBackgroundNonSelectionColor(new Color(100, 100, 100));
         renderer.setBackgroundSelectionColor(new Color(150, 150, 150));
@@ -123,11 +137,11 @@ public class FTPView extends JFrame {
     private void setupTopPanel() {
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
         topPanel.setBackground(Color.DARK_GRAY);
-        topPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         topPanel.add(reloadButton);
         topPanel.add(Box.createRigidArea(new Dimension(78, 0)));
-        topPanel.add(renameFieldText);
+        topPanel.add(label);
         topPanel.add(Box.createRigidArea(new Dimension(10, 0)));
         topPanel.add(renameButton);
     }
@@ -138,6 +152,8 @@ public class FTPView extends JFrame {
 
         leftPanel.add(Box.createVerticalGlue());
         leftPanel.add(createButton);
+        leftPanel.add(Box.createRigidArea(new Dimension(250, 40)));
+        leftPanel.add(uploadButton);
         leftPanel.add(Box.createRigidArea(new Dimension(250, 40)));
         leftPanel.add(deleteButton);
         leftPanel.add(Box.createRigidArea(new Dimension(250, 40)));
@@ -171,6 +187,10 @@ public class FTPView extends JFrame {
         renameButton.addActionListener(new ButtonListenerFTP(this));
         createButton.setActionCommand("Create");
         createButton.addActionListener(new ButtonListenerFTP(this));
+
+        uploadButton.setActionCommand("Upload");
+        uploadButton.addActionListener(new ButtonListenerFTP(this));
+
         deleteButton.setActionCommand("Delete");
         deleteButton.addActionListener(new ButtonListenerFTP(this));
         downloadButton.setActionCommand("Download");
@@ -186,6 +206,32 @@ public class FTPView extends JFrame {
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setMaximumSize(isReloadButton ? new Dimension(30, 40) : new Dimension(150, 30));
         return button;
+    }
+
+    // This method set the root of the file in a label in the view
+    private void configureTreeSelectionListener() {
+        tree.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+                if (selectedNode != null) {
+                    TreeNode[] pathNodes = selectedNode.getPath();
+                    StringBuilder entireDirBuilder = new StringBuilder();
+
+                    for (TreeNode node : pathNodes) {
+                        String nodeName = node.toString().replace("📁 ", "").replace("🗎 ", "");
+                        entireDirBuilder.append("/").append(nodeName);
+                    }
+
+                    String entireDir = entireDirBuilder.toString(); // Ruta completa
+                    label.setText(entireDir); // Actualizar el campo de texto con la ruta progresiva
+                }
+            }
+        });
+    }
+
+    public JLabel getLabel() {
+        return label;
     }
 
     public LocalServiceFTP getLocalServiceFTP() {

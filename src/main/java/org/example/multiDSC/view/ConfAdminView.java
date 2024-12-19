@@ -25,10 +25,11 @@ import org.example.multiDSC.model.viewModels.ConfAdminModel;
  * @version 2.1
  */
 
+@Getter
+@Setter
 public class ConfAdminView extends JFrame {
     private final Manager manager;
-    @Getter
-    @Setter
+    private ConfAdminModel confAdminModel;
     private JPanel fieldsPanel;
     private JButton editarButton;
     private JButton eliminarButton;
@@ -40,8 +41,9 @@ public class ConfAdminView extends JFrame {
     private ArrayList<JButton> modifyButtons = new ArrayList<>();
     private ArrayList<JButton> deleteButtons = new ArrayList<>();
 
-    public ConfAdminView(Manager manager) {
+    public ConfAdminView(Manager manager, ConfAdminModel confAdminModel) {
         this.manager = manager;
+        this.confAdminModel=confAdminModel;
         setTitle("Configuración de Admin");
         setSize(1500, 500);  // Tamaño más grande
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -165,65 +167,4 @@ public class ConfAdminView extends JFrame {
     }
 
 
-    public JButton getEditarButton() {
-        return null;  // Se eliminó el botón superior "Editar"
-    }
-
-    public void setEditarButton(JButton editarButton) {
-        // Este método se eliminó, ya que los botones se agregan en cada fila
-    }
-
-    public JButton getApplyButton() {
-        return null;  // No se utiliza el botón "Apply"
-    }
-
-    public void setApplyButton(JButton applyButton) {
-        // Este método se eliminó
-    }
-
-    public JButton getEliminarButton() {
-        return null;  // Se eliminó el botón superior "Eliminar"
-    }
-
-    public void setEliminarButton(JButton eliminarButton) {
-        // Este método se eliminó
-    }
-
-    public ArrayList<JComboBox<String>> getComboBoxes() {
-        return comboBoxes;
-    }
-
-    public void setComboBoxes(ArrayList<JComboBox<String>> comboBoxes) {
-        this.comboBoxes = comboBoxes;
-    }
-
-    public JComboBox<String> getRolComboBox() {
-        return rolComboBox;
-    }
-
-    public void setRolComboBox(JComboBox<String> rolComboBox) {
-        this.rolComboBox = rolComboBox;
-    }
-    public ArrayList<JTextField> getTextField() {
-        return textFields;
-    }
-    public void setTextField(ArrayList<JTextField> textFields) {
-        this.textFields = textFields;
-    }
-
-    public ArrayList<JButton> getModifyButtons() {
-        return modifyButtons;
-    }
-
-    public void setModifyButtons(ArrayList<JButton> modifyButtons) {
-        this.modifyButtons = modifyButtons;
-    }
-
-    public ArrayList<JButton> getDeleteButtons() {
-        return deleteButtons;
-    }
-
-    public void setDeleteButtons(ArrayList<JButton> deleteButtons) {
-        this.deleteButtons = deleteButtons;
-    }
 }
