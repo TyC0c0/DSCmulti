@@ -4,9 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.controller.databaseConection.ConexionThread;
-import org.example.multiDSC.controller.listeners.LoginView.ButtonListenerLogin;
-import org.example.multiDSC.controller.listeners.LoginView.LabelListenerLogin;
-import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonListener;
+import org.example.multiDSC.controller.listeners.LoginView.LabelListener;
+import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonsListener;
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.*;
 import org.example.multiDSC.view.*;
@@ -18,14 +17,28 @@ import java.sql.SQLException;
 public class MainController {
 
     private static ConectionBD conexion;
-    private LoginView login;
-    private Utils utils;
     private static Manager manager;
-    private UserRegistrerView register;
-    private UserRegisterModel userRegisterModel;
-    private PostLoginView postLoginView;
-    MailView m;
+    private Utils utils;
     private ConexionThread hconect;
+
+    private LoginView login;
+    private LoginModel loginModel;
+    private UserRegistrerView register;
+    private UserRegisterModel registerModel;
+    private SendMailView sendMail;
+    private SendMailModel sendMailModel;
+    private PostLoginView postLogin;
+    private PostLoginModel postLoginModel;
+    private MailView mail;
+    private MailModel mailModel;
+    private InfoView info;
+    private InfoModel infoModel;
+    private FTPView ftp;
+    private FTPModel ftpModel;
+    private ConfUserView confUser;
+    private ConfUserModel confUserModel;
+    private ConfAdminView confAdmin;
+    private ConfAdminModel confAdminModel;
 
     public MainController() {
         init();
@@ -41,15 +54,19 @@ public class MainController {
         manager.setConexionThread(hconect);
 
         // Inicializar vista
-        LoginModel model= new LoginModel(manager);
-        login = new LoginView(manager, model);
-        userRegisterModel = new UserRegisterModel(manager);
-        register = new UserRegistrerView(manager, userRegisterModel);
+        loginModel= new LoginModel(manager);
+        login = new LoginView(manager, loginModel);
         addLoginListeners();
-        addUserRegisterListeners();
-        getLogin().setVisible(true);
-        ConfAdminView confAdminView  = new ConfAdminView();
+        login.setVisible(true);
 
+        // ALVARO
+        //LoginModel model= new LoginModel(manager);
+        //login = new LoginView(manager, model);
+        //userRegisterModel = new UserRegisterModel(manager);
+        //register = new UserRegistrerView(manager, userRegisterModel);
+        //addLoginListeners();
+        //addUserRegisterListeners();
+        //getLogin().setVisible(true);
 
     }
 
@@ -71,14 +88,14 @@ public class MainController {
     }
 
     public void addUserRegisterListeners() {
-        register.getRegisterButton().addActionListener(new ButtonListener(manager));
-        register.getCancelButton().addActionListener(new ButtonListener(manager));
+        register.getRegisterButton().addActionListener(new ButtonsListener(manager));
+        register.getCancelButton().addActionListener(new ButtonsListener(manager));
     }
 
     private void addLoginListeners() {
-        manager.getMainController().getLogin().getBtnOk().addActionListener(new ButtonListenerLogin(manager));
-        login.getBtnCancel().addActionListener(new ButtonListenerLogin(manager));
-        login.getLblDontHaveBeenRegistred().addMouseListener(new LabelListenerLogin(login,conexion,manager));
+        manager.getMainController().getLogin().getBtnOk().addActionListener(new org.example.multiDSC.controller.listeners.LoginView.ButtonsListener(manager));
+        login.getBtnCancel().addActionListener(new org.example.multiDSC.controller.listeners.LoginView.ButtonsListener(manager));
+        login.getLblDontHaveBeenRegistred().addMouseListener(new LabelListener(login,conexion,manager));
     }
 
 }

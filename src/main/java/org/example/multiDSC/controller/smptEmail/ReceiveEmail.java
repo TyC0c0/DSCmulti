@@ -54,7 +54,7 @@ public class ReceiveEmail {
             Message message1= message[i];
             from=removeExtra(message1.getFrom()[0].toString());
 
-            DefaultListModel<String> listModel = (DefaultListModel<String>) manager.getMainController().getM().getMailList().getModel();
+            DefaultListModel<String> listModel = (DefaultListModel<String>) manager.getMainController().getMail().getMailList().getModel();
             // Crear el nuevo registro
             String newEntry = z + from + "Asunto: " + message1.getSubject();
 

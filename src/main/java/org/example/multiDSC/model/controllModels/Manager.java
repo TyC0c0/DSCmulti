@@ -15,6 +15,8 @@ public class Manager {
     private MainController mainController;
     private String userEmail;
     private String userPassword;
+    private String userIP;
+    private String userDNI;
     private ConexionThread conexionThread;
 
 }
