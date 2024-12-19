@@ -11,7 +11,11 @@ public class SqlSentences {
     private void addTextToArrayList() {
         sencences.add("SELECT \"Nickname\", \"Contraseña\" FROM \"USUARIO\"");//0
         sencences.add("SELECT \"Correo\" FROM public.\"USUARIO\"");//1
+        sencences.add("SELECT u.\"Correo\", u.\"Nombre\", r.\"Nombre\" AS \"Rol_Nombre\"\n" +
+                "FROM \"USUARIO\" u\n" +
+                "JOIN \"ROLES\" r ON u.id_rol = r.id");//2
     }
+
 
     public ArrayList<String> getSencences() {
         return sencences;

@@ -3,7 +3,7 @@ package org.example.multiDSC.view;
 import org.apache.commons.net.ftp.FTPFile;
 import org.example.multiDSC.controller.ftpServer.ClientFTP;
 import org.example.multiDSC.controller.listeners.ftp.ButtonListenerFTP;
-import org.example.multiDSC.model.*;
+//import org.example.multiDSC.model.*;
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.FTPModel;
 
