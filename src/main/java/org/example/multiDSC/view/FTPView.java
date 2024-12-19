@@ -3,7 +3,8 @@ package org.example.multiDSC.view;
 import org.apache.commons.net.ftp.FTPFile;
 import org.example.multiDSC.controller.ftpServer.ClientFTP;
 import org.example.multiDSC.controller.listeners.ftp.ButtonListenerFTP;
-import org.example.multiDSC.model.FTPModel_en;
+import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.viewModels.FTPModel;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -24,7 +25,7 @@ import java.io.File;
 public class FTPView extends JFrame {
 
     // Attributes
-    private FTPModel_en model;
+    private FTPModel FTPModel;
     private JScrollPane panelTree;
     private JTree tree;
     private JTextField renameFieldText;
@@ -44,7 +45,10 @@ public class FTPView extends JFrame {
     private ClientFTP clientFTP;
 
     // Constructor
-    public FTPView(String directoryName) {
+    public FTPView(String directoryName, Manager manager, FTPModel ftpModel) {
+        
+        this.FTPModel = ftpModel;
+        
         // Starting elements
         clientFTP = new ClientFTP();
         if (!clientFTP.connectFTP()) {
@@ -56,10 +60,6 @@ public class FTPView extends JFrame {
         setLayout(new BorderLayout()); // Use BorderLayout for the main frame
         setSize(700, 500); // Adjust size dynamically based on content
         setDefaultCloseOperation(EXIT_ON_CLOSE); // Exit on close
-
-
-        model = new FTPModel_en();
-
         // Top panel for the reload button and rename components
         topPanel = new JPanel();
         topRightPanel = new JPanel();
@@ -69,10 +69,10 @@ public class FTPView extends JFrame {
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
         topPanel.setBackground(Color.DARK_GRAY);
 
-        reloadButton = createSizedButton(model.getFTPText_en().get(5), true);
+        reloadButton = createSizedButton(FTPModel.getText().get(5), true);
         renameFieldText = new JTextField();
         renameFieldText.setPreferredSize(new Dimension(200, 30));
-        renameButton = createSizedButton(model.getFTPText_en().get(6), false);
+        renameButton = createSizedButton(FTPModel.getText().get(6), false);
 
         topPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
@@ -86,11 +86,11 @@ public class FTPView extends JFrame {
         leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS)); // Stack vertically
 
-        managePermissionsButton = createSizedButton(model.getFTPText_en().get(0), false);
-        uploadFolderButton = createSizedButton(model.getFTPText_en().get(1), false);
-        downloadFolderButton = createSizedButton(model.getFTPText_en().get(2), false);
-        manageDirectoryButton = createSizedButton(model.getFTPText_en().get(3), false);
-        downloadButton = createSizedButton(model.getFTPText_en().get(7),false);
+        managePermissionsButton = createSizedButton(FTPModel.getText().get(0), false);
+        uploadFolderButton = createSizedButton(FTPModel.getText().get(1), false);
+        downloadFolderButton = createSizedButton(FTPModel.getText().get(2), false);
+        manageDirectoryButton = createSizedButton(FTPModel.getText().get(3), false);
+        downloadButton = createSizedButton(FTPModel.getText().get(7),false);
 
         leftPanel.setBackground(Color.DARK_GRAY); // Fondo gris suave para el panel izquierdo
 
@@ -130,7 +130,7 @@ public class FTPView extends JFrame {
         // Panel para el botón Exit con FlowLayout
         JPanel exitPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT)); // Centra el botón
         exitPanel.setBackground(Color.DARK_GRAY);
-        exitButton = createSizedButton(model.getFTPText_en().get(4),false);
+        exitButton = createSizedButton(FTPModel.getText().get(4),false);
         exitButton.setPreferredSize(new Dimension(100, 30)); // Ajusta el tamaño del botón
         exitButton.setActionCommand("Exit");
         exitButton.addActionListener(new ButtonListenerFTP(this));
@@ -234,9 +234,5 @@ public class FTPView extends JFrame {
         button.setMaximumSize(isReloadButton ? new Dimension(30, 40) : new Dimension(150, 30)); // Button size
         return button;
     }
-
-    public static void main(String[] args) {
-        new FTPView("/");
-        //System.out.println("Hello world");
-    }
+    
 }

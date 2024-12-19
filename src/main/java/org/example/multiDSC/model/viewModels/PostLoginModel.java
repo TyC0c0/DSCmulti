@@ -18,7 +18,7 @@ public class PostLoginModel {
     }
 
     public void init(){
-        query= "SELECT "+ manager.getTable() +" FROM \"NOMBRES\" WHERE \"Entrada\" like \"PostLoginModel\"";
+        query= "SELECT "+ manager.getTable() +" FROM \"NOMBRES\" WHERE \"Entrada\" like 'PostLoginModel'";
 
     }
     public void fillTexts(){
