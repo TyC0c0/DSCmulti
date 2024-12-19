@@ -34,8 +34,6 @@ public class Main {
      */
     public static void main(String[] args) {
         try {
-            // Mensaje inicial
-            System.out.println("main");
 
             // Inicialización del controlador principal
             MainController controller = new MainController();
@@ -49,9 +47,6 @@ public class Main {
             // Captura de errores generales no previstos
             System.err.println("Se produjo un error inesperado: " + e.getMessage());
             Utils.showErrorWindow(null, "Error inesperado: " + e.getMessage(), "Error Desconocido");
-        } finally {
-            // Limpieza o mensajes finales (si aplica)
-            System.out.println("El programa ha terminado su ejecución.");
         }
     }
 }

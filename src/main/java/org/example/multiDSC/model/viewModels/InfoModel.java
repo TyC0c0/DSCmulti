@@ -22,7 +22,7 @@ public class InfoModel {
     }
 
     public void init() {
-        query = "SELECT " + manager.getTable() + " FROM \"NOMBRES\" WHERE \"Entrada\" like \"InfoModel\"";
+        query = "SELECT " + manager.getTable() + " FROM \"NOMBRES\" WHERE \"Entrada\" like 'InfoModel'";
 
     }
 

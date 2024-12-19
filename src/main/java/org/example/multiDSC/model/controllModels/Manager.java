@@ -12,11 +12,13 @@ public class Manager {
 
     private String table;
     private ConectionBD conexion;
+    private ConexionThread conexionThread;
     private MainController mainController;
     private String userEmail;
     private String userPassword;
     private String userIP;
     private String userDNI;
-    private ConexionThread conexionThread;
+    private Integer userRol;
+
 
 }

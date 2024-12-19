@@ -49,12 +49,14 @@ public class ButtonsListener implements ActionListener {
                 if (nicknamesAndPasswords.containsKey(nickname)) {
                     if (nicknamesAndPasswords.get(nickname).equals(password)) {
                         System.out.println("Login successful!");
-                        manager.getMainController().getLogin().dispose();
+                        manager.getMainController().getLogin().dispose(); //Cierra login
+                        Utils.fillUser(manager, nickname);
 
+                        //Abre correctamente postLogin
                         manager.getMainController().setPostLoginModel(new PostLoginModel(manager));
                         manager.getMainController().setPostLogin(new PostLoginView());
-                        //addlisteners
-                        //setvisibleTrue
+                        manager.getMainController().addPostLoginListeners();
+                        manager.getMainController().getPostLogin().getFrame().setVisible(true);
 
                         Utils.LogRegister(manager, "Un usuario se ha conectado a traves de una cuenta", true);
 

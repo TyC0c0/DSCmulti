@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Utils {
 
@@ -39,6 +41,7 @@ public class Utils {
         String query= "INSERT INTO \"LOGS\" (\"Fecha\", \"Hora\", \"Accion\", \"IP\", \"Completado\") VALUES "+
                                           "('"+sqlDate+"', '"+time+"', '"+accion+"', '"+manager.getUserIP()+"', '"+ completado+"')";
 
+        System.out.println("Insertando log...");
         try {
             manager.getConexion().sqlModification(query);
         } catch (SQLException e) {
@@ -66,7 +69,6 @@ public class Utils {
 
     public boolean isStrongPassword(Manager manager) {
         String password = new String(manager.getMainController().getRegister().getPasswordField().getPassword());
-        //LO HE CAMBIADO PORQUE ME DABA ERROR EL ANTERIOR
         String passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
 
         if (password.matches(passwordRegex)) {
@@ -75,5 +77,43 @@ public class Utils {
             showErrorWindow(null, "The password is not enouth strong", "Weak password");
             return false;
         }
-}
+    }
+
+    public static void fillUser(Manager manager, String nickname) {
+        try {
+            String query = "SELECT \"Correo\", \"Contraseña\", \"DNI\", \"id_rol\" FROM \"USUARIO\" WHERE \"Nickname\" = '" + nickname + "'";
+
+            int columnas = 4;  // Número de columnas que vas a seleccionar
+            int[] selecciones = {1, 2, 3, 4};  // Seleccionar las columnas DEL QUERY
+
+            HashMap<Object, Object[]> users = manager.getConexion().getValuesFromTables2(query, columnas, selecciones);
+
+            // Ahora puedes acceder al mapa para ver los valores
+            for (Map.Entry<Object, Object[]> entry : users.entrySet()) {
+                Object key = entry.getKey();
+                Object[] values = entry.getValue();
+
+                // Asignar los datos al manager
+                manager.setUserEmail((String) values[0]);
+                manager.setUserPassword((String) values[1]);
+                //manager.setUserIP(ip);
+                manager.setUserDNI((String) values[2]);
+                manager.setUserRol((Integer) values[3]);
+
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+    public static void resetUser(Manager manager){
+        manager.setUserEmail("");
+        manager.setUserPassword("");
+        manager.setUserIP("");
+        manager.setUserDNI("");
+        manager.setUserRol(0);
+    }
 }

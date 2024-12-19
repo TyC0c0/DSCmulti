@@ -5,11 +5,13 @@ import lombok.Setter;
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.controller.databaseConection.ConexionThread;
 import org.example.multiDSC.controller.listeners.LoginView.LabelListener;
+import org.example.multiDSC.controller.listeners.PostLogin.PostLoginButtonsListener;
 import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonsListener;
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.*;
 import org.example.multiDSC.view.*;
 
+import javax.swing.*;
 import java.sql.SQLException;
 
 @Getter
@@ -59,15 +61,6 @@ public class MainController {
         addLoginListeners();
         login.setVisible(true);
 
-        // ALVARO
-        //LoginModel model= new LoginModel(manager);
-        //login = new LoginView(manager, model);
-        //userRegisterModel = new UserRegisterModel(manager);
-        //register = new UserRegistrerView(manager, userRegisterModel);
-        //addLoginListeners();
-        //addUserRegisterListeners();
-        //getLogin().setVisible(true);
-
     }
 
     public void hiloConexion() {
@@ -92,10 +85,16 @@ public class MainController {
         register.getCancelButton().addActionListener(new ButtonsListener(manager));
     }
 
-    private void addLoginListeners() {
+    public void addLoginListeners() {
         manager.getMainController().getLogin().getBtnOk().addActionListener(new org.example.multiDSC.controller.listeners.LoginView.ButtonsListener(manager));
         login.getBtnCancel().addActionListener(new org.example.multiDSC.controller.listeners.LoginView.ButtonsListener(manager));
         login.getLblDontHaveBeenRegistred().addMouseListener(new LabelListener(login,conexion,manager));
+    }
+
+    public void addPostLoginListeners(){
+        for (JButton button : postLogin.getButtons()){
+            button.addActionListener(new PostLoginButtonsListener(manager));
+        }
     }
 
 }

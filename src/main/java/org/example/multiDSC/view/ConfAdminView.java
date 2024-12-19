@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
+import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.viewModels.ConfAdminModel;
 
 /**
  * A JFrame class that displays a user configuration form.
@@ -23,7 +25,7 @@ public class ConfAdminView extends JFrame {
      * Constructs the ConfAdminView GUI.
      * Initializes components, connects to the database, and creates user input fields.
      */
-    public ConfAdminView() {
+    public ConfAdminView(Manager manager, ConfAdminModel confAdminModel) {
         // Configuración de la ventana
         setTitle("Configuración de Admin");
         setSize(900, 400);
