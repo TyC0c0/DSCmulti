@@ -6,6 +6,8 @@ import org.example.multiDSC.controller.databaseConection.ConectionBD;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -18,6 +20,9 @@ public class ConfAdminView extends JFrame {
     private JButton eliminarButton;
     private JButton applyButton;
     private boolean botonAñadido = false;
+    private ArrayList<JComboBox<String>> comboBoxes;
+    private ArrayList<JTextField> textFields;
+    private JComboBox<String> rolComboBox;
 
     public ConfAdminView() {
         setTitle("Configuración de Admin");
@@ -26,13 +31,16 @@ public class ConfAdminView extends JFrame {
         setLocationRelativeTo(null);
         setResizable(true);
 
+        comboBoxes = new ArrayList<>();
+        textFields = new ArrayList<>();
+
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainPanel.setBackground(Color.DARK_GRAY);
 
-        JPanel labelsPanel = new JPanel(new GridLayout(1, 10, 10, 10));
+        JPanel labelsPanel = new JPanel(new GridLayout(1, 4, 10, 10));
         labelsPanel.setBackground(Color.DARK_GRAY);
-        String[] etiquetas = {"Nombre:", "Correo:", "Rol:"};
+        String[] etiquetas = {"Nombre:", "Correo:", "Rol:", "Acción:"};
 
         for (String etiqueta : etiquetas) {
             JLabel label = new JLabel(etiqueta, SwingConstants.CENTER);
@@ -59,17 +67,25 @@ public class ConfAdminView extends JFrame {
         }
 
         for (Map<String, String> userData : userDataList) {
-            JPanel rowPanel = new JPanel(new GridLayout(1, 10, 10, 10));
+            JPanel rowPanel = new JPanel(new GridLayout(1, 4, 10, 10));
             rowPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
             rowPanel.setBackground(Color.DARK_GRAY);
 
             JTextField nombreField = createTextField(userData.get("Nombre"));
             JTextField correoField = createTextField(userData.get("Correo"));
-            JTextField rolField = createTextField(userData.get("Rol_Nombre"));
+            textFields.add(nombreField);
+            textFields.add(correoField);
+
+            // Crear JComboBox para roles
+            String[] roles = {"Admin", "Usuario"};  // Asegúrate de que estos roles están en la base de datos
+            rolComboBox = new JComboBox<>(roles);
+            rolComboBox.setSelectedItem(userData.get("Rol_Nombre"));
+            rolComboBox.setEnabled(false); // Desactivar inicialmente
+            comboBoxes.add(rolComboBox);
 
             rowPanel.add(nombreField);
             rowPanel.add(correoField);
-            rowPanel.add(rolField);
+            rowPanel.add(rolComboBox);
 
             fieldsPanel.add(rowPanel);
 
@@ -80,6 +96,7 @@ public class ConfAdminView extends JFrame {
 
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
+        // Panel de botones superior
         JPanel topButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         topButtonPanel.setBackground(Color.DARK_GRAY);
 
@@ -91,28 +108,21 @@ public class ConfAdminView extends JFrame {
 
         mainPanel.add(topButtonPanel, BorderLayout.NORTH);
 
+        // Panel inferior con el JTextField y el botón adicional
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         bottomPanel.setBackground(Color.DARK_GRAY);
 
         JTextField extraTextField = new JTextField(20);
         extraTextField.setFont(new Font("Arial", Font.PLAIN, 14));
-        JButton extraButton = new JButton("Search");
+        JButton extraButton = new JButton("Extra Button");
         bottomPanel.add(extraTextField);
         bottomPanel.add(extraButton);
 
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
         add(mainPanel);
-    }
 
-    private JCheckBox createCheckBox(String permisos) {
-        JCheckBox checkBox = new JCheckBox();
-        checkBox.setBackground(Color.DARK_GRAY);
-        checkBox.setForeground(Color.WHITE);
-        checkBox.setFont(new Font("Arial", Font.BOLD, 18));
-        checkBox.setSelected("true".equalsIgnoreCase(permisos) || "1".equals(permisos)); // Establecer el estado según el valor booleano
-        return checkBox;
+        setVisible(true);
     }
-
 
     private JTextField createTextField(String text) {
         JTextField textField = new JTextField(text);
@@ -174,5 +184,27 @@ public class ConfAdminView extends JFrame {
 
     public void setEliminarButton(JButton eliminarButton) {
         this.eliminarButton = eliminarButton;
+    }
+
+    public ArrayList<JComboBox<String>> getComboBoxes() {
+        return comboBoxes;
+    }
+
+    public void setComboBoxes(ArrayList<JComboBox<String>> comboBoxes) {
+        this.comboBoxes = comboBoxes;
+    }
+
+    public JComboBox<String> getRolComboBox() {
+        return rolComboBox;
+    }
+
+    public void setRolComboBox(JComboBox<String> rolComboBox) {
+        this.rolComboBox = rolComboBox;
+    }
+    public ArrayList<JTextField> getTextField() {
+        return textFields;
+    }
+    public void setTextField(ArrayList<JTextField> textFields) {
+        this.textFields = textFields;
     }
 }

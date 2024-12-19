@@ -72,11 +72,11 @@ public class MainController {
 //        getLogin().setVisible(true);
 
 
-//        confAdminModel = new ConfAdminModel(manager);
-//        confAdmin = new ConfAdminView();
-//        confAdmin.addButtonNextToDelete("Apply");
-//        ConfAdminAddActionListeners();
-//        confAdmin.setVisible(true);
+        confAdminModel = new ConfAdminModel(manager);
+        confAdmin = new ConfAdminView();
+        confAdmin.addButtonNextToDelete("Apply");
+        ConfAdminAddActionListeners();
+        confAdmin.setVisible(true);
     }
 
     private void ConfAdminAddActionListeners() {
