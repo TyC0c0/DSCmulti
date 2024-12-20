@@ -22,6 +22,7 @@ import org.example.multiDSC.controller.MainController;
  * @version 1.0
  * @since 2024-12-18
  */
+
 public class Main {
 
     /**

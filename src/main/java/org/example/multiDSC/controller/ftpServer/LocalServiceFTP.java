@@ -2,6 +2,7 @@ package org.example.multiDSC.controller.ftpServer;
 
 import org.apache.commons.net.ftp.FTPFile;
 import org.example.multiDSC.controller.Utils;
+import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.view.FTPView;
 
 import javax.swing.*;
@@ -23,17 +24,27 @@ public class LocalServiceFTP {
     private ClientFTP clientFTP;
     private JTree tree;
     private FTPView ftpView;
+    private Manager manager;
 
     // Constructor
-    public LocalServiceFTP(ClientFTP clientFTP, JTree tree, FTPView ftpView) {
+    public LocalServiceFTP(ClientFTP clientFTP, JTree tree, FTPView ftpView, Manager manager) {
         this.clientFTP = clientFTP;
         this.tree = tree;
         this.ftpView = ftpView;
+        this.manager = manager;
     }
 
     // This method is the function of the button Create Directory
     public void createNewDirectory() {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+
+        if (manager.getUserRol() != 1) { // Si no es administrador
+            String selectedPath = getDirNodeCreate(selectedNode);
+            if (!selectedPath.startsWith("/" + manager.getUserNickname())) {
+                Utils.showErrorWindow(null, "No tienes permisos para crear directorios fuera de tu carpeta.", "Error");
+                return;
+            }
+        }
 
         if (selectedNode == null) {
             Utils.showWarningWindow(null, "Por favor, selecciona un directorio donde crear el nuevo directorio.", "Aviso");
@@ -50,12 +61,6 @@ public class LocalServiceFTP {
         }
 
         String parentPath = getDirNodeCreate(selectedNode);
-
-//        if (!manager.isPathAllowed(parentPath)) {
-//            Utils.showErrorWindow(null, "No tienes permisos para crear directorios en este nivel.", "Error");
-//            return;
-//        }
-
         String newDirName = Utils.showInputDialog(null, "Introduce el nombre del nuevo directorio:", "Crear Directorio");
 
         if (newDirName == null || newDirName.trim().isEmpty()) {
@@ -124,11 +129,6 @@ public class LocalServiceFTP {
 
         String direction = getDirNodeDelete(selectedNode);
         System.out.println("Intentando eliminar: " + direction);
-
-//        if (!manager.isPathAllowed(direction)) {
-//            Utils.showErrorWindow(null, "No tienes permisos para eliminar este archivo o directorio.", "Error");
-//            return;
-//        }
 
         boolean success = false; // Inicializar como false por defecto
         int confirm = Utils.showConfirmDialog(null, "¿Seguro que lo quieres eliminar?", "Aviso");
@@ -286,106 +286,66 @@ public class LocalServiceFTP {
         }
     }
 
-//    public boolean isPathAllowed(String path) {
-//        if (manager.isAdmin()) {
-//            return true; // Los administradores tienen acceso completo
-//        }
-//
-//        String userDir = "/" + manager.getUserNickname();
-//        return path.startsWith(userDir); // Solo permite rutas dentro del directorio del usuario
-//    }
-
-
-//    public void loadDirectories(String directoryName) {
-//        DefaultMutableTreeNode mainDir = new DefaultMutableTreeNode("FTP Server");
-//
-//        try {
-//            // Si el usuario no es administrador, cargar solo su directorio
-//            if (!manager.isAdmin()) {
-//                String userDir = "/" + manager.getUserNickname();
-//                FTPFile[] userFiles = clientFTP.showDirectoriesUser(userDir);
-//
-//                DefaultMutableTreeNode userNode = new DefaultMutableTreeNode("📁 " + manager.getUserNickname());
-//
-//                if (userFiles != null && userFiles.length > 0) {
-//                    for (FTPFile file : userFiles) {
-//                        if (file.isDirectory()) {
-//                            DefaultMutableTreeNode dirNode = new DefaultMutableTreeNode("📁 " + file.getName());
-//                            userNode.add(dirNode);
-//                        } else if (file.isFile()) {
-//                            DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode("🗎 " + file.getName());
-//                            userNode.add(fileNode);
-//                        }
-//                    }
-//                }
-//
-//                mainDir.add(userNode);
-//            } else {
-//                // Cargar todos los directorios si es administrador
-//                FTPFile[] files = clientFTP.showDirectoriesUser(directoryName);
-//
-//                if (files != null && files.length > 0) {
-//                    for (FTPFile file : files) {
-//                        if (file.isDirectory()) {
-//                            DefaultMutableTreeNode dirNode = new DefaultMutableTreeNode("📁 " + file.getName());
-//                            mainDir.add(dirNode);
-//                        } else if (file.isFile()) {
-//                            DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode("🗎 " + file.getName());
-//                            mainDir.add(fileNode);
-//                        }
-//                    }
-//                }
-//            }
-//        } catch (Exception e) {
-//            Utils.showErrorWindow(null, "Error al cargar los directorios.", "Error");
-//            e.printStackTrace();
-//        }
-//
-//        tree.setModel(new DefaultTreeModel(mainDir));
-//    }
-
-
     public void loadDirectories(String directoryName) {
         DefaultMutableTreeNode mainDir = new DefaultMutableTreeNode("FTP Server");
 
         try {
-            FTPFile[] files = clientFTP.showDirectoriesUser(directoryName);
+            FTPFile[] files;
 
-            if (files != null && files.length > 0) {
+            // Verificar si el usuario es administrador
+            if (manager.getUserRol() == 1) { // Administrador
+                files = clientFTP.showDirectoriesUser("/"); // Directorio raíz
+            } else {
+                // Cargar solo el directorio del usuario
+                String userDir = "/" + manager.getUserNickname();
+                files = clientFTP.showDirectoriesUser(userDir);
+
+                // Crear un nodo para la carpeta del usuario si no hay contenido
+                DefaultMutableTreeNode userNode = new DefaultMutableTreeNode("📁 " + manager.getUserNickname());
+                if (files == null || files.length == 0) {
+                    mainDir.add(userNode); // Agregar la carpeta del usuario como nodo principal
+                } else {
+                    // Agregar el contenido de la carpeta del usuario
+                    for (FTPFile file : files) {
+                        if (file.isDirectory()) {
+                            DefaultMutableTreeNode dirNode = new DefaultMutableTreeNode("📁 " + file.getName());
+                            dirNode.add(new DefaultMutableTreeNode("Cargando...")); // Placeholder para carga dinámica
+                            userNode.add(dirNode);
+                        } else if (file.isFile()) {
+                            DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode("🗎 " + file.getName());
+                            userNode.add(fileNode);
+                        }
+                    }
+                    mainDir.add(userNode); // Agregar el nodo del usuario al árbol principal
+                }
+            }
+
+            // Si es administrador o hay contenido en la raíz
+            if (files != null && files.length > 0 && manager.getUserRol() == 1) {
                 for (FTPFile file : files) {
                     if (file.isDirectory()) {
-                        // Mostrar el nombre del directorio con el emoticono
                         DefaultMutableTreeNode dirNode = new DefaultMutableTreeNode("📁 " + file.getName());
-
-                        // Añadir marcador para carga dinámica (En caso de que tarde en cargar algun directorio)
-                        dirNode.add(new DefaultMutableTreeNode("Cargando..."));
+                        dirNode.add(new DefaultMutableTreeNode("Cargando...")); // Placeholder para carga dinámica
                         mainDir.add(dirNode);
-                        //completado(true) porque carga los directorios
-
                     } else if (file.isFile()) {
-                        // Mostrar el nombre del archivo con el emoticono
                         DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode("🗎 " + file.getName());
                         mainDir.add(fileNode);
-
-                        //completado(true) porque carga los archivos
                     }
                 }
-            } else {
+            } else if (manager.getUserRol() == 1) {
                 Utils.showInfoWindow(null, "El directorio raíz está vacío.", "Información");
                 System.out.println("El directorio raíz está vacío: " + directoryName);
-                //Utils.LogRegister();
-
             }
+
         } catch (Exception e) {
             Utils.showErrorWindow(null, "Error al cargar los directorios desde la raíz.", "Error");
             System.out.println("Error al cargar los directorios desde la raíz: " + directoryName);
-            //Utils.LogRegister();
             e.printStackTrace();
         }
 
         ((DefaultTreeCellRenderer) tree.getCellRenderer()).setLeafIcon(null);
 
-        // Asignamos el modelo al árbol (jtree)
+        // Asignamos el modelo al árbol (JTree)
         tree.setModel(new DefaultTreeModel(mainDir));
 
         // Añadimos un listener para la expansión dinámica de los directorios
@@ -414,6 +374,7 @@ public class LocalServiceFTP {
             }
         });
     }
+
 
     private String getParentPath(DefaultMutableTreeNode node) {
         StringBuilder pathBuilder = new StringBuilder();
@@ -537,11 +498,6 @@ public class LocalServiceFTP {
         String serverPath = getDirNodeCreate(selectedNode);
 
         List<String> expandedPaths = saveTreeState();
-
-//        if (!manager.isPathAllowed(serverPath)) {
-//            Utils.showErrorWindow(null, "No tienes permisos para subir archivos en este directorio.", "Error");
-//            return;
-//        }
 
         // Subir el archivo al servidor FTP
         try {

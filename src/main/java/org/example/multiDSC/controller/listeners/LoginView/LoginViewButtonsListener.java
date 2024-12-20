@@ -26,7 +26,6 @@ public class LoginViewButtonsListener implements ActionListener {
         this.manager = manager;
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
         String nickname = manager.getMainController().getLogin().getTfNickname().getText();
@@ -50,6 +49,8 @@ public class LoginViewButtonsListener implements ActionListener {
                         manager.getMainController().getLogin().dispose(); //Cierra login
                         Utils.fillUser(manager, nickname);
 
+                        manager.getMainController().initServerFTP();
+
                         //Abre correctamente postLogin
                         manager.getMainController().setPostLoginModel(new PostLoginModel(manager));
                         manager.getMainController().setPostLogin(new PostLoginView(manager, manager.getMainController().getPostLoginModel()));
@@ -66,9 +67,5 @@ public class LoginViewButtonsListener implements ActionListener {
                 }
             }
         }
-
     }
-
 }
-
-

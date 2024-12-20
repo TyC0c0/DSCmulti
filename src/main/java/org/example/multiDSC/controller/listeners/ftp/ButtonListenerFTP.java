@@ -1,5 +1,6 @@
 package org.example.multiDSC.controller.listeners.ftp;
 
+import org.example.multiDSC.controller.ftpServer.ClientFTP;
 import org.example.multiDSC.controller.ftpServer.LocalServiceFTP;
 import org.example.multiDSC.view.FTPView;
 
@@ -17,10 +18,12 @@ public class ButtonListenerFTP implements ActionListener {
 
     private LocalServiceFTP localServiceFTP;
     private FTPView ftpView;
+    private ClientFTP clientFTP;
 
-    public ButtonListenerFTP (FTPView ftpView) {
+    public ButtonListenerFTP (FTPView ftpView, ClientFTP clientFTP) {
         this.ftpView = ftpView;
         this.localServiceFTP = ftpView.getLocalServiceFTP();
+        this.clientFTP = clientFTP;
     }
 
     @Override
@@ -29,6 +32,10 @@ public class ButtonListenerFTP implements ActionListener {
 
         switch (command) {
             case "Exit":
+                if (clientFTP != null) {
+                    clientFTP.disconnectFTP();
+                    System.out.println("Cliente desconectado correctamente.");
+                }
                 ftpView.dispose();
                 break;
 

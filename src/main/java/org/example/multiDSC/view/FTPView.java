@@ -55,7 +55,6 @@ public class FTPView extends JFrame {
         this.model = ftpModel;
         this.manager = manager;
 
-
         initializeFTPClient();
         initializeLocalServiceFTP(directoryName);
         setupMainFrame();
@@ -77,7 +76,7 @@ public class FTPView extends JFrame {
 
     private void initializeLocalServiceFTP(String directoryName) {
         tree = new JTree();
-        this.localServiceFTP = new LocalServiceFTP(clientFTP, tree, this);
+        this.localServiceFTP = new LocalServiceFTP(clientFTP, tree, this, manager);
     }
 
     private void setupMainFrame() {
@@ -188,21 +187,21 @@ public class FTPView extends JFrame {
 
     private void setupActions() {
         reloadButton.setActionCommand("Reload");
-        reloadButton.addActionListener(new ButtonListenerFTP(this));
+        reloadButton.addActionListener(new ButtonListenerFTP(this, clientFTP));
         renameButton.setActionCommand("Rename");
-        renameButton.addActionListener(new ButtonListenerFTP(this));
+        renameButton.addActionListener(new ButtonListenerFTP(this, clientFTP));
         createButton.setActionCommand("Create");
-        createButton.addActionListener(new ButtonListenerFTP(this));
+        createButton.addActionListener(new ButtonListenerFTP(this, clientFTP));
 
         uploadButton.setActionCommand("Upload");
-        uploadButton.addActionListener(new ButtonListenerFTP(this));
+        uploadButton.addActionListener(new ButtonListenerFTP(this, clientFTP));
 
         deleteButton.setActionCommand("Delete");
-        deleteButton.addActionListener(new ButtonListenerFTP(this));
+        deleteButton.addActionListener(new ButtonListenerFTP(this, clientFTP));
         downloadButton.setActionCommand("Download");
-        downloadButton.addActionListener(new ButtonListenerFTP(this));
+        downloadButton.addActionListener(new ButtonListenerFTP(this, clientFTP));
         exitButton.setActionCommand("Exit");
-        exitButton.addActionListener(new ButtonListenerFTP(this));
+        exitButton.addActionListener(new ButtonListenerFTP(this, clientFTP));
     }
 
     private JButton createSizedButton(String text, boolean isReloadButton) {
