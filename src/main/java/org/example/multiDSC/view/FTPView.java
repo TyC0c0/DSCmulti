@@ -48,10 +48,13 @@ public class FTPView extends JFrame {
 
     private ClientFTP clientFTP;
     private LocalServiceFTP localServiceFTP;
+    private Manager manager;
 
     // Constructor
     public FTPView(String directoryName, Manager manager, FTPModel ftpModel) {
         this.model = ftpModel;
+        this.manager = manager;
+
 
         initializeFTPClient();
         initializeLocalServiceFTP(directoryName);
@@ -65,7 +68,7 @@ public class FTPView extends JFrame {
     }
 
     private void initializeFTPClient() {
-        clientFTP = new ClientFTP();
+        clientFTP = new ClientFTP(manager);
         if (!clientFTP.connectFTP()) {
             Utils.showErrorWindow(this, "Error de conexión con el servidor FTP.", "Error");
             throw new RuntimeException("Failed to connect to FTP server");
