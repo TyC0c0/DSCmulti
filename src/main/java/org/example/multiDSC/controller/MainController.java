@@ -7,6 +7,8 @@ import org.example.multiDSC.controller.databaseConection.ConexionThread;
 import org.example.multiDSC.controller.listeners.ConfAdminView.ConfAdminButtonListener;
 import org.example.multiDSC.controller.listeners.ConfAdminView.ConfAdminDeleteButton;
 import org.example.multiDSC.controller.listeners.ConfAdminView.ConfAdminEditTextListener;
+import org.example.multiDSC.controller.listeners.Email.MailButtonsListener;
+import org.example.multiDSC.controller.listeners.Email.MailLabelListener;
 import org.example.multiDSC.controller.listeners.ConfUserView.ConfUserViewButtonsListener;
 import org.example.multiDSC.controller.listeners.LoginView.LabelListener;
 import org.example.multiDSC.controller.listeners.PostLogin.PostLoginButtonsListener;
@@ -98,6 +100,22 @@ public class MainController {
     public void UserViewAddModButtonListener(){
         manager.getMainController().getConfUser().getModButton().addActionListener(new ConfUserViewButtonsListener(manager));
         manager.getMainController().getConfUser().getModificationButtons().get(0).addActionListener(new ConfUserViewButtonsListener(manager));
+    }
+
+    public void addMailButtonsListener(){
+        for(int i=0; i<manager.getMainController().getMail().getButtonList().size(); i++){
+            manager.getMainController().getMail().getButtonList().get(i).addActionListener(new MailButtonsListener(manager));
+        }
+    }
+
+//    public void addMailLabelsListener(){
+//        for(int i=0; i<manager.getMainController().getMail().getLabelList().size(); i++){
+//            manager.getMainController().getMail().getLabelList().get(i).addMouseListener(new MailLabelListener(manager));
+//        }
+//    }
+
+    public void addSendEmailButtonsLlistener(){
+
     }
 
     public void hiloConexion() {

@@ -20,5 +20,8 @@ public class Manager {
     private String userDNI;
     private Integer userRol;
     private String userNickname;
+    private Thread mailThread;
+    private String revisando;
+
 
 }
