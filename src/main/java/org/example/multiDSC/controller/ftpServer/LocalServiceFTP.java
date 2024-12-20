@@ -51,6 +51,11 @@ public class LocalServiceFTP {
 
         String parentPath = getDirNodeCreate(selectedNode);
 
+//        if (!manager.isPathAllowed(parentPath)) {
+//            Utils.showErrorWindow(null, "No tienes permisos para crear directorios en este nivel.", "Error");
+//            return;
+//        }
+
         String newDirName = Utils.showInputDialog(null, "Introduce el nombre del nuevo directorio:", "Crear Directorio");
 
         if (newDirName == null || newDirName.trim().isEmpty()) {
@@ -119,6 +124,11 @@ public class LocalServiceFTP {
 
         String direction = getDirNodeDelete(selectedNode);
         System.out.println("Intentando eliminar: " + direction);
+
+//        if (!manager.isPathAllowed(direction)) {
+//            Utils.showErrorWindow(null, "No tienes permisos para eliminar este archivo o directorio.", "Error");
+//            return;
+//        }
 
         boolean success = false; // Inicializar como false por defecto
         int confirm = Utils.showConfirmDialog(null, "¿Seguro que lo quieres eliminar?", "Aviso");
@@ -275,6 +285,64 @@ public class LocalServiceFTP {
             Utils.showErrorWindow(null, "Ocurrió un error inesperado al intentar renombrar.", "Error");
         }
     }
+
+//    public boolean isPathAllowed(String path) {
+//        if (manager.isAdmin()) {
+//            return true; // Los administradores tienen acceso completo
+//        }
+//
+//        String userDir = "/" + manager.getUserNickname();
+//        return path.startsWith(userDir); // Solo permite rutas dentro del directorio del usuario
+//    }
+
+
+//    public void loadDirectories(String directoryName) {
+//        DefaultMutableTreeNode mainDir = new DefaultMutableTreeNode("FTP Server");
+//
+//        try {
+//            // Si el usuario no es administrador, cargar solo su directorio
+//            if (!manager.isAdmin()) {
+//                String userDir = "/" + manager.getUserNickname();
+//                FTPFile[] userFiles = clientFTP.showDirectoriesUser(userDir);
+//
+//                DefaultMutableTreeNode userNode = new DefaultMutableTreeNode("📁 " + manager.getUserNickname());
+//
+//                if (userFiles != null && userFiles.length > 0) {
+//                    for (FTPFile file : userFiles) {
+//                        if (file.isDirectory()) {
+//                            DefaultMutableTreeNode dirNode = new DefaultMutableTreeNode("📁 " + file.getName());
+//                            userNode.add(dirNode);
+//                        } else if (file.isFile()) {
+//                            DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode("🗎 " + file.getName());
+//                            userNode.add(fileNode);
+//                        }
+//                    }
+//                }
+//
+//                mainDir.add(userNode);
+//            } else {
+//                // Cargar todos los directorios si es administrador
+//                FTPFile[] files = clientFTP.showDirectoriesUser(directoryName);
+//
+//                if (files != null && files.length > 0) {
+//                    for (FTPFile file : files) {
+//                        if (file.isDirectory()) {
+//                            DefaultMutableTreeNode dirNode = new DefaultMutableTreeNode("📁 " + file.getName());
+//                            mainDir.add(dirNode);
+//                        } else if (file.isFile()) {
+//                            DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode("🗎 " + file.getName());
+//                            mainDir.add(fileNode);
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            Utils.showErrorWindow(null, "Error al cargar los directorios.", "Error");
+//            e.printStackTrace();
+//        }
+//
+//        tree.setModel(new DefaultTreeModel(mainDir));
+//    }
 
 
     public void loadDirectories(String directoryName) {
@@ -469,6 +537,11 @@ public class LocalServiceFTP {
         String serverPath = getDirNodeCreate(selectedNode);
 
         List<String> expandedPaths = saveTreeState();
+
+//        if (!manager.isPathAllowed(serverPath)) {
+//            Utils.showErrorWindow(null, "No tienes permisos para subir archivos en este directorio.", "Error");
+//            return;
+//        }
 
         // Subir el archivo al servidor FTP
         try {

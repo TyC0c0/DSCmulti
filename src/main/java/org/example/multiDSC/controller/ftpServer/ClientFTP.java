@@ -3,32 +3,61 @@ package org.example.multiDSC.controller.ftpServer;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.example.multiDSC.controller.Utils;
+import org.example.multiDSC.model.controllModels.Manager;
 
 import java.io.*;
 
 /**
- * ClientFTP - ClientFTP ...
+ * ClientFTP - The ClientFTP is the user which connect to the ServerFTP.
+ * This user will have his own directory in the FTP.
  *
  * @author Ramón Reina González
- * @version 1.5
+ * @version 1.6
  */
 
 public class ClientFTP {
 
-    private static final String SERVER = "localhost"; // IP del servidor FTP
-    private static final int PORT = 2121; // FTP Port
-    private static final String ADMIN_USER = "admin";
-    private static final String ADMIN_PASS = "1234";
-
     private FTPClient user;
+    private Manager manager;
 
-    public ClientFTP() {
+    public ClientFTP(Manager manager) {
         user = new FTPClient();
+        this.manager = manager;
     }
 
-    // Esta clase se conecta al servidor FTP de manera local y realiza la acción de
-    // listar archivos
+    private static final String SERVER = "localhost"; // IP del servidor FTP
+    private static final int PORT = 2121; // FTP Port
 
+    private boolean isAdminAccess = false;
+    private String baseDirectory = "/";
+
+    public void setAdminAccess(boolean isAdminAccess) {
+        this.isAdminAccess = isAdminAccess;
+    }
+
+    public boolean isAdminAccess() {
+        return isAdminAccess;
+    }
+
+    public void setBaseDirectory(String baseDirectory) {
+        this.baseDirectory = baseDirectory;
+    }
+
+    public String getBaseDirectory() {
+        return baseDirectory;
+    }
+
+    // This method enable or disable admin permissions from the loged user
+    public void configureClientPermissions(ClientFTP clientFTP) {
+        if (manager.getUserRol() == 1) { // Administrador
+            System.out.println("Configurando cliente FTP para administrador: Acceso completo.");
+            clientFTP.setAdminAccess(true);
+        } else { // Usuario normal
+            System.out.println("Configurando cliente FTP para usuario normal: Acceso restringido.");
+            clientFTP.setBaseDirectory("/" + manager.getUserNickname()); // Limita el acceso al directorio del usuario
+            clientFTP.setAdminAccess(false);
+        }
+    }
 
     // También hay que organizar los usuarios ya que los admin tienen permisos a
     // todso los directorios
@@ -56,15 +85,17 @@ public class ClientFTP {
             System.out.println("Intentando conexión con el Servidor FTP...");
             user.connect(SERVER, PORT);
 
-            if (!user.login(ADMIN_USER, ADMIN_PASS)) {
-                Utils.showErrorWindow(null, "Ha habido un problema en el login (Usuario o contraseña incorrectos)", "Error");
+            System.out.println(manager.getUserNickname());
+            System.out.println(manager.getUserPassword());
+
+            if (!user.login(manager.getUserNickname(), manager.getUserPassword())) {
+                Utils.showErrorWindow(null, "Ha habido un problema en el Login (Usuario o contraseña incorrectos)", "Error");
                 System.out.println("Ha habido un problema en el login (Usuario o contraseña incorrectos)");
                 return false;
             } else {
                 System.out.println("Login correcto! Acceso permitido...");
                 return true;
             }
-
         } catch (IOException e) {
             System.out.println("Ha habido un error al conectarse al Servidor FTP...");
             e.printStackTrace();
@@ -183,7 +214,8 @@ public class ClientFTP {
     }
 
     public static void main(String[] args) {
-        ClientFTP cliente = new ClientFTP();
+        Manager manager = new Manager();
+        ClientFTP cliente = new ClientFTP(manager);
 
         // Existe un propiedad que es exactamente igual que esta linea pero (ADMIN_USER,
         // ADMIN_PASS)

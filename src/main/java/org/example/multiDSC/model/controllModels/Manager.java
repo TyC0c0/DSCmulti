@@ -21,5 +21,4 @@ public class Manager {
     private Integer userRol;
     private String userNickname;
 
-
 }
