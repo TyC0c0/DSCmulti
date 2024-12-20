@@ -2,8 +2,10 @@ package org.example.multiDSC.controller.listeners.ConfAdminView;
 
 import org.example.multiDSC.model.controllModels.Manager;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.Map;
 
 public class ConfAdminEditTextListener implements ActionListener {
@@ -19,6 +21,39 @@ public class ConfAdminEditTextListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("no he modificado porque no hago nada todavia " + userId);
+        // Obtener el JComboBox para el rol
+        JComboBox<String> roleComboBox = manager.getMainController().getEditWindow().getRoleComboBox();
+        String rolNombre = (String) roleComboBox.getSelectedItem(); // Obtener el rol seleccionado
+
+        int idRol;
+        if ("Admin".equalsIgnoreCase(rolNombre)) {
+            idRol = 1;
+        } else if ("Usuario".equalsIgnoreCase(rolNombre)) {
+            idRol = 2;
+        } else {
+            System.err.println("Rol desconocido: " + rolNombre);
+            return; // Salir si el rol no es válido
+        }
+
+        // Construcción de la query para actualizar
+        String updateQuery = String.format(
+                "UPDATE \"USUARIO\" " +
+                        "SET \"Nombre\" = '%s', \"Correo\" = '%s', \"id_rol\" = %d WHERE \"id\" = %d;",
+                manager.getMainController().getEditWindow().getNameField().getText(), // Nuevo nombre
+                manager.getMainController().getEditWindow().getEmailField().getText(), // Nuevo correo
+                idRol,                  // id_rol calculado
+                userId                  // ID del usuario
+        );
+
+        try {
+            // Ejecutar la query con sqlModification
+            manager.getConexion().sqlModification(updateQuery);
+            manager.getMainController().getEditWindow().dispose();
+            System.out.println("Usuario modificado correctamente.");
+        } catch (SQLException ex) {
+            System.err.println("Error al modificar el usuario: " + ex.getMessage());
+        }
     }
+
+
 }

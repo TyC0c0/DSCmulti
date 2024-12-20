@@ -5,12 +5,14 @@ import lombok.Setter;
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.controller.databaseConection.ConexionThread;
 import org.example.multiDSC.controller.listeners.ConfAdminView.ConfAdminButtonListener;
+import org.example.multiDSC.controller.listeners.ConfAdminView.ConfAdminDeleteButton;
 import org.example.multiDSC.controller.listeners.ConfAdminView.ConfAdminEditTextListener;
 import org.example.multiDSC.controller.listeners.LoginView.LabelListener;
 import org.example.multiDSC.controller.listeners.PostLogin.PostLoginButtonsListener;
 import org.example.multiDSC.controller.listeners.LoginView.LoginViewButtonsListener;
 import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonsListener;
 import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.controllModels.SqlSentences;
 import org.example.multiDSC.model.viewModels.*;
 import org.example.multiDSC.view.*;
 
@@ -46,6 +48,7 @@ public class MainController {
     private ConfAdminView confAdmin;
     private ConfAdminModel confAdminModel;
     private EditWindow editWindow;
+    private SqlSentences sqlSentences;
 
     public MainController() {
         init();
@@ -77,7 +80,7 @@ public class MainController {
     public void ConfAdminAddActionListeners() {
         for (int i = 0; i < manager.getMainController().getConfAdmin().getModifyButtons().size(); i++){
             manager.getMainController().getConfAdmin().getModifyButtons().get(i).addActionListener(new ConfAdminButtonListener(manager));
-            manager.getMainController().getConfAdmin().getDeleteButtons().get(i).addActionListener(new ConfAdminButtonListener(manager));
+            manager.getMainController().getConfAdmin().getDeleteButtons().get(i).addActionListener(new ConfAdminDeleteButton(manager));
         }
     }
 

@@ -181,7 +181,7 @@ public class ConectionBD {
         try {
             connect(); // Asegúrate de que la conexión está establecida
             statement = connection.createStatement();
-            rs = statement.executeQuery(sqlSentences.getSencences().get(2)); // Consulta de nombres, correos, y roles.
+            rs = statement.executeQuery(sqlSentences.getSencences().get(3)); // Consulta de nombres, correos, y roles.
 
             while (rs.next()) {
                 Map<String, String> userData = new HashMap<>();
@@ -204,7 +204,37 @@ public class ConectionBD {
 
         return userDataList;
     }
+    public ArrayList<Map<String, String>> getUserData2() throws SQLException {
+        ArrayList<Map<String, String>> userDataList = new ArrayList<>();
+        Statement statement = null;
+        ResultSet rs = null;
 
+        try {
+            connect(); // Asegúrate de que la conexión está establecida
+            statement = connection.createStatement();
+            rs = statement.executeQuery(sqlSentences.getSencences().get(2)); // Consulta de nombres, correos, y roles.
+
+            while (rs.next()) {
+                Map<String, String> userData = new HashMap<>();
+                userData.put("id", rs.getString("id"));
+                userData.put("Nombre", rs.getString("Nombre"));
+                userData.put("Correo", rs.getString("Correo"));
+                userData.put("id_rol", rs.getString("id_rol"));
+                userDataList.add(userData);
+
+                // Imprimir los datos para depuración
+                System.out.println(userData);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Añadir para depuración
+            throw new SQLException("Error al obtener datos de los usuarios: ", e);
+        } finally {
+            if (rs != null) rs.close();
+            if (statement != null) statement.close();
+        }
+
+        return userDataList;
+    }
 
 
 
