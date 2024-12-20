@@ -1,29 +1,27 @@
 package org.example.multiDSC.controller.listeners.ftp;
 
-import org.example.multiDSC.controller.ftpServer.ClientFTP;
 import org.example.multiDSC.controller.ftpServer.LocalServiceFTP;
 import org.example.multiDSC.view.FTPView;
-import org.example.multiDSC.view.PostLoginView;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+/**
+ * ButtonListenerFTP - This class set actions for the buttons.
+ *
+ * @author Ramón Reina González
+ * @version 1.2
+ */
 
 public class ButtonListenerFTP implements ActionListener {
 
     private LocalServiceFTP localServiceFTP;
     private FTPView ftpView;
-    private ClientFTP clientFTP;
 
     public ButtonListenerFTP (FTPView ftpView) {
         this.ftpView = ftpView;
         this.localServiceFTP = ftpView.getLocalServiceFTP();
     }
-
-//    public void deteleDirectory() {
-//        String selectedDir = ftpView
-//    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -32,7 +30,6 @@ public class ButtonListenerFTP implements ActionListener {
         switch (command) {
             case "Exit":
                 ftpView.dispose();
-                //new PostLoginView();
                 break;
 
             case "Reload":
@@ -44,11 +41,10 @@ public class ButtonListenerFTP implements ActionListener {
                 break;
 
             case "Upload":
-                //localServiceFTP.uploadFile();
+                localServiceFTP.uploadFile();
                 break;
             case "Create":
-
-                //clientFTP.createDirectory("");
+                localServiceFTP.createNewDirectory();
                 break;
 
             case "Delete":
@@ -56,10 +52,11 @@ public class ButtonListenerFTP implements ActionListener {
                 break;
 
             case "Download":
+                localServiceFTP.downloadFile();
                 break;
 
             default:
-                System.out.println("Unknown command..."+command);
+                System.err.println("Unknown command..."+command);
                 break;
         }
     }

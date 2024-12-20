@@ -74,7 +74,7 @@ public class FTPView extends JFrame {
 
     private void initializeLocalServiceFTP(String directoryName) {
         tree = new JTree();
-        this.localServiceFTP = new LocalServiceFTP(clientFTP, tree);
+        this.localServiceFTP = new LocalServiceFTP(clientFTP, tree, this);
     }
 
     private void setupMainFrame() {
@@ -115,6 +115,9 @@ public class FTPView extends JFrame {
     private void setupTreeRenderer() {
         tree.setBackground(new Color(100, 100, 100));
         tree.setBorder(BorderFactory.createEmptyBorder());
+        tree.setDragEnabled(true);
+        tree.setDropMode(DropMode.ON_OR_INSERT);
+
         DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) tree.getCellRenderer();
         renderer.setBackgroundNonSelectionColor(new Color(100, 100, 100));
         renderer.setBackgroundSelectionColor(new Color(150, 150, 150));

@@ -12,6 +12,13 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Utils - This is the utilities class.
+ *
+ * @author Isaac Requena Santiago, Ramón Reina González
+ * @version 1.3
+ */
+
 public class Utils {
 
     public String switchLanguage(String language) {
@@ -38,9 +45,9 @@ public class Utils {
         JOptionPane.showMessageDialog(parentComponent, infoMessage, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
-//    public static void showInputDialog(Component parentComponent, String message, String title) {
-//        JOptionPane.showInputDialog(parentComponent, , title, JOptionPane.INPUT_VALUE_PROPERTY);
-//    }
+    public static String showInputDialog(Component parentComponent, String inputMessage, String title) {
+        return JOptionPane.showInputDialog(parentComponent, inputMessage , title, JOptionPane.PLAIN_MESSAGE);
+    }
 
     public static int showConfirmDialog(Component parentComponent, String message, String title) {
         return JOptionPane.showConfirmDialog(parentComponent, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
