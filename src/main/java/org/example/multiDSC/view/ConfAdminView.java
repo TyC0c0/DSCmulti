@@ -111,7 +111,7 @@ public class ConfAdminView extends JFrame {
             JButton modifyButton = new JButton("Modify");
             modifyButton.setActionCommand(userId); // Set the userId as ActionCommand
             JButton deleteButton = new JButton("Delete");
-
+            deleteButton.setActionCommand(String.valueOf(userId));
             modifyButtons.add(modifyButton);
             deleteButtons.add(deleteButton);
 

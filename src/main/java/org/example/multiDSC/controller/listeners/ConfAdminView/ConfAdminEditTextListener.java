@@ -48,12 +48,27 @@ public class ConfAdminEditTextListener implements ActionListener {
         try {
             // Ejecutar la query con sqlModification
             manager.getConexion().sqlModification(updateQuery);
+
+            // Mostrar el mensaje de éxito
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Usuario actualizado correctamente.",
+                    "Éxito",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            // Cerrar la ventana de edición
             manager.getMainController().getEditWindow().dispose();
             System.out.println("Usuario modificado correctamente.");
         } catch (SQLException ex) {
+            // Si ocurre un error, mostrar el mensaje de error
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Error al actualizar el usuario: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
             System.err.println("Error al modificar el usuario: " + ex.getMessage());
         }
     }
-
-
 }
