@@ -35,6 +35,8 @@ public class PostLoginButtonsListener implements ActionListener {
                     manager.getMainController().setMailModel(new MailModel(manager));
                 }
                 manager.getMainController().setMail(new MailView(manager, manager.getMainController().getMailModel()));
+                Thread hmail= new Thread(manager.getMainController().getMail());
+                hmail.start();
                 //manager.getMainController().addMailListeners();
                 manager.getMainController().getMail().setVisible(true);
             }

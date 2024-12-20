@@ -1,7 +1,9 @@
 package org.example.multiDSC.controller.listeners.LoginView;
 
-import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.model.controllModels.Manager;
+import org.example.multiDSC.model.viewModels.ConfAdminModel;
+import org.example.multiDSC.model.viewModels.UserRegisterModel;
+import org.example.multiDSC.view.ConfAdminView;
 import org.example.multiDSC.view.LoginView;
 import org.example.multiDSC.view.UserRegistrerView;
 
@@ -13,7 +15,7 @@ public class LabelListener implements MouseListener {
     private final LoginView loginView;
     private final Manager manager;
 
-    public LabelListener(LoginView loginView, ConectionBD conectionBD, Manager manager) {
+    public LabelListener(LoginView loginView, Manager manager) {
         this.loginView = loginView;
         this.manager = manager;
     }
@@ -21,7 +23,13 @@ public class LabelListener implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         loginView.dispose();
-        manager.getMainController().getRegister().setVisible(true); // Mostrar la vista de registro
+
+        if (manager.getMainController().getRegisterModel() ==null){
+            manager.getMainController().setRegisterModel(new UserRegisterModel(manager));
+        }
+        manager.getMainController().setRegister(new UserRegistrerView(manager, manager.getMainController().getRegisterModel()));
+        manager.getMainController().addUserRegisterListeners();
+        manager.getMainController().getRegister().setVisible(true);
     }
 
     @Override

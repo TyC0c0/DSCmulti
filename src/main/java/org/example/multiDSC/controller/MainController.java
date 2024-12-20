@@ -80,10 +80,10 @@ public class MainController {
             manager.getMainController().getConfAdmin().getDeleteButtons().get(i).addActionListener(new ConfAdminButtonListener(manager));
         }
     }
+
     public void EditWindowAddActionListener(Map<String, String> userData, int userId) {
         manager.getMainController().getEditWindow().getApplyButton().addActionListener(new ConfAdminEditTextListener(manager, userData, userId));
     }
-
 
     public void hiloConexion() {
         conexion = new ConectionBD();
@@ -110,7 +110,7 @@ public class MainController {
     public void addLoginListeners() {
         manager.getMainController().getLogin().getBtnOk().addActionListener(new LoginViewButtonsListener(manager));
         manager.getMainController().getLogin().getBtnCancel().addActionListener(new LoginViewButtonsListener(manager));
-        manager.getMainController().getLogin().getLblDontHaveBeenRegistred().addMouseListener(new LabelListener(manager.getMainController().getLogin(), conexion, manager));
+        manager.getMainController().getLogin().getLblDontHaveBeenRegistred().addMouseListener(new LabelListener(manager.getMainController().getLogin(), manager));
     }
 
     public void addPostLoginListeners(){

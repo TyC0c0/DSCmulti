@@ -125,10 +125,8 @@ public class MailView extends JFrame implements Runnable{
     @SneakyThrows
     @Override
     public void run() {
-        System.out.println("runsi");
         while(keepChecking){
 
-            System.out.println("runemail");
             checkEmails();
             try {
                 Thread.sleep(3000);
@@ -144,7 +142,6 @@ public class MailView extends JFrame implements Runnable{
     }
 
     private void checkEmails(){
-        System.out.println("chechmail");
         receiveEmail.check();
         System.out.println("Inbox recargado"+ recharges);
         recharges++;

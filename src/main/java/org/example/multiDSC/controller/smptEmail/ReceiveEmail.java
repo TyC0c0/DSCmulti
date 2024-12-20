@@ -19,10 +19,10 @@ public class ReceiveEmail {
 
     public ReceiveEmail(Manager manager){
         this.manager=manager;
-//        emailFrom=mainController.getCurrentUser().getEmail();
-//        passwordFrom=mainController.getCurrentUser().getPassword();
-        emailFrom="diegolg20037@gmail.com";
-        passwordFrom="nmvvcsyzkzczkviy";
+        emailFrom=manager.getUserEmail();
+        passwordFrom=manager.getUserPassword();
+        //emailFrom="arbarogarsia@gmail.com";
+        //passwordFrom="qhytdkcfmuykeffv";
         properties= new Properties();
     }
     @SneakyThrows
@@ -49,7 +49,7 @@ public class ReceiveEmail {
 
         int z=0;
         String from;
-        int start = Math.max(0, message.length - 15);
+        int start = Math.max(0, message.length - 1);
         for (int i = message.length - 1; i >= start; i--) {
             Message message1= message[i];
             from=removeExtra(message1.getFrom()[0].toString());
