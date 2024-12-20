@@ -45,7 +45,7 @@ public class PostLoginButtonsListener implements ActionListener {
                         manager.getMainController().setConfAdminModel(new ConfAdminModel(manager));
                     }
                     manager.getMainController().setConfAdmin(new ConfAdminView(manager, manager.getMainController().getConfAdminModel()));
-                    //manager.getMainController().addConfigAdminListeners();
+                    manager.getMainController().ConfAdminAddActionListeners();
                     manager.getMainController().getConfAdmin().setVisible(true);
                 }
                 if(manager.getUserRol()== 2){
