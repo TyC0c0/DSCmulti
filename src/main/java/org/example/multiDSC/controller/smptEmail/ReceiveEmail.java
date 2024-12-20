@@ -2,11 +2,9 @@ package org.example.multiDSC.controller.smptEmail;
 
 import lombok.SneakyThrows;
 import org.example.multiDSC.model.controllModels.Manager;
-import javax.mail.Folder;
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Store;
+import javax.mail.*;
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Properties;
 
 public class ReceiveEmail {
@@ -16,62 +14,78 @@ public class ReceiveEmail {
     private Session session;
     private static String emailFrom = "";
     private static String passwordFrom = "";
+    private ArrayList<Message> messages = new ArrayList<>();  // Lista para almacenar los mensajes
 
-    public ReceiveEmail(Manager manager){
-        this.manager=manager;
-        emailFrom=manager.getUserEmail();
-        passwordFrom=manager.getUserPassword();
-        //emailFrom="arbarogarsia@gmail.com";
-        //passwordFrom="qhytdkcfmuykeffv";
-        properties= new Properties();
+    public ReceiveEmail(Manager manager) {
+        this.manager = manager;
+        emailFrom = manager.getUserEmail();
+        passwordFrom = manager.getUserPassword();
+        properties = new Properties();
     }
+
     @SneakyThrows
-    public void check(){
-        System.out.println("receive");
-        // Mail transfer protocol
+    public void check() {
+        System.out.println("Checking emails...");
+
+        // Configuración del protocolo de correo
         properties.put("mail.smtp.starttls.enable", "true");
         properties.setProperty("mail.store.protocol", "imaps");
         properties.setProperty("mail.imaps.host", "imap.gmail.com");
         properties.setProperty("mail.imaps.port", "993");
         properties.setProperty("mail.imaps.ssl.enable", "true");
 
-        session= Session.getDefaultInstance(properties);
+        session = Session.getDefaultInstance(properties);
 
-        // Modeling messages and access protocol
-        Store store= session.getStore("imaps");
+        // Conexión al almacén de correos
+        Store store = session.getStore("imaps");
         store.connect("imap.gmail.com", emailFrom, passwordFrom);
 
-        // Folder object to open email inbox
-        Folder folder= store.getFolder("INBOX");
+        // Abrir la carpeta de entrada (INBOX)
+        Folder folder = store.getFolder("INBOX");
         folder.open(Folder.READ_ONLY);
 
-        Message[] message = folder.getMessages();
+        // Obtener los mensajes
+        messages.clear();  // Limpiar la lista de mensajes antes de agregar nuevos
+        Message[] messageArray = folder.getMessages();
 
-        int z=0;
-        String from;
-        int start = Math.max(0, message.length - 1);
-        for (int i = message.length - 1; i >= start; i--) {
-            Message message1= message[i];
-            from=removeExtra(message1.getFrom()[0].toString());
+        // Limpiar la lista antes de añadir nuevos correos
+        DefaultListModel<String> listModel = (DefaultListModel<String>) manager.getMainController().getMail().getMailList().getModel();
+        listModel.clear();
 
-            DefaultListModel<String> listModel = (DefaultListModel<String>) manager.getMainController().getMail().getMailList().getModel();
-            // Crear el nuevo registro
-            String newEntry = z + from + "Asunto: " + message1.getSubject();
+        // Iterar sobre los mensajes y añadirlos al modelo
+        for (int i = messageArray.length - 1; i >= 0; i--) {
+            Message message = messageArray[i];
+            messages.add(message);  // Guardar el mensaje en la lista
 
-            System.out.println("Añadiendo "+ newEntry);
-            // Añadir el registro al modelo
+            // Procesar el remitente
+            String from = removeExtra(message.getFrom()[0].toString());
+
+            // Crear el nuevo registro para el correo
+            String newEntry = "De: " + from + " | Asunto: " + message.getSubject();
+
+            // Añadir el registro al modelo de la lista
             listModel.addElement(newEntry);
-            z++;
-            System.out.println("si");
         }
 
-        folder.close(true);
+        // Cerrar conexiones
+        folder.close(false);
         store.close();
     }
 
-    private String removeExtra(String from){
-        from= from.replaceFirst("<.*?>", "");
-        from="<b>"+ "De: "+ from+"</b>";
+    private String removeExtra(String from) {
+        // Limpiar el remitente del correo
+        if (from.contains("<")) {
+            from = from.replaceAll("<.*?>", "").trim();
+        }
         return from;
     }
+
+    // Método para obtener el mensaje por índice
+    public Message getMessage(int index) {
+        if (index >= 0 && index < messages.size()) {
+            return messages.get(index);  // Devolver el mensaje desde la lista
+        }
+        return null;  // Si el índice no es válido, devolver null
+    }
 }
+

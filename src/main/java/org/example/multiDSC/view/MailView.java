@@ -4,6 +4,9 @@ import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.MailModel;
 import org.example.multiDSC.controller.smptEmail.ReceiveEmail;
 
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.Multipart;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,13 +17,13 @@ import lombok.SneakyThrows;
 
 /**
  * MailView - Represents the main view of a mail application.*
- * @author Ivan Guerrero Romero
- * @version 1.0
+ * @author Ivan Guerrero Romero, Isaac Requena Santiago
+ * @version 2.0
  */
 
 @Getter
 @Setter
-public class MailView extends JFrame implements Runnable{
+public class MailView extends JFrame implements Runnable {
 
     private MailModel model;
     private JPanel mainPanel;
@@ -28,11 +31,11 @@ public class MailView extends JFrame implements Runnable{
     private JList<String> mailList;
     private JScrollPane scrollPane;
     private ReceiveEmail receiveEmail;
-    private boolean keepChecking=true;
-    private int recharges =0;
+    private boolean keepChecking = true;
+    private int recharges = 0;
 
     public MailView(Manager manager, MailModel mailModel) {
-       this.model = mailModel;
+        this.model = mailModel;
         // Configuración del marco
         setTitle("Mail");
         setSize(900, 500);
@@ -84,7 +87,6 @@ public class MailView extends JFrame implements Runnable{
         panelLeftWrapper.add(panelLeft, BorderLayout.NORTH);
         mainPanel.add(panelLeftWrapper, BorderLayout.WEST);
 
-
         // Panel central
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.setBackground(Color.darkGray);
@@ -94,10 +96,10 @@ public class MailView extends JFrame implements Runnable{
         mailList.setBackground(Color.LIGHT_GRAY); // Color de fondo del JList
         mailList.setForeground(Color.BLACK); // Color del texto del JList
 
+        // Agregar el JList a un JScrollPane para permitir el desplazamiento
         scrollPane = new JScrollPane(mailList);
         scrollPane.setBorder(BorderFactory.createEmptyBorder()); // Eliminar el borde del JScrollPane
         centerPanel.add(scrollPane, BorderLayout.CENTER);
-
 
         // Agregar botones Refresh y Back al panel central debajo del JList
         JPanel centerButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
@@ -118,32 +120,90 @@ public class MailView extends JFrame implements Runnable{
         refreshButton.setText(texts[7]);
         backButton.setText(texts[8]);
 
-        //setVisible(true);
+        // Agregar Listener para el JList
+        mailList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int selectedIndex = mailList.getSelectedIndex();
+                if (selectedIndex >= 0) {
+                    try {
+                        // Obtener el mensaje seleccionado desde ReceiveEmail
+                        Message selectedMessage = receiveEmail.getMessage(selectedIndex);
+                        if (selectedMessage != null) {
+                            String content = getMessageContent(selectedMessage);
+                            // Mostrar el contenido del mensaje en un JOptionPane
+                            JOptionPane.showMessageDialog(
+                                    this,
+                                    content,
+                                    "Contenido del Mensaje",
+                                    JOptionPane.INFORMATION_MESSAGE
+                            );
+                        } else {
+                            JOptionPane.showMessageDialog(
+                                    this,
+                                    "No se encontró el mensaje.",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(
+                                this,
+                                "Error al cargar el contenido del mensaje: " + ex.getMessage(),
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                    }
+                }
+            }
+        });
+
+
+        // Inicializar la clase ReceiveEmail para cargar los correos
         receiveEmail = new ReceiveEmail(manager);
     }
 
     @SneakyThrows
     @Override
     public void run() {
-        while(keepChecking){
-
+        while (keepChecking) {
             checkEmails();
             try {
-                Thread.sleep(3000);
+                Thread.sleep(10000);  // Espera de 10 segundos antes de revisar los correos nuevamente
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
-            } catch (Exception e1){
-                System.out.println("Error al revisar correos: "+ e1.getMessage());
+            } catch (Exception e1) {
+                System.out.println("Error al revisar correos: " + e1.getMessage());
                 e1.printStackTrace();
             }
-
-        setVisible(true);
+            setVisible(true);
         }
     }
 
-    private void checkEmails(){
-        receiveEmail.check();
-        System.out.println("Inbox recargado"+ recharges);
+    private void checkEmails() {
+        receiveEmail.check();  // Verifica los correos en el servidor
+        System.out.println("Inbox recargado " + recharges);
         recharges++;
     }
+
+    // Método para obtener el contenido de un mensaje
+    private String getMessageContent(Message message) throws Exception {
+        Object content = message.getContent();
+        if (content == null) {
+            return "El mensaje no tiene contenido.";
+        }
+        if (content instanceof String) {
+            return (String) content;
+        } else if (content instanceof Multipart) {
+            Multipart multipart = (Multipart) content;
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < multipart.getCount(); i++) {
+                BodyPart bodyPart = multipart.getBodyPart(i);
+                builder.append(bodyPart.getContent().toString()).append("\n");
+            }
+            return builder.toString();
+        }
+        return "No se puede mostrar el contenido del mensaje.";
+    }
 }
+
+

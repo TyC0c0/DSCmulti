@@ -1,5 +1,7 @@
 package org.example.multiDSC.view;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.viewModels.SendMailModel;
 
@@ -12,6 +14,8 @@ Class to configure the view which allows to the users sending emails
 @author Alvaro Garcia Lopez
 @version 1.1
 */
+@Getter
+@Setter
 public class SendMailView {
     private SendMailModel model;
     private JTextField textField1;
@@ -34,12 +38,13 @@ public class SendMailView {
     private JPanel row1;
     private JPanel row2;
     private JPanel row3;
+    JFrame frame;
 
     public SendMailView(Manager manager, SendMailModel sendMailModel) {
 
         this.model = sendMailModel;
 
-        JFrame frame = new JFrame("Send Mail");
+        frame = new JFrame("Send Mail");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 400);
         frame.setLayout(new BorderLayout());

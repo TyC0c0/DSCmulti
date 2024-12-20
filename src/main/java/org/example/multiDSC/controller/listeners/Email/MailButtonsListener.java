@@ -42,7 +42,7 @@ public class MailButtonsListener implements ActionListener {
 
             case "Refresh":
                 // Acción para refrescar la bandeja de entrada (revisar correos)
-                manager.getMainController().getMail().getReceiveEmail().check(manager.getRevisando());
+                manager.getMainController().getMail().getReceiveEmail().check();
                 break;
 
             case "Back":
