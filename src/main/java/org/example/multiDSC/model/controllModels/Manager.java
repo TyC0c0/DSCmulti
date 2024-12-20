@@ -14,11 +14,14 @@ public class Manager {
     private ConectionBD conexion;
     private ConexionThread conexionThread;
     private MainController mainController;
+    private String userNickname;
     private String userEmail;
     private String userPassword;
     private String userIP;
     private String userDNI;
     private Integer userRol;
+    private Thread mailThread;
+    private String revisando;
 
 
 }

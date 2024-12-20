@@ -109,6 +109,7 @@ public class Utils {
                 Object[] values = entry.getValue();
 
                 // Asignar los datos al manager
+                manager.setUserNickname(nickname);
                 manager.setUserEmail((String) values[0]);
                 manager.setUserPassword((String) values[1]);
                 //manager.setUserIP(ip);
