@@ -1,6 +1,8 @@
 package org.example.multiDSC.controller.ftpServer;
 
 import java.io.File;
+import java.io.IOException;
+
 import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
 import org.apache.ftpserver.ftplet.UserManager;
@@ -29,10 +31,15 @@ public class ServerFTP {
 
     public void initServer() {
         try {
+            // Validar que el Manager tiene los datos necesarios
+            if (manager.getUserNickname() == null || manager.getUserNickname().isEmpty() ||
+                    manager.getUserPassword() == null || manager.getUserPassword().isEmpty()) {
+                throw new IllegalArgumentException("El Manager no tiene configurado el nickname o la contraseña.");
+            }
+
             // Configurar el servidor FTP
             FtpServerFactory serverFactory = new FtpServerFactory();
             ListenerFactory listenerFactory = new ListenerFactory();
-
             // Configurar puerto FTP
             listenerFactory.setPort(2121);
             serverFactory.addListener("default", listenerFactory.createListener());
@@ -45,38 +52,47 @@ public class ServerFTP {
             user.setName(manager.getUserNickname());
             user.setPassword(manager.getUserPassword());
 
-            String homeDirPath = "C:/FTPserver/" + manager.getUserNickname(); // Directorio personal del usuario
-            File homeDir = new File(homeDirPath);
+            // Configurar el directorio raíz
+            String baseDir = "C:/FTPserver";
+            File adminDir = new File(baseDir + "/"+manager.getUserNickname());
 
-            user.setHomeDirectory(homeDir.getAbsolutePath()); // Directorio de inicio del usuario
+            if (manager.getUserRol() == 1) { // Administrador
+                user.setHomeDirectory(baseDir); // El administrador accede al directorio base completo
+                if (!adminDir.exists()) {
+                    adminDir.mkdirs(); // Crear carpeta admin1 si no existe
+                    System.out.println("Carpeta admin1 creada automáticamente.");
+                }
+            } else {
+                // Usuario normal: limitar acceso a su carpeta
+                String userDirPath = baseDir + "/" + manager.getUserNickname();
+                File userDir = new File(userDirPath);
+                if (!userDir.exists()) {
+                    userDir.mkdirs(); // Crear la carpeta del usuario si no existe
+                }
+                user.setHomeDirectory(userDirPath); // Establecemos su directorio personal como el "raíz"
+            }
+
             user.setAuthorities(java.util.Collections.singletonList(new WritePermission())); // Permisos de escritura
 
             userManager.save(user);
             serverFactory.setUserManager(userManager);
-
-            // Crear el directorio de inicio si no existe
-            if (!homeDir.exists()) {
-                homeDir.mkdirs();
-                System.out.println("Se creó el Directorio FTP para el usuario " + manager.getUserNickname() + ": " + homeDir.getAbsolutePath());
-            }
+            userManager.save(user);
+            serverFactory.setUserManager(userManager);
 
             // Iniciar el servidor FTP
             FtpServer server = serverFactory.createServer();
-            System.out.println("El servidor FTP está iniciado en el puerto " + listenerFactory.getPort());
             server.start();
 
+            // Indicar el rol del usuario en el log
+            System.out.println("Servidor FTP iniciado.");
+            System.out.println("Usuario configurado como " +
+                    (manager.getUserRol() == 1 ? "administrador" : "usuario normal") + ".");
+
+        } catch (IllegalArgumentException e) {
+            Utils.showErrorWindow(null, "Error de configuración del usuario: " + e.getMessage(), "Error");
         } catch (Exception e) {
             Utils.showErrorWindow(null, "Ha habido un error al arrancar el Servidor FTP. Disculpe las molestias...", "Error");
             System.err.println("Error al arrancar el servidor FTP: "+e.getMessage());
         }
-    }
-
-    public static void main(String[] args) {
-        Manager manager = new Manager();
-        //manager.setUserNickname("");
-        //manager.setUserPassword("");
-
-        ServerFTP serverFTP = new ServerFTP(manager);
-        serverFTP.initServer();
     }
 }

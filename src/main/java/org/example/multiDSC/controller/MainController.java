@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.multiDSC.controller.databaseConection.ConectionBD;
 import org.example.multiDSC.controller.databaseConection.ConexionThread;
+import org.example.multiDSC.controller.ftpServer.ClientFTP;
+import org.example.multiDSC.controller.ftpServer.ServerFTP;
 import org.example.multiDSC.controller.listeners.ConfAdminView.ConfAdminButtonListener;
 import org.example.multiDSC.controller.listeners.ConfAdminView.ConfAdminDeleteButton;
 import org.example.multiDSC.controller.listeners.ConfAdminView.ConfAdminEditTextListener;
@@ -72,12 +74,34 @@ public class MainController {
         addLoginListeners();
         login.setVisible(true);
 
+    }
 
-//        confAdminModel = new ConfAdminModel(manager);
-//        confAdmin = new ConfAdminView();
-//        confAdmin.addButtonNextToDelete("Apply");
-//        ConfAdminAddActionListeners();
-//        confAdmin.setVisible(true);
+    public void initServerFTP() {
+        try {
+            // Verificar que los datos del usuario estén configurados
+            if (manager.getUserNickname() == null || manager.getUserNickname().isEmpty() ||
+                    manager.getUserPassword() == null || manager.getUserPassword().isEmpty()) {
+                throw new IllegalStateException("Error. El nickname o la contraseña no están configurados en el Manager.");
+            }
+
+            // Iniciar el servidor FTP
+            ServerFTP serverFTP = new ServerFTP(manager);
+            serverFTP.initServer();
+            System.out.println("Servidor FTP iniciado correctamente.");
+
+            // Iniciar el cliente FTP y conectarlo
+            ClientFTP clientFTP = new ClientFTP(manager);
+            if (clientFTP.connectFTP()) {
+                System.out.println("Cliente conectado al servidor FTP con éxito.");
+            } else {
+                System.err.println("El cliente no ha podido conectarse al servidor FTP.");
+            }
+        } catch (IllegalStateException e) {
+            System.err.println("Error de configuración del usuario: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error al iniciar el servidor FTP: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void ConfAdminAddActionListeners() {
