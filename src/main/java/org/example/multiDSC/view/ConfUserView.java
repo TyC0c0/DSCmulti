@@ -21,13 +21,15 @@ public class ConfUserView extends JFrame {
     private ArrayList<JButton> modificationButtons;
     private JPanel rightPanel;
     private JPanel buttonsPanel;
+    private JButton exitButton;
+    private JButton modButton;
 
     /**
      * Constructs the ConfUserView and initializes the GUI components and layout.
      * The interface includes buttons for modifying user details and applying or canceling changes.
      *
-     * @author Ivan Guerrero Romero, Isaac Requena Santiago
-     * @version 2.0
+     * @author Ivan Guerrero Romero, Isaac Requena Santiago, Alvaro Garcia
+     * @version 2.1
      */
 
 
@@ -73,34 +75,16 @@ public class ConfUserView extends JFrame {
         }
 
         // Create separated the button "exit"
-        JButton exitButton = new JButton(confUserModel.getText().get(3));
+        exitButton = new JButton(confUserModel.getText().get(3));
         exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         exitButton.setBackground(Color.WHITE);
         exitButton.setForeground(Color.BLACK);
         exitButton.setFocusPainted(false);
         exitButton.setFont(new Font("Arial", Font.BOLD, 12));
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0); // Close the app
-            }
-        });
+
         leftPanel.add(Box.createVerticalGlue()); // Flexible separator
         leftPanel.add(exitButton);
         leftPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Lower space
-
-        // Add action to the button "Modify"
-        buttons.get(1).addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                for (JTextField textField : textFields) {
-                    textField.setEnabled(true); // Activate the text fields
-                    textField.setBackground(Color.WHITE);
-                }
-                createModificationButtons();
-                buttons.get(1).setEnabled(false);
-            }
-        });
 
         // Right panel
         rightPanel = new JPanel();
@@ -135,47 +119,25 @@ public class ConfUserView extends JFrame {
         add(leftPanel, BorderLayout.WEST);
         add(rightPanel, BorderLayout.CENTER);
         add(buttonsPanel, BorderLayout.SOUTH);
-
-        setVisible(true);
+        //manager.getMainController().UserViewAddActionListener();
+       // setVisible(true);
     }
 
     /**
      * Creates the "Apply" and "Cancel" buttons dynamically and configures their actions.
      * "Cancel" clears the text fields, disables them, and hides the modification buttons.
      */
-    private void createModificationButtons() {
+    public void createModificationButtons() {
         if (modificationButtons.isEmpty()) {
             // Names of the buttons to create
             String[] buttonsNames = {model.getText().get(4), model.getText().get(5)};
 
             // Create and configure dynamically the buttons
             for (String name : buttonsNames) {
-                JButton modButton = new JButton(name);
+                modButton = new JButton(name);
                 modButton.setBackground(Color.WHITE);
                 modButton.setForeground(Color.BLACK);
                 modButton.setFont(new Font("Arial", Font.BOLD, 12));
-
-                // Add functionality to the button "Cancel"
-                if (name.equals(model.getText().get(5))) {
-                    modButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            for (JButton button : modificationButtons) {
-                                buttonsPanel.remove(button);
-                                buttons.get(1).setEnabled(true);
-                            }
-                            modificationButtons.clear();
-                            buttonsPanel.setVisible(false); // Hide the button panel
-                            for (JTextField textField : textFields) {
-                                textField.setEnabled(false); // Deactivate the text fields
-                                textField.setBackground(Color.GRAY);
-                                textField.setText(""); // Clean the text fields
-                            }
-                            buttonsPanel.revalidate();
-                            buttonsPanel.repaint();
-                        }
-                    });
-                }
 
                 modificationButtons.add(modButton);
                 buttonsPanel.add(modButton);
@@ -185,5 +147,53 @@ public class ConfUserView extends JFrame {
             buttonsPanel.revalidate();
             buttonsPanel.repaint();
         }
+    }
+
+    public ArrayList<JButton> getButtons() {
+        return buttons;
+    }
+
+    public void setButtons(ArrayList<JButton> buttons) {
+        this.buttons = buttons;
+    }
+
+    public ArrayList<JTextField> getTextFields() {
+        return textFields;
+    }
+
+    public void setTextFields(ArrayList<JTextField> textFields) {
+        this.textFields = textFields;
+    }
+
+    public JButton getExitButton() {
+        return exitButton;
+    }
+
+    public void setExitButton(JButton exitButton) {
+        this.exitButton = exitButton;
+    }
+
+    public ArrayList<JButton> getModificationButtons() {
+        return modificationButtons;
+    }
+
+    public void setModificationButtons(ArrayList<JButton> modificationButtons) {
+        this.modificationButtons = modificationButtons;
+    }
+
+    public JButton getModButton() {
+        return modButton;
+    }
+
+    public void setModButton(JButton modButton) {
+        this.modButton = modButton;
+    }
+
+    public JPanel getButtonsPanel() {
+        return buttonsPanel;
+    }
+
+    public void setButtonsPanel(JPanel buttonsPanel) {
+        this.buttonsPanel = buttonsPanel;
     }
 }

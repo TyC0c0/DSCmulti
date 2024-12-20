@@ -20,6 +20,7 @@ public class ConfUserModel {
         this.manager = manager;
         init();
         fillTexts();
+
     }
 
     public void init() {

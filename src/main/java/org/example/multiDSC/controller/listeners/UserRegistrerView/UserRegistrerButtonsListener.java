@@ -9,10 +9,10 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class ButtonsListener implements ActionListener {
+public class UserRegistrerButtonsListener implements ActionListener {
     private final Manager manager;
 
-    public ButtonsListener(Manager manager) {
+    public UserRegistrerButtonsListener(Manager manager) {
 
         this.manager = manager;
     }

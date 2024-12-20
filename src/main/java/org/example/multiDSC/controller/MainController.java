@@ -7,10 +7,11 @@ import org.example.multiDSC.controller.databaseConection.ConexionThread;
 import org.example.multiDSC.controller.listeners.ConfAdminView.ConfAdminButtonListener;
 import org.example.multiDSC.controller.listeners.ConfAdminView.ConfAdminDeleteButton;
 import org.example.multiDSC.controller.listeners.ConfAdminView.ConfAdminEditTextListener;
+import org.example.multiDSC.controller.listeners.ConfUserView.ConfUserViewButtonsListener;
 import org.example.multiDSC.controller.listeners.LoginView.LabelListener;
 import org.example.multiDSC.controller.listeners.PostLogin.PostLoginButtonsListener;
 import org.example.multiDSC.controller.listeners.LoginView.LoginViewButtonsListener;
-import org.example.multiDSC.controller.listeners.UserRegistrerView.ButtonsListener;
+import org.example.multiDSC.controller.listeners.UserRegistrerView.UserRegistrerButtonsListener;
 import org.example.multiDSC.model.controllModels.Manager;
 import org.example.multiDSC.model.controllModels.SqlSentences;
 import org.example.multiDSC.model.viewModels.*;
@@ -87,6 +88,17 @@ public class MainController {
     public void EditWindowAddActionListener(Map<String, String> userData, int userId) {
         manager.getMainController().getEditWindow().getApplyButton().addActionListener(new ConfAdminEditTextListener(manager, userData, userId));
     }
+    public void UserViewAddActionListener(){
+        for(int i = 0; i<manager.getMainController().getConfUser().getButtons().size();i++){
+            manager.getMainController().getConfUser().getButtons().get(i).addActionListener(new ConfUserViewButtonsListener(manager));
+        }
+        manager.getMainController().getConfUser().getExitButton().addActionListener(new ConfUserViewButtonsListener(manager));
+
+    }
+    public void UserViewAddModButtonListener(){
+        manager.getMainController().getConfUser().getModButton().addActionListener(new ConfUserViewButtonsListener(manager));
+        manager.getMainController().getConfUser().getModificationButtons().get(0).addActionListener(new ConfUserViewButtonsListener(manager));
+    }
 
     public void hiloConexion() {
         conexion = new ConectionBD();
@@ -106,8 +118,8 @@ public class MainController {
     }
 
     public void addUserRegisterListeners() {
-        register.getRegisterButton().addActionListener(new ButtonsListener(manager));
-        register.getCancelButton().addActionListener(new ButtonsListener(manager));
+        register.getRegisterButton().addActionListener(new UserRegistrerButtonsListener(manager));
+        register.getCancelButton().addActionListener(new UserRegistrerButtonsListener(manager));
     }
 
     public void addLoginListeners() {
