@@ -19,6 +19,7 @@ public class Manager {
     private String userIP;
     private String userDNI;
     private Integer userRol;
+    private String userNickname;
 
 
 }
